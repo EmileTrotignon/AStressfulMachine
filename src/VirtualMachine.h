@@ -6,13 +6,25 @@
 #define BRAINFUCK_BRAINFUCK_ITERATION_H
 
 #include <iostream>
-#include "string_utilities.h"
+#include "utilities.h"
 
 using namespace std;
 
 class VirtualMachine
 {
 private:
+
+    string program;
+    istream *in;
+    ostream *out;
+    size_t size;
+    char *memory;
+    char *memory_ptr;
+    unsigned int current_operator;
+    int status; // 1 means running, 0 means stopped, and -1 mean an error occurred.
+
+    VirtualMachine *procedure_call;
+
     void ptr_incr();
 
     void ptr_dincr();
@@ -41,20 +53,23 @@ private:
     void do_n_time();
 
 public:
-    string program;
-    istream *in;
-    ostream *out;
-    size_t size;
-    char *memory;
-    char *memory_ptr;
-    unsigned int current_operator;
-    int status; // 0 means running
 
     VirtualMachine(const string &program, istream *in, ostream *out, size_t size = 30000, char *memory = nullptr);
 
     void do_one_iteration(bool advance = true);
 
     void loop();
+
+    size_t get_size();
+
+    int get_current_operator();
+
+    int get_status();
+
+    char *get_memory();
+
+    char *get_memory_ptr();
+
 };
 
 

@@ -15,6 +15,7 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
     memory_ptr = memory;
     current_operator = 0;
     status = 0;
+    procedure_call = nullptr;
 }
 
 void VirtualMachine::ptr_incr()
@@ -217,4 +218,29 @@ void VirtualMachine::loop()
     {
         do_one_iteration();
     }
+}
+
+size_t VirtualMachine::get_size()
+{
+    return size;
+}
+
+int VirtualMachine::get_current_operator()
+{
+    return current_operator;
+}
+
+int VirtualMachine::get_status()
+{
+    return status;
+}
+
+char *VirtualMachine::get_memory()
+{
+    return memory;
+}
+
+char *VirtualMachine::get_memory_ptr()
+{
+    return memory_ptr;
 }
