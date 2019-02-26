@@ -2,7 +2,7 @@
 // Created by emile on 26/02/19.
 //
 
-#include "virtual_machine_procedure.h"
+#include "VirtualMachineProcedure.h"
 
 VirtualMachineProcedure::VirtualMachineProcedure(const string &program, istream *in, ostream *out, size_t size,
                                                  int *memory) : VirtualMachine(program, in, out, size, memory)
@@ -19,7 +19,7 @@ void VirtualMachineProcedure::val_out()
 
 void VirtualMachineProcedure::val_in()
 {
-   status = INPUTTING;
+    status = INPUTTING;
 }
 
 void VirtualMachineProcedure::input(int inpt)

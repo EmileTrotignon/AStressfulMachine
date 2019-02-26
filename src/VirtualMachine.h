@@ -8,7 +8,7 @@
 #include <iostream>
 #include "utilities.h"
 
-// Status values
+// Status macros
 #define ERROR -1
 #define RUNNING 1
 #define PAUSED 0

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <assert.h>
 #include "VirtualMachine.h"
-#include "virtual_machine_procedure.h"
+#include "VirtualMachineProcedure.h"
 
 VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s, int *m)
 {
@@ -183,7 +183,7 @@ void VirtualMachine::call_procedure()
         return;
     }
     string procedure = program.substr(current_operator + 1, (unsigned int) i - current_operator);
-    current_operator = (unsigned int)i;
+    current_operator = (unsigned int) i;
     string code;
     if (procedure[0] == '~')
     {
@@ -231,7 +231,7 @@ void VirtualMachine::do_one_iteration(bool advance)
 {
     if (status != RUNNING) return;
     //cout << program[current_operator] << endl;
-    if (verbose) cout << (string)(*this);
+    if (verbose) cout << (string) (*this);
     switch (program[current_operator])
     {
         default:
@@ -396,24 +396,25 @@ void VirtualMachine::stop_verbose_procedure()
     verbose_procedure = false;
 }
 
-VirtualMachine::operator string(){
+VirtualMachine::operator string()
+{
     string s = program;
     s += "\n";
-    for (int i=0; i < current_operator; i++) s += " ";
+    for (int i = 0; i < current_operator; i++) s += " ";
     s += "^\n";
     for (int j = 0; j < 255; j++)
     {
         s += (to_string(memory[j]) + " ");
     }
     s += "\n";
-    for (int i=0; i < (int)(memory_ptr - memory) * 2; i++) s += " ";
+    for (int i = 0; i < (int) (memory_ptr - memory) * 2; i++) s += " ";
     s += "^\n";
     return s;
 }
 
 ostream &VirtualMachine::operator<<(ostream &o)
 {
-    o << (string)(*this);
+    o << (string) (*this);
     return o;
 }
 
