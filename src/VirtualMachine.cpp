@@ -187,7 +187,13 @@ void VirtualMachine::call_procedure()
     string code;
     if (procedure[0] == '~')
     {
-        ifstream file(procedure.substr(1, string::npos));
+        ifstream file(procedure.substr(1, string::npos).c_str());
+        if (!file.is_open())
+        {
+            cout << "Runtime error: the virtual machine is unable to open '" << procedure.substr(1, procedure.size() - 2) << "'" << endl;
+            status = ERROR;
+            return;
+        }
         string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
         code = c;
     } else
@@ -402,7 +408,7 @@ VirtualMachine::operator string()
     s += "\n";
     for (int i = 0; i < current_operator; i++) s += " ";
     s += "^\n";
-    for (int j = 0; j < 255; j++)
+    for (int j = 0; j < 100; j++)
     {
         s += (to_string(memory[j]) + " ");
     }
