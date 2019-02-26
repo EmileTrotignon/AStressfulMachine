@@ -27,14 +27,3 @@ void VirtualMachineProcedure::input(int inpt)
     *memory_ptr = inpt;
     loop();
 }
-
-void VirtualMachineProcedure::loop()
-{
-    cout << "Lauching the Virtual Machine now" << endl;
-    cout << program << endl;
-    status = RUNNING;
-    while (status == RUNNING)
-    {
-        do_one_iteration();
-    }
-}

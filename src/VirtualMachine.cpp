@@ -19,6 +19,8 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
     current_operator = 0;
     status = PAUSED;
     procedure_call = nullptr;
+    verbose = false;
+    verbose_procedure = false;
 }
 
 VirtualMachine::~VirtualMachine()
@@ -172,7 +174,7 @@ void VirtualMachine::do_n_time()
 
 void VirtualMachine::call_procedure()
 {
-    //need work
+
     int i = corresponding_par(program, '{', '}', current_operator);
     if (i == -1)
     {
@@ -180,8 +182,8 @@ void VirtualMachine::call_procedure()
         status = ERROR;
         return;
     }
-    string procedure = program.substr(current_operator + 1, (unsigned int) i);
-    current_operator += i + 1;
+    string procedure = program.substr(current_operator + 1, (unsigned int) i - current_operator);
+    current_operator = (unsigned int)i;
     string code;
     if (procedure[0] == '~')
     {
@@ -192,7 +194,9 @@ void VirtualMachine::call_procedure()
     {
         code = procedure;
     }
+    if (verbose_procedure) cout << "[ START PROCEDURE ]" << endl;
     procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr);
+    if (verbose_procedure) procedure_call->be_verbose();
     loop_procedure();
 }
 
@@ -227,6 +231,7 @@ void VirtualMachine::do_one_iteration(bool advance)
 {
     if (status != RUNNING) return;
     //cout << program[current_operator] << endl;
+    if (verbose) cout << (string)(*this);
     switch (program[current_operator])
     {
         default:
@@ -329,15 +334,14 @@ void VirtualMachine::do_one_iteration(bool advance)
     if (advance) current_operator++;
     if (current_operator >= program.size())
     {
-        cout << "\nThe execution is finished" << endl;
+        if (verbose) cout << "\nThe execution is finished" << endl;
         status = PAUSED;
     }
 }
 
 void VirtualMachine::loop()
 {
-    cout << "Lauching the Virtual Machine now" << endl;
-    cout << program << endl;
+    if (verbose) cout << "Lauching the Virtual Machine now" << endl;
     status = RUNNING;
     while (status == RUNNING)
     {
@@ -369,3 +373,47 @@ int *VirtualMachine::get_memory_ptr()
 {
     return memory_ptr;
 }
+
+void VirtualMachine::be_verbose()
+{
+    verbose = true;
+}
+
+void VirtualMachine::stop_verbose()
+{
+    verbose = false;
+    verbose_procedure = false;
+}
+
+void VirtualMachine::be_verbose_procedure()
+{
+    verbose = true;
+    verbose_procedure = true;
+}
+
+void VirtualMachine::stop_verbose_procedure()
+{
+    verbose_procedure = false;
+}
+
+VirtualMachine::operator string(){
+    string s = program;
+    s += "\n";
+    for (int i=0; i < current_operator; i++) s += " ";
+    s += "^\n";
+    for (int j = 0; j < 255; j++)
+    {
+        s += (to_string(memory[j]) + " ");
+    }
+    s += "\n";
+    for (int i=0; i < (int)(memory_ptr - memory) * 2; i++) s += " ";
+    s += "^\n";
+    return s;
+}
+
+ostream &VirtualMachine::operator<<(ostream &o)
+{
+    o << (string)(*this);
+    return o;
+}
+

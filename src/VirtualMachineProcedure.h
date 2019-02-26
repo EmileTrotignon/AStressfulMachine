@@ -23,7 +23,6 @@ public:
 
     int output;
     void input(int inpt);
-    void loop() override;
 };
 
 

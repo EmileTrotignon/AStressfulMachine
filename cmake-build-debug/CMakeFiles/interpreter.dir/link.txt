@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/interpreter.dir/src/interpreter.cpp.o CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.o CMakeFiles/interpreter.dir/src/utilities.cpp.o CMakeFiles/interpreter.dir/src/virtual_machine_procedure.cpp.o  -o interpreter 

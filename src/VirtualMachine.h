@@ -29,6 +29,8 @@ protected:
     int *memory_ptr;
     unsigned int current_operator;
     int status; // 1 means running, 0 means stopped, and -1 mean an error occurred.
+    bool verbose;
+    bool verbose_procedure;
 
     VirtualMachineProcedure *procedure_call;
 
@@ -87,6 +89,17 @@ public:
 
     int *get_memory_ptr();
 
+    void be_verbose();
+
+    void stop_verbose();
+
+    void be_verbose_procedure();
+
+    void stop_verbose_procedure();
+
+    explicit operator string();
+
+    ostream &operator<<(ostream &o);
 };
 
 
