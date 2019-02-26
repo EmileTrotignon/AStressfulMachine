@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <assert.h>
 #include "VirtualMachine.h"
 #include "virtual_machine_procedure.h"
 
@@ -18,6 +19,12 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
     current_operator = 0;
     status = PAUSED;
     procedure_call = nullptr;
+}
+
+VirtualMachine::~VirtualMachine()
+{
+    delete[] memory;
+    delete procedure_call;
 }
 
 void VirtualMachine::ptr_incr()
@@ -45,14 +52,12 @@ void VirtualMachine::val_out()
     if (procedure_call == nullptr)
     {
         *out << *memory_ptr;
-    }
-    else
+    } else
     {
         if (procedure_call->status == INPUTTING)
         {
             procedure_call->input(*memory_ptr);
-        }
-        else
+        } else
         {
             *out << *memory_ptr;
         }
@@ -70,16 +75,26 @@ void VirtualMachine::val_in()
     if (procedure_call == nullptr)
     {
         *in >> *memory_ptr;
-    }
-    else
+    } else
     {
         if (procedure_call->status == OUTPUTTING)
         {
             *memory_ptr = procedure_call->output;
-        }
-        else
+        } else
         {
-            *in >> *memory_ptr;
+            loop_procedure();
+            if (procedure_call->status == OUTPUTTING) *memory_ptr = procedure_call->output;
+            else
+            {
+                if (procedure_call->status == INPUTTING)
+                    cout << "Procedure error: tried to access procedure output when it still needed input. ";
+                else if (procedure_call->status == PAUSED)
+                    cout << "Procedure error: tried to access procedure output its execution was finished. ";
+                cout << "This happenend at char #"
+                     << current_operator << "and char #" << procedure_call->current_operator << " in procedure"
+                     << endl;
+                status = ERROR;
+            }
         }
     }
 }
@@ -134,7 +149,7 @@ void VirtualMachine::mem_dump()
     for (int j = 0; j < 255; j++)
     {
         if (memory + j == memory_ptr)
-            cout << "[ " << (int) memory[j] << " ] ";
+            cout << "[ " << memory[j] << " ] ";
         else cout << memory[j] << " ";
     }
     cout << endl;
@@ -158,24 +173,55 @@ void VirtualMachine::do_n_time()
 void VirtualMachine::call_procedure()
 {
     //need work
-    unsigned int i = 1;
-    for (; program[current_operator + i] != '$'; i++);
-    string procedure = program.substr(current_operator, i);
+    int i = corresponding_par(program, '{', '}', current_operator);
+    if (i == -1)
+    {
+        cout << "Syntax error : unmatched '{' at char #" << current_operator << endl;
+        status = ERROR;
+        return;
+    }
+    string procedure = program.substr(current_operator + 1, (unsigned int) i);
+    current_operator += i + 1;
     string code;
     if (procedure[0] == '~')
     {
         ifstream file(procedure.substr(1, string::npos));
         string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
         code = c;
-    }
-    else
+    } else
     {
         code = procedure;
     }
     procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr);
-    procedure_call->loop();
+    loop_procedure();
 }
 
+void VirtualMachine::loop_procedure()
+{
+    assert(procedure_call != nullptr);
+    procedure_call->loop();
+    if (procedure_call->status == PAUSED)
+    {
+        delete procedure_call;
+        procedure_call = nullptr;
+    } else if (procedure_call->status == ERROR)
+    {
+        status = ERROR;
+    }
+}
+
+void VirtualMachine::terminate_procedure()
+{
+    if (procedure_call == nullptr)
+    {
+        cout << "Procedure error: trying to terminate a procedure that does not exist at char #" << current_operator
+             << endl;
+        status = ERROR;
+        return;
+    }
+    delete procedure_call;
+    procedure_call = nullptr;
+}
 
 void VirtualMachine::do_one_iteration(bool advance)
 {
@@ -242,7 +288,7 @@ void VirtualMachine::do_one_iteration(bool advance)
             ptr_reset();
             break;
 
-        case '!':
+        case '_':
             // This operator set the pointed cell's content to 0
             val_reset();
             break;
@@ -258,8 +304,12 @@ void VirtualMachine::do_one_iteration(bool advance)
             mem_dump();
             break;
 
-        case '$':
+        case '{':
             call_procedure();
+            break;
+
+        case '!':
+            terminate_procedure();
             break;
     }
     if (memory_ptr >= memory + size)

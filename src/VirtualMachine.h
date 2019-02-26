@@ -63,9 +63,15 @@ protected:
 
     void call_procedure();
 
+    void loop_procedure();
+
+    void terminate_procedure();
+
 public:
 
     VirtualMachine(const string &program, istream *in, ostream *out, size_t size = 30000, int *memory = nullptr);
+
+    ~VirtualMachine();
 
     void do_one_iteration(bool advance = true);
 
