@@ -2,7 +2,9 @@
 // Created by emile on 25/02/19.
 //
 
+#include <fstream>
 #include "VirtualMachine.h"
+#include "virtual_machine_procedure.h"
 
 VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s, int *m)
 {
@@ -14,7 +16,7 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
     if (m == nullptr) memory = new int[s];
     memory_ptr = memory;
     current_operator = 0;
-    status = 0;
+    status = PAUSED;
     procedure_call = nullptr;
 }
 
@@ -40,17 +42,46 @@ void VirtualMachine::val_dincr()
 
 void VirtualMachine::val_out()
 {
-    *out << *memory_ptr;
+    if (procedure_call == nullptr)
+    {
+        *out << *memory_ptr;
+    }
+    else
+    {
+        if (procedure_call->status == INPUTTING)
+        {
+            procedure_call->input(*memory_ptr);
+        }
+        else
+        {
+            *out << *memory_ptr;
+        }
+    }
 }
+
 
 void VirtualMachine::char_out()
 {
-    *out << (char)*memory_ptr;
+    *out << (char) *memory_ptr;
 }
 
 void VirtualMachine::val_in()
 {
-    *in >> *memory_ptr;
+    if (procedure_call == nullptr)
+    {
+        *in >> *memory_ptr;
+    }
+    else
+    {
+        if (procedure_call->status == OUTPUTTING)
+        {
+            *memory_ptr = procedure_call->output;
+        }
+        else
+        {
+            *in >> *memory_ptr;
+        }
+    }
 }
 
 void VirtualMachine::open_loop()
@@ -62,7 +93,7 @@ void VirtualMachine::open_loop()
         else
         {
             cout << "Syntax error : unmatched '[' at char #" << current_operator << endl;
-            status = -1;
+            status = ERROR;
             return;
         }
     }
@@ -77,7 +108,7 @@ void VirtualMachine::close_loop()
         else
         {
             cout << "Syntax error : unmatched ']' at char #" << current_operator << endl;
-            status = -1;
+            status = ERROR;
             return;
         }
     }
@@ -120,14 +151,35 @@ void VirtualMachine::do_n_time()
     for (int j = 0; j < n; j++)
     {
         do_one_iteration(false);
-        if (status != 1) return;
+        if (status != RUNNING) return;
     }
+}
+
+void VirtualMachine::call_procedure()
+{
+    //need work
+    unsigned int i = 1;
+    for (; program[current_operator + i] != '$'; i++);
+    string procedure = program.substr(current_operator, i);
+    string code;
+    if (procedure[0] == '~')
+    {
+        ifstream file(procedure.substr(1, string::npos));
+        string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+        code = c;
+    }
+    else
+    {
+        code = procedure;
+    }
+    procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr);
+    procedure_call->loop();
 }
 
 
 void VirtualMachine::do_one_iteration(bool advance)
 {
-    if (status != 1) return;
+    if (status != RUNNING) return;
     //cout << program[current_operator] << endl;
     switch (program[current_operator])
     {
@@ -207,27 +259,28 @@ void VirtualMachine::do_one_iteration(bool advance)
             break;
 
         case '$':
+            call_procedure();
             break;
     }
     if (memory_ptr >= memory + size)
     {
         cout << "Runtime error : The VirtualMachine is out of memory. This happened at char #" << current_operator
              << endl;
-        status = -1;
+        status = ERROR;
         return;
     }
     if (memory_ptr < memory)
     {
         cout << "Runtime error : The program tried to access negative memory. This happened at char #"
              << current_operator << endl;
-        status = -1;
+        status = ERROR;
         return;
     }
     if (advance) current_operator++;
     if (current_operator >= program.size())
     {
         cout << "\nThe execution is finished" << endl;
-        status = 0;
+        status = PAUSED;
     }
 }
 
@@ -235,8 +288,8 @@ void VirtualMachine::loop()
 {
     cout << "Lauching the Virtual Machine now" << endl;
     cout << program << endl;
-    status = 1;
-    while (status == 1)
+    status = RUNNING;
+    while (status == RUNNING)
     {
         do_one_iteration();
     }

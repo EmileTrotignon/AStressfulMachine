@@ -8,11 +8,18 @@
 #include <iostream>
 #include "utilities.h"
 
+// Status values
+#define ERROR -1
+#define RUNNING 1
+#define PAUSED 0
+
 using namespace std;
+
+class VirtualMachineProcedure;
 
 class VirtualMachine
 {
-private:
+protected:
 
     string program;
     istream *in;
@@ -23,7 +30,7 @@ private:
     unsigned int current_operator;
     int status; // 1 means running, 0 means stopped, and -1 mean an error occurred.
 
-    VirtualMachine *procedure_call;
+    VirtualMachineProcedure *procedure_call;
 
     void ptr_incr();
 
@@ -33,11 +40,11 @@ private:
 
     void val_dincr();
 
-    void val_out();
+    virtual void val_out();
 
     void char_out();
 
-    void val_in();
+    virtual void val_in();
 
     void open_loop();
 
@@ -54,13 +61,15 @@ private:
 
     void do_n_time();
 
+    void call_procedure();
+
 public:
 
     VirtualMachine(const string &program, istream *in, ostream *out, size_t size = 30000, int *memory = nullptr);
 
     void do_one_iteration(bool advance = true);
 
-    void loop();
+    virtual void loop();
 
     size_t get_size();
 
