@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/brainfuck.dir/main.cpp.o CMakeFiles/brainfuck.dir/VirtualMachine.cpp.o CMakeFiles/brainfuck.dir/string_utilities.cpp.o  -o brainfuck 
