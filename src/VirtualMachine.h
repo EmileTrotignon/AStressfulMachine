@@ -18,8 +18,8 @@ private:
     istream *in;
     ostream *out;
     size_t size;
-    char *memory;
-    char *memory_ptr;
+    int *memory;
+    int *memory_ptr;
     unsigned int current_operator;
     int status; // 1 means running, 0 means stopped, and -1 mean an error occurred.
 
@@ -34,6 +34,8 @@ private:
     void val_dincr();
 
     void val_out();
+
+    void char_out();
 
     void val_in();
 
@@ -54,7 +56,7 @@ private:
 
 public:
 
-    VirtualMachine(const string &program, istream *in, ostream *out, size_t size = 30000, char *memory = nullptr);
+    VirtualMachine(const string &program, istream *in, ostream *out, size_t size = 30000, int *memory = nullptr);
 
     void do_one_iteration(bool advance = true);
 
@@ -66,9 +68,9 @@ public:
 
     int get_status();
 
-    char *get_memory();
+    int *get_memory();
 
-    char *get_memory_ptr();
+    int *get_memory_ptr();
 
 };
 

@@ -4,14 +4,14 @@
 
 #include "VirtualMachine.h"
 
-VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s, char *m)
+VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s, int *m)
 {
     program = p;
     in = i;
     out = o;
     size = s;
     memory = m;
-    if (m == nullptr) memory = new char[s];
+    if (m == nullptr) memory = new int[s];
     memory_ptr = memory;
     current_operator = 0;
     status = 0;
@@ -40,8 +40,12 @@ void VirtualMachine::val_dincr()
 
 void VirtualMachine::val_out()
 {
-    *out << (int) *memory_ptr << " ";
-    out->flush();
+    *out << *memory_ptr;
+}
+
+void VirtualMachine::char_out()
+{
+    *out << (char)*memory_ptr;
 }
 
 void VirtualMachine::val_in()
@@ -100,7 +104,7 @@ void VirtualMachine::mem_dump()
     {
         if (memory + j == memory_ptr)
             cout << "[ " << (int) memory[j] << " ] ";
-        else cout << (int) memory[j] << " ";
+        else cout << memory[j] << " ";
     }
     cout << endl;
 }
@@ -131,52 +135,63 @@ void VirtualMachine::do_one_iteration(bool advance)
             break;
 
         case '>':
+            // This operator make the pointer point to the cell after the current cell
             ptr_incr();
             break;
 
         case '<':
+            // This operator make the pointer point to the cell before the current cell
             ptr_dincr();
             break;
 
         case '+':
+            // This operator increment the current value
             val_incr();
             break;
 
         case '-':
+            // This operator decrement the current value
             val_dincr();
             break;
 
         case '.':
+            // This operator output the current value as an int
             val_out();
+            break;
+        case ':':
+            // This operator output the current value as a char
+            char_out();
             break;
 
         case ',':
+            // This operator input a value into the current cell
             val_in();
             break;
 
         case '[':
+            // This operator jumps to the corresponding ']' if the current cell contains a 0
             open_loop();
             if (status != 1) return;
             break;
 
         case ']':
+            // This operator jumps to the corresponding '[' if the current cell does not contains 0
             close_loop();
             if (status != 1) return;
             break;
 
-            // Syntax Extension
         case '^':
-            // This operator treats the current case as a pointer and jumps to it.
+            // This operator treats the current cell's content as a pointer and jumps to it.
             ptr_jump();
             break;
 
         case '#':
-            // This operator make the pointed case the case 0
+            // This operator make the pointed cell the cell 0
             ptr_reset();
             break;
 
         case '!':
-            // This operator set the pointed case value to 0
+            // This operator set the pointed cell's content to 0
             val_reset();
             break;
 
@@ -242,12 +257,12 @@ int VirtualMachine::get_status()
     return status;
 }
 
-char *VirtualMachine::get_memory()
+int *VirtualMachine::get_memory()
 {
     return memory;
 }
 
-char *VirtualMachine::get_memory_ptr()
+int *VirtualMachine::get_memory_ptr()
 {
     return memory_ptr;
 }
