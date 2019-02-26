@@ -2,7 +2,7 @@
 // Created by emile on 25/02/19.
 //
 
-#include "string_utilities.h"
+#include "utilities.h"
 
 int corresponding_par(const string &s, char open, char close, unsigned int par_address)
 {
