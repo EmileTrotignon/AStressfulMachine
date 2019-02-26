@@ -164,7 +164,7 @@ void VirtualMachine::do_one_iteration(bool advance)
             if (status != 1) return;
             break;
 
-        // Syntax Extension
+            // Syntax Extension
         case '^':
             // This operator treats the current case as a pointer and jumps to it.
             ptr_jump();
@@ -194,10 +194,17 @@ void VirtualMachine::do_one_iteration(bool advance)
         case '$':
             break;
     }
-    if (memory_ptr - memory >= size)
+    if (memory_ptr >= memory + size)
     {
         cout << "Runtime error : The VirtualMachine is out of memory. This happened at char #" << current_operator
              << endl;
+        status = -1;
+        return;
+    }
+    if (memory_ptr < memory)
+    {
+        cout << "Runtime error : The program tried to access negative memory. This happened at char #"
+             << current_operator << endl;
         status = -1;
         return;
     }
