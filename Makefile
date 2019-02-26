@@ -1,15 +1,16 @@
-OBJS = interpreter.o utilities.o VirtualMachine.o
+OBJS = obj/interpreter.o obj/utilities.o obj/VirtualMachine.o
 FLAGS = -ggdb -Wall -std=c++14
 SRC = src/
+EXE = bin/interpreter
 
-projet: $(OBJS)
-	g++ $(FLAGS) -o projet $(OBJS)
+$(EXE): $(OBJS)
+	g++ $(FLAGS) -o $(EXE) $(OBJS)
 
-interpreter.o: $(SRC)interpreter.cpp $(SRC)VirtualMachine.h $(SRC)utilities.h
-	g++ $(FLAGS) -c $(SRC)interpreter.cpp
+obj/interpreter.o: $(SRC)interpreter.cpp $(SRC)VirtualMachine.h $(SRC)utilities.h
+	g++ $(FLAGS) -c $(SRC)interpreter.cpp -o obj/interpreter.o
 
-VirtualMachine.o: $(SRC)VirtualMachine.cpp $(SRC)VirtualMachine.h
-	g++ $(FLAGS) -c $(SRC)VirtualMachine.cpp
+obj/VirtualMachine.o: $(SRC)VirtualMachine.cpp $(SRC)VirtualMachine.h
+	g++ $(FLAGS) -c $(SRC)VirtualMachine.cpp -o obj/VirtualMachine.o
 
-utilities.o: $(SRC)utilities.cpp $(SRC)utilities.h
-	g++ $(FLAGS) -c $(SRC)utilities.cpp
+obj/utilities.o: $(SRC)utilities.cpp $(SRC)utilities.h
+	g++ $(FLAGS) -c $(SRC)utilities.cpp -o obj/utilities.o
