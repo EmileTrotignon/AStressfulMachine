@@ -34,6 +34,8 @@ private:
 
     void ptr_reset();
 
+    void val_reset();
+
     void mem_dump();
 
     void do_n_time();
@@ -46,7 +48,7 @@ public:
     char *memory;
     char *memory_ptr;
     unsigned int current_operator;
-    int status;
+    int status; // 0 means running
 
     VirtualMachine(const string &program, istream *in, ostream *out, size_t size = 30000, char *memory = nullptr);
 

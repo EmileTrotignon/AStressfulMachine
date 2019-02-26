@@ -57,7 +57,7 @@ void VirtualMachine::open_loop()
         else
         {
             cout << "Syntax error : unmatched '[' at char #" << current_operator << endl;
-            status = 1;
+            status = -1;
             return;
         }
     }
@@ -72,6 +72,8 @@ void VirtualMachine::close_loop()
         else
         {
             cout << "Syntax error : unmatched ']' at char #" << current_operator << endl;
+            status = -1;
+            return;
         }
     }
 }
@@ -84,6 +86,11 @@ void VirtualMachine::ptr_jump()
 void VirtualMachine::ptr_reset()
 {
     memory_ptr = memory;
+}
+
+void VirtualMachine::val_reset()
+{
+    *memory_ptr = 0;
 }
 
 void VirtualMachine::mem_dump()
@@ -108,14 +115,14 @@ void VirtualMachine::do_n_time()
     for (int j = 0; j < n; j++)
     {
         do_one_iteration(false);
-        if (status) return;
+        if (status != 1) return;
     }
 }
 
 
 void VirtualMachine::do_one_iteration(bool advance)
 {
-    if (status) return;
+    if (status != 1) return;
     //cout << program[current_operator] << endl;
     switch (program[current_operator])
     {
@@ -148,12 +155,12 @@ void VirtualMachine::do_one_iteration(bool advance)
 
         case '[':
             open_loop();
-            if (status) return;
+            if (status != 1) return;
             break;
 
         case ']':
             close_loop();
-            if (status) return;
+            if (status != 1) return;
             break;
 
         // Syntax Extension
@@ -165,6 +172,11 @@ void VirtualMachine::do_one_iteration(bool advance)
         case '#':
             // This operator make the pointed case the case 0
             ptr_reset();
+            break;
+
+        case '!':
+            // This operator set the pointed case value to 0
+            val_reset();
             break;
 
         case '*':
@@ -185,14 +197,14 @@ void VirtualMachine::do_one_iteration(bool advance)
     {
         cout << "Runtime error : The VirtualMachine is out of memory. This happened at char #" << current_operator
              << endl;
-        status = 1;
+        status = -1;
         return;
     }
     if (advance) current_operator++;
     if (current_operator >= program.size())
     {
         cout << "\nThe execution is finished" << endl;
-        status = 2;
+        status = 0;
     }
 }
 
@@ -200,7 +212,8 @@ void VirtualMachine::loop()
 {
     cout << "Lauching the Virtual Machine now" << endl;
     cout << program << endl;
-    while (!status)
+    status = 1;
+    while (status == 1)
     {
         do_one_iteration();
     }
