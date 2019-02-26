@@ -1,5 +1,5 @@
 OBJS = interpreter.o utilities.o VirtualMachine.o
-FLAGS = -ggdb -Wall
+FLAGS = -ggdb -Wall -std=c++14
 SRC = src/
 
 projet: $(OBJS)
