@@ -8,10 +8,24 @@
 #include <iostream>
 #include "utilities.h"
 
+#define MEMORY_SIZE_PRINT 10
+
 // Status macros
 #define ERROR -1
 #define RUNNING 1
 #define PAUSED 0
+
+// Error code macros
+#define OUT_OF_MEMORY                 1
+#define NEGATIVE_MEMORY_ACCESS        2
+#define UNMATCHED_OPEN_BRACKET        3
+#define UNMATCHED_CLOSED_BRACKET      4
+#define UNMATCHED_CURLY_BRACKET       5
+#define PROC_ASK_OUTPUT_WITHOUT_INPUT 6
+#define PROC_ASK_OUPUT_WHEN_FINISHED  7
+#define UNABLE_TO_OPEN_FILE           8
+#define TERMINATE_NONEXISTING_PROC    9
+#define ERROR_IN_PROC                 10
 
 using namespace std;
 
@@ -69,6 +83,8 @@ protected:
 
     void terminate_procedure();
 
+    virtual void error(int code);
+
 public:
 
     VirtualMachine(const string &program, istream *in, ostream *out, size_t size = 30000, int *memory = nullptr);
@@ -97,7 +113,7 @@ public:
 
     void stop_verbose_procedure();
 
-    explicit operator string();
+    virtual explicit operator string();
 
     ostream &operator<<(ostream &o);
 };

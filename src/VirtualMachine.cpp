@@ -85,17 +85,14 @@ void VirtualMachine::val_in()
         } else
         {
             loop_procedure();
+            if (procedure_call == nullptr) val_in();
             if (procedure_call->status == OUTPUTTING) *memory_ptr = procedure_call->output;
             else
             {
                 if (procedure_call->status == INPUTTING)
-                    cout << "Procedure error: tried to access procedure output when it still needed input. ";
+                    error(PROC_ASK_OUTPUT_WITHOUT_INPUT);
                 else if (procedure_call->status == PAUSED)
-                    cout << "Procedure error: tried to access procedure output its execution was finished. ";
-                cout << "This happenend at char #"
-                     << current_operator << "and char #" << procedure_call->current_operator << " in procedure"
-                     << endl;
-                status = ERROR;
+                    error(PROC_ASK_OUPUT_WHEN_FINISHED);
             }
         }
     }
@@ -109,8 +106,7 @@ void VirtualMachine::open_loop()
         if (corresponding != -1) current_operator = (unsigned int) corresponding;
         else
         {
-            cout << "Syntax error : unmatched '[' at char #" << current_operator << endl;
-            status = ERROR;
+            error(UNMATCHED_OPEN_BRACKET);
             return;
         }
     }
@@ -124,8 +120,7 @@ void VirtualMachine::close_loop()
         if (corresponding != -1) current_operator = (unsigned int) corresponding;
         else
         {
-            cout << "Syntax error : unmatched ']' at char #" << current_operator << endl;
-            status = ERROR;
+            error(UNMATCHED_CLOSED_BRACKET);
             return;
         }
     }
@@ -163,7 +158,6 @@ void VirtualMachine::do_n_time()
     int n;
     size_t t;
     n = stoi(number, &t);
-    //cout << endl << n << endl;
     current_operator = (unsigned int) t + 1;
     for (int j = 0; j < n; j++)
     {
@@ -178,8 +172,7 @@ void VirtualMachine::call_procedure()
     int i = corresponding_par(program, '{', '}', current_operator);
     if (i == -1)
     {
-        cout << "Syntax error : unmatched '{' at char #" << current_operator << endl;
-        status = ERROR;
+        error(UNMATCHED_CURLY_BRACKET);
         return;
     }
     string procedure = program.substr(current_operator + 1, (unsigned int) i - current_operator);
@@ -187,11 +180,10 @@ void VirtualMachine::call_procedure()
     string code;
     if (procedure[0] == '~')
     {
-        ifstream file(procedure.substr(1, string::npos).c_str());
+        ifstream file(procedure.substr(1, procedure.size() - 2));
         if (!file.is_open())
         {
-            cout << "Runtime error: the virtual machine is unable to open '" << procedure.substr(1, procedure.size() - 2) << "'" << endl;
-            status = ERROR;
+            error(UNABLE_TO_OPEN_FILE);
             return;
         }
         string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
@@ -216,7 +208,8 @@ void VirtualMachine::loop_procedure()
         procedure_call = nullptr;
     } else if (procedure_call->status == ERROR)
     {
-        status = ERROR;
+        error(ERROR_IN_PROC);
+        return;
     }
 }
 
@@ -224,13 +217,64 @@ void VirtualMachine::terminate_procedure()
 {
     if (procedure_call == nullptr)
     {
-        cout << "Procedure error: trying to terminate a procedure that does not exist at char #" << current_operator
-             << endl;
-        status = ERROR;
+        error(TERMINATE_NONEXISTING_PROC);
         return;
     }
     delete procedure_call;
     procedure_call = nullptr;
+}
+
+void VirtualMachine::error(int code)
+{
+    switch (code)
+    {
+        default:
+            break;
+        case OUT_OF_MEMORY:
+            cout << "Runtime error : The VirtualMachine is out of memory.";
+            break;
+
+        case NEGATIVE_MEMORY_ACCESS:
+            cout << "Runtime error : The program tried to access negative memory.";
+            break;
+
+        case UNMATCHED_OPEN_BRACKET:
+            cout << "Syntax error : unmatched '['";
+            break;
+
+        case UNMATCHED_CLOSED_BRACKET:
+            cout << "Syntax error : unmatched ']'";
+            break;
+
+        case UNMATCHED_CURLY_BRACKET:
+            cout << "Syntax error : unmatched '{'";
+            break;
+
+        case PROC_ASK_OUTPUT_WITHOUT_INPUT:
+            cout << "Procedure error: tried to access procedure output when it still needed input.";
+            if (verbose_procedure) cout << endl << (string)(*procedure_call);
+            else cout << " This happened at char #" << procedure_call->current_operator << "in procedure";
+            break;
+
+        case PROC_ASK_OUPUT_WHEN_FINISHED:
+            cout << "Procedure error: tried to access procedure output its execution was finished. ";
+            break;
+
+        case UNABLE_TO_OPEN_FILE:
+            cout << "Runtime error: the virtual machine is unable to open a file";
+            break;
+
+        case TERMINATE_NONEXISTING_PROC:
+            cout << "Procedure error: trying to terminate a procedure that does not exist";
+            break;
+
+        case ERROR_IN_PROC:
+            cout << "Procedure error: another error occurred in the current procedure";
+            break;
+    }
+    if (verbose) cout << endl << (string)(*this);
+    else cout << " This Happened at char #" << current_operator << endl;
+    status = ERROR;
 }
 
 void VirtualMachine::do_one_iteration(bool advance)
@@ -325,20 +369,16 @@ void VirtualMachine::do_one_iteration(bool advance)
     }
     if (memory_ptr >= memory + size)
     {
-        cout << "Runtime error : The VirtualMachine is out of memory. This happened at char #" << current_operator
-             << endl;
-        status = ERROR;
+        error(OUT_OF_MEMORY);
         return;
     }
     if (memory_ptr < memory)
     {
-        cout << "Runtime error : The program tried to access negative memory. This happened at char #"
-             << current_operator << endl;
-        status = ERROR;
+        error(NEGATIVE_MEMORY_ACCESS);
         return;
     }
     if (advance) current_operator++;
-    if (current_operator >= program.size())
+    if (current_operator > program.size())
     {
         if (verbose) cout << "\nThe execution is finished" << endl;
         status = PAUSED;
@@ -408,7 +448,7 @@ VirtualMachine::operator string()
     s += "\n";
     for (int i = 0; i < current_operator; i++) s += " ";
     s += "^\n";
-    for (int j = 0; j < 100; j++)
+    for (int j = 0; j < MEMORY_SIZE_PRINT; j++)
     {
         s += (to_string(memory[j]) + " ");
     }
