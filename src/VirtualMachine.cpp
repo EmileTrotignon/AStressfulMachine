@@ -281,7 +281,6 @@ void VirtualMachine::do_one_iteration(bool advance)
 {
     if (status != RUNNING) return;
     //cout << program[current_operator] << endl;
-    if (verbose) cout << (string) (*this);
     switch (program[current_operator])
     {
         default:
@@ -378,6 +377,7 @@ void VirtualMachine::do_one_iteration(bool advance)
         return;
     }
     if (advance) current_operator++;
+    if (verbose) cout << (string) (*this);
     if (current_operator > program.size())
     {
         if (verbose) cout << "\nThe execution is finished" << endl;
@@ -387,7 +387,11 @@ void VirtualMachine::do_one_iteration(bool advance)
 
 void VirtualMachine::loop()
 {
-    if (verbose) cout << "Lauching the Virtual Machine now" << endl;
+    if (verbose)
+    {
+        cout << "Lauching the Virtual Machine now" << endl;
+        if (verbose) cout << (string) (*this);
+    }
     status = RUNNING;
     while (status == RUNNING)
     {
@@ -442,20 +446,34 @@ void VirtualMachine::stop_verbose_procedure()
     verbose_procedure = false;
 }
 
-VirtualMachine::operator string()
+string VirtualMachine::program_to_string()
 {
     string s = program;
     s += "\n";
     for (int i = 0; i < current_operator; i++) s += " ";
     s += "^\n";
+    return s;
+}
+
+string VirtualMachine::memory_to_string()
+{
+    string s;
+    int k = 0;
     for (int j = 0; j < MEMORY_SIZE_PRINT; j++)
     {
         s += (to_string(memory[j]) + " ");
+        if (j == (int) (memory_ptr - memory)) k = (int)s.size() - 2;
     }
     s += "\n";
-    for (int i = 0; i < (int) (memory_ptr - memory) * 2; i++) s += " ";
+    for (int i = 0; i < k; i++) s += " ";
     s += "^\n";
     return s;
+
+}
+
+VirtualMachine::operator string()
+{
+    return program_to_string() + memory_to_string();
 }
 
 ostream &VirtualMachine::operator<<(ostream &o)

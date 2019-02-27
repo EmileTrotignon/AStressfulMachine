@@ -31,3 +31,16 @@ int corresponding_par_backward(const string &s, char open, char close, unsigned 
     if (depth == 0) return par_address + j;
     else return -1;
 }
+
+string add_message_before_each_line(string s, string message)
+{
+    istringstream stream(s);
+    string r;
+    string line;
+    while (getline(stream, line))
+    {
+        r += message + line + "\n";
+        line = "";
+    }
+    return r;
+}

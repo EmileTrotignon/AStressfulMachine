@@ -113,6 +113,10 @@ public:
 
     void stop_verbose_procedure();
 
+    virtual string memory_to_string();
+
+    virtual string program_to_string();
+
     virtual explicit operator string();
 
     ostream &operator<<(ostream &o);
