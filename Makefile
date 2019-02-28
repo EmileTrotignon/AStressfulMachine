@@ -1,21 +1,19 @@
-OBJS = obj/interpreter.o obj/utilities.o obj/VirtualMachine.o obj/VirtualMachineProcedure.o
-FLAGS = -ggdb -Wall -std=c++14
-EXE = bin/interpreter
+# CMake project wrapper
+# https://stackoverflow.com/questions/11143062/getting-cmake-to-build-out-of-source-without-wrapping-scripts
 
-$(EXE): $(OBJS)
-	g++ $(FLAGS) -o $(EXE) $(OBJS)
+MKDIR := mkdir -p
 
-obj/interpreter.o: src/interpreter.cpp src/VirtualMachine.h
-	g++ $(FLAGS) -c src/interpreter.cpp -o obj/interpreter.o
+all: ./build/Makefile
+	@ $(MAKE) -C build
 
-obj/VirtualMachine.o: src/VirtualMachine.cpp src/VirtualMachine.h src/utilities.h src/VirtualMachineProcedure.h
-	g++ $(FLAGS) -c src/VirtualMachine.cpp -o obj/VirtualMachine.o
-
-obj/VirtualMachineProcedure.o: src/VirtualMachineProcedure.cpp src/VirtualMachineProcedure.h src/VirtualMachine.h
-	g++ $(FLAGS) -c src/VirtualMachineProcedure.cpp -o obj/VirtualMachineProcedure.o
-
-obj/utilities.o: src/utilities.cpp src/utilities.h
-	g++ $(FLAGS) -c src/utilities.cpp -o obj/utilities.o
+./build/Makefile:
+	@ ($(MKDIR) build)
+	@  (cd build && cmake ..)
 
 clean:
-	rm obj/*.o
+	rm -r build/CMake*
+	rm -r build/cmake*
+
+ifeq ($(findstring clean, $(MAKECMDGOALS)),)
+	@ $(MAKE) -C build $(MAKECMDGOALS)
+endif
