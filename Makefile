@@ -1,16 +1,21 @@
-OBJS = obj/interpreter.o obj/utilities.o obj/VirtualMachine.o
+OBJS = obj/interpreter.o obj/utilities.o obj/VirtualMachine.o obj/VirtualMachineProcedure.o
 FLAGS = -ggdb -Wall -std=c++14
-SRC = src/
 EXE = bin/interpreter
 
 $(EXE): $(OBJS)
 	g++ $(FLAGS) -o $(EXE) $(OBJS)
 
-obj/interpreter.o: $(SRC)interpreter.cpp $(SRC)VirtualMachine.h $(SRC)utilities.h
-	g++ $(FLAGS) -c $(SRC)interpreter.cpp -o obj/interpreter.o
+obj/interpreter.o: src/interpreter.cpp src/VirtualMachine.h
+	g++ $(FLAGS) -c src/interpreter.cpp -o obj/interpreter.o
 
-obj/VirtualMachine.o: $(SRC)VirtualMachine.cpp $(SRC)VirtualMachine.h
-	g++ $(FLAGS) -c $(SRC)VirtualMachine.cpp -o obj/VirtualMachine.o
+obj/VirtualMachine.o: src/VirtualMachine.cpp src/VirtualMachine.h src/utilities.h src/VirtualMachineProcedure.h
+	g++ $(FLAGS) -c src/VirtualMachine.cpp -o obj/VirtualMachine.o
 
-obj/utilities.o: $(SRC)utilities.cpp $(SRC)utilities.h
-	g++ $(FLAGS) -c $(SRC)utilities.cpp -o obj/utilities.o
+obj/VirtualMachineProcedure.o: src/VirtualMachineProcedure.cpp src/VirtualMachineProcedure.h src/VirtualMachine.h
+	g++ $(FLAGS) -c src/VirtualMachineProcedure.cpp -o obj/VirtualMachineProcedure.o
+
+obj/utilities.o: src/utilities.cpp src/utilities.h
+	g++ $(FLAGS) -c src/utilities.cpp -o obj/utilities.o
+
+clean:
+	rm obj/*.o
