@@ -21,12 +21,34 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
     procedure_call = nullptr;
     verbose = false;
     verbose_procedure = false;
+    anchor_array = vector<unsigned int>(0, -1);
+    initialize_anchor_array();
+
 }
 
 VirtualMachine::~VirtualMachine()
 {
     delete[] memory;
     delete procedure_call;
+}
+
+void VirtualMachine::initialize_anchor_array()
+{
+    while (current_operator < program.size())
+    {
+        if (program[current_operator] == '[' && program[current_operator + 1] != '|')
+        {
+            current_operator++;
+            size_t t;
+            int anchor = extract_number_from_program(current_operator, &t);
+            if (status == ERROR) return;
+            //stoi(program.substr(current_operator, string::npos), &t);
+            for (int i = 0; i <= anchor_array.size() - anchor; i++) anchor_array.push_back(0);
+            anchor_array[anchor] = (int) t + current_operator;
+        }
+        current_operator++;
+    }
+    current_operator = 0;
 }
 
 void VirtualMachine::ptr_incr()
@@ -126,6 +148,84 @@ void VirtualMachine::close_loop()
     }
 }
 
+void VirtualMachine::handle_bracket()
+{
+    current_operator++;
+    switch (program[current_operator])
+    {
+        case '|':
+            current_operator++;
+            go_to_cond();
+            break;
+        default:
+            exit_goto();
+            return;
+    }
+}
+
+void VirtualMachine::go_to_cond()
+{
+    if (program[current_operator] == '=')
+    {
+        if (*memory_ptr == 0)
+        {
+            current_operator++;
+            go_to();
+            return;
+        } else exit_goto();
+    } else if (program[current_operator] == '>')
+    {
+        if (*memory_ptr > 0)
+        {
+            current_operator++;
+            go_to();
+            return;
+        } else exit_goto();
+    } else if (program[current_operator] == '/')
+    {
+        if (*memory_ptr != 0)
+        {
+            current_operator++;
+            go_to();
+            return;
+        } else exit_goto();
+    } else if (program[current_operator] == '<')
+    {
+        if (*memory_ptr < 0)
+        {
+            current_operator++;
+            go_to();
+            return;
+        } else exit_goto();
+    } else
+    {
+        go_to();
+        return;
+    }
+}
+
+void VirtualMachine::go_to()
+{
+    int anchor = extract_number_from_program(current_operator); //stoi(program.substr(current_operator, string::npos));
+    go_to_anchor(anchor);
+}
+
+void VirtualMachine::go_to_anchor(int anchor)
+{
+    current_operator = anchor_array[anchor];
+}
+
+void VirtualMachine::exit_goto()
+{
+    int i = corresponding_par(program, '[', ']', current_operator - 1);
+    if (i == -1)
+    {
+        error(UNMATCHED_OPEN_BRACKET);
+        return;
+    }
+    current_operator = (unsigned int)i;
+}
+
 void VirtualMachine::ptr_jump()
 {
     memory_ptr = memory + (*memory_ptr);
@@ -157,7 +257,7 @@ void VirtualMachine::do_n_time()
     string number = program.substr(current_operator + 1);
     int n;
     size_t t;
-    n = stoi(number, &t);
+    n = extract_number_from_program(current_operator + 1, &t); //stoi(number, &t);
     current_operator = (unsigned int) t + 1;
     for (int j = 0; j < n; j++)
     {
@@ -239,40 +339,43 @@ void VirtualMachine::error(int code)
             break;
 
         case UNMATCHED_OPEN_BRACKET:
-            cout << "Syntax error : unmatched '['";
+            cout << "Syntax error : unmatched '['.";
             break;
 
         case UNMATCHED_CLOSED_BRACKET:
-            cout << "Syntax error : unmatched ']'";
+            cout << "Syntax error : unmatched ']'.";
             break;
 
         case UNMATCHED_CURLY_BRACKET:
-            cout << "Syntax error : unmatched '{'";
+            cout << "Syntax error : unmatched '{'.";
             break;
 
         case PROC_ASK_OUTPUT_WITHOUT_INPUT:
             cout << "Procedure error: tried to access procedure output when it still needed input.";
-            if (verbose_procedure) cout << endl << (string)(*procedure_call);
-            else cout << " This happened at char #" << procedure_call->current_operator << "in procedure";
+            if (verbose_procedure) cout << endl << (string) (*procedure_call);
+            else cout << " This happened at char #" << procedure_call->current_operator << "in the procedure.";
             break;
 
         case PROC_ASK_OUPUT_WHEN_FINISHED:
-            cout << "Procedure error: tried to access procedure output its execution was finished. ";
+            cout << "Procedure error: tried to access procedure output its execution was finished.";
             break;
 
         case UNABLE_TO_OPEN_FILE:
-            cout << "Runtime error: the virtual machine is unable to open a file";
+            cout << "Runtime error: the virtual machine is unable to open a file.";
             break;
 
         case TERMINATE_NONEXISTING_PROC:
-            cout << "Procedure error: trying to terminate a procedure that does not exist";
+            cout << "Procedure error: trying to terminate a procedure that does not exist.";
             break;
 
         case ERROR_IN_PROC:
-            cout << "Procedure error: another error occurred in the current procedure";
+            cout << "Procedure error: another error occurred in the current procedure.";
+            break;
+        case INVALID_NUMBER:
+            cout << "Syntax error : invalid number.";
             break;
     }
-    if (verbose) cout << endl << (string)(*this);
+    if (verbose) cout << endl << (string) (*this);
     else cout << " This Happened at char #" << current_operator << endl;
     status = ERROR;
 }
@@ -322,16 +425,16 @@ void VirtualMachine::do_one_iteration(bool advance)
 
         case '[':
             // This operator jumps to the corresponding ']' if the current cell contains a 0
-            open_loop();
-            if (status != 1) return;
+            handle_bracket();
+            //if (status != 1) return;
             break;
 
-        case ']':
+        /*case ']':
             // This operator jumps to the corresponding '[' if the current cell does not contains 0
             close_loop();
             if (status != 1) return;
             break;
-
+        */
         case '^':
             // This operator treats the current cell's content as a pointer and jumps to it.
             ptr_jump();
@@ -446,6 +549,29 @@ void VirtualMachine::stop_verbose_procedure()
     verbose_procedure = false;
 }
 
+int VirtualMachine::extract_number_from_program(unsigned int start_address, size_t *t)
+{
+    int r = -1;
+    try
+    {
+        if (t == nullptr)
+        {
+            r = stoi(program.substr(start_address));
+        } else
+        {
+            r = stoi(program.substr(start_address), t);
+        }
+    } catch (invalid_argument const &e)
+    {
+        error(INVALID_NUMBER);
+    } catch (out_of_range const &e)
+    {
+        error(INVALID_NUMBER);
+    }
+
+    return r;
+}
+
 string VirtualMachine::program_to_string()
 {
     string s = program;
@@ -462,7 +588,7 @@ string VirtualMachine::memory_to_string()
     for (int j = 0; j < MEMORY_SIZE_PRINT; j++)
     {
         s += (to_string(memory[j]) + " ");
-        if (j == (int) (memory_ptr - memory)) k = (int)s.size() - 2;
+        if (j == (int) (memory_ptr - memory)) k = (int) s.size() - 2;
     }
     s += "\n";
     for (int i = 0; i < k; i++) s += " ";

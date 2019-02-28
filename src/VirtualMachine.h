@@ -6,6 +6,7 @@
 #define BRAINFUCK_BRAINFUCK_ITERATION_H
 
 #include <iostream>
+#include <vector>
 #include "utilities.h"
 
 #define MEMORY_SIZE_PRINT 10
@@ -26,6 +27,7 @@
 #define UNABLE_TO_OPEN_FILE           8
 #define TERMINATE_NONEXISTING_PROC    9
 #define ERROR_IN_PROC                 10
+#define INVALID_NUMBER                11
 
 using namespace std;
 
@@ -45,8 +47,11 @@ protected:
     int status; // 1 means running, 0 means stopped, and -1 mean an error occurred.
     bool verbose;
     bool verbose_procedure;
+    vector<unsigned int> anchor_array;
 
     VirtualMachineProcedure *procedure_call;
+
+    void initialize_anchor_array();
 
     void ptr_incr();
 
@@ -66,7 +71,16 @@ protected:
 
     void close_loop();
 
-    // Syntax Extension
+    void handle_bracket();
+
+    void go_to_cond();
+
+    void go_to();
+
+    void go_to_anchor(int anchor);
+
+    void exit_goto();
+
     void ptr_jump();
 
     void ptr_reset();
@@ -112,6 +126,8 @@ public:
     void be_verbose_procedure();
 
     void stop_verbose_procedure();
+
+    int extract_number_from_program(unsigned int start_address, size_t *t=nullptr);
 
     virtual string memory_to_string();
 
