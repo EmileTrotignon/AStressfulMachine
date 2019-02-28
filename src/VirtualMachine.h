@@ -7,9 +7,10 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include "utilities.h"
 
-#define MEMORY_SIZE_PRINT 10
+#define MAX_SIZE_MEMORY_PRINT 10
 
 // Status macros
 #define ERROR -1
@@ -29,6 +30,10 @@
 #define ERROR_IN_PROC                 10
 #define INVALID_NUMBER                11
 
+// Message code macros
+#define LAUNCHING 1
+#define FINISHED  2
+
 using namespace std;
 
 class VirtualMachineProcedure;
@@ -47,11 +52,11 @@ protected:
     int status; // 1 means running, 0 means stopped, and -1 mean an error occurred.
     bool verbose;
     bool verbose_procedure;
-    vector<unsigned int> anchor_array;
+    map<unsigned int, unsigned int> anchor_map;
 
     VirtualMachineProcedure *procedure_call;
 
-    void initialize_anchor_array();
+    void initialize_anchor_map();
 
     void ptr_incr();
 
@@ -93,11 +98,21 @@ protected:
 
     void call_procedure();
 
+    string file_to_string(string filename);
+
     void loop_procedure();
 
     void terminate_procedure();
 
     virtual void error(int code);
+
+    int extract_number_from_program(unsigned int start_address, size_t *t=nullptr);
+
+    virtual void message(int code);
+
+    virtual string memory_to_string();
+
+    virtual string program_to_string();
 
 public:
 
@@ -126,12 +141,6 @@ public:
     void be_verbose_procedure();
 
     void stop_verbose_procedure();
-
-    int extract_number_from_program(unsigned int start_address, size_t *t=nullptr);
-
-    virtual string memory_to_string();
-
-    virtual string program_to_string();
 
     virtual explicit operator string();
 

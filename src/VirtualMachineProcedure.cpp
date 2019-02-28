@@ -15,14 +15,22 @@ void VirtualMachineProcedure::val_out()
 {
     output = *memory_ptr;
     status = OUTPUTTING;
+    if (verbose) cout << "[PROC OUTPUTTING]" << endl;
 }
 
 void VirtualMachineProcedure::val_in()
 {
     status = INPUTTING;
+    if (verbose) cout << "[PROC INPUTTING]" << endl;
 }
 
 void VirtualMachineProcedure::error(int code)
+{
+    cout << PROC_PRINTING_MESSAGE;
+    VirtualMachine::error(code);
+}
+
+void VirtualMachineProcedure::message(int code)
 {
     cout << PROC_PRINTING_MESSAGE;
     VirtualMachine::error(code);

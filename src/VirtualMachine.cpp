@@ -9,21 +9,26 @@
 
 VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s, int *m)
 {
+    status = PAUSED;
     program = p;
     in = i;
     out = o;
     size = s;
     memory = m;
-    if (m == nullptr) memory = new int[s];
+    if (isdigit(program[0]))
+    {
+        size_t t;
+        size = (size_t) extract_number_from_program(0, &t);
+        program = program.substr(t);
+    }
+    if (program[0] == '~') program = file_to_string(program.substr(1));
+    if (m == nullptr) memory = new int[size];
     memory_ptr = memory;
     current_operator = 0;
-    status = PAUSED;
     procedure_call = nullptr;
     verbose = false;
     verbose_procedure = false;
-    anchor_array = vector<unsigned int>(0, -1);
-    initialize_anchor_array();
-
+    initialize_anchor_map();
 }
 
 VirtualMachine::~VirtualMachine()
@@ -32,7 +37,7 @@ VirtualMachine::~VirtualMachine()
     delete procedure_call;
 }
 
-void VirtualMachine::initialize_anchor_array()
+void VirtualMachine::initialize_anchor_map()
 {
     while (current_operator < program.size())
     {
@@ -42,9 +47,7 @@ void VirtualMachine::initialize_anchor_array()
             size_t t;
             int anchor = extract_number_from_program(current_operator, &t);
             if (status == ERROR) return;
-            //stoi(program.substr(current_operator, string::npos), &t);
-            for (int i = 0; i <= anchor_array.size() - anchor; i++) anchor_array.push_back(0);
-            anchor_array[anchor] = (int) t + current_operator;
+            anchor_map[anchor] = (int) t + current_operator;
         }
         current_operator++;
     }
@@ -212,7 +215,7 @@ void VirtualMachine::go_to()
 
 void VirtualMachine::go_to_anchor(int anchor)
 {
-    current_operator = anchor_array[anchor];
+    current_operator = anchor_map[anchor];
 }
 
 void VirtualMachine::exit_goto()
@@ -223,7 +226,7 @@ void VirtualMachine::exit_goto()
         error(UNMATCHED_OPEN_BRACKET);
         return;
     }
-    current_operator = (unsigned int)i;
+    current_operator = (unsigned int) i;
 }
 
 void VirtualMachine::ptr_jump()
@@ -280,14 +283,8 @@ void VirtualMachine::call_procedure()
     string code;
     if (procedure[0] == '~')
     {
-        ifstream file(procedure.substr(1, procedure.size() - 2));
-        if (!file.is_open())
-        {
-            error(UNABLE_TO_OPEN_FILE);
-            return;
-        }
-        string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
-        code = c;
+        code = file_to_string(procedure.substr(1, procedure.size() - 2));
+        if (status == ERROR) return;
     } else
     {
         code = procedure;
@@ -296,6 +293,18 @@ void VirtualMachine::call_procedure()
     procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr);
     if (verbose_procedure) procedure_call->be_verbose();
     loop_procedure();
+}
+
+string VirtualMachine::file_to_string(string filename)
+{
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+        error(UNABLE_TO_OPEN_FILE);
+        return "";
+    }
+    string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+    return c;
 }
 
 void VirtualMachine::loop_procedure()
@@ -382,6 +391,11 @@ void VirtualMachine::error(int code)
 
 void VirtualMachine::do_one_iteration(bool advance)
 {
+    if (current_operator >= program.size())
+    {
+        if (verbose) message(FINISHED);
+        status = PAUSED;
+    }
     if (status != RUNNING) return;
     //cout << program[current_operator] << endl;
     switch (program[current_operator])
@@ -429,12 +443,12 @@ void VirtualMachine::do_one_iteration(bool advance)
             //if (status != 1) return;
             break;
 
-        /*case ']':
-            // This operator jumps to the corresponding '[' if the current cell does not contains 0
-            close_loop();
-            if (status != 1) return;
-            break;
-        */
+            /*case ']':
+                // This operator jumps to the corresponding '[' if the current cell does not contains 0
+                close_loop();
+                if (status != 1) return;
+                break;
+            */
         case '^':
             // This operator treats the current cell's content as a pointer and jumps to it.
             ptr_jump();
@@ -481,19 +495,15 @@ void VirtualMachine::do_one_iteration(bool advance)
     }
     if (advance) current_operator++;
     if (verbose) cout << (string) (*this);
-    if (current_operator > program.size())
-    {
-        if (verbose) cout << "\nThe execution is finished" << endl;
-        status = PAUSED;
-    }
+
 }
 
 void VirtualMachine::loop()
 {
     if (verbose)
     {
-        cout << "Lauching the Virtual Machine now" << endl;
-        if (verbose) cout << (string) (*this);
+        message(LAUNCHING);
+        cout << (string) (*this);
     }
     status = RUNNING;
     while (status == RUNNING)
@@ -572,9 +582,26 @@ int VirtualMachine::extract_number_from_program(unsigned int start_address, size
     return r;
 }
 
+void VirtualMachine::message(int code)
+{
+
+    switch (code)
+    {
+        default:
+            break;
+        case LAUNCHING:
+            cout << "Lauching the Virtual Machine now" << endl;
+            break;
+        case FINISHED:
+            cout << "The execution is finished" << endl;
+            break;
+
+    }
+}
+
 string VirtualMachine::program_to_string()
 {
-    string s = program;
+    string s = "\n" + program;
     s += "\n";
     for (int i = 0; i < current_operator; i++) s += " ";
     s += "^\n";
@@ -585,7 +612,7 @@ string VirtualMachine::memory_to_string()
 {
     string s;
     int k = 0;
-    for (int j = 0; j < MEMORY_SIZE_PRINT; j++)
+    for (int j = 0; j < ((size < MAX_SIZE_MEMORY_PRINT) ? size : MAX_SIZE_MEMORY_PRINT); j++)
     {
         s += (to_string(memory[j]) + " ");
         if (j == (int) (memory_ptr - memory)) k = (int) s.size() - 2;
