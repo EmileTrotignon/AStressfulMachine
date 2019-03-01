@@ -21,7 +21,7 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
         size = (size_t) extract_number_from_program(0, &t);
         program = program.substr(t);
     }
-    if (program[0] == '~') program = file_to_string(program.substr(1));
+    if (program[0] == FILE_MARKER) program = file_to_string(program.substr(1));
     if (m == nullptr) memory = new int[size];
     memory_ptr = memory;
     current_operator = 0;
@@ -41,7 +41,7 @@ void VirtualMachine::initialize_anchor_map()
 {
     while (current_operator < program.size())
     {
-        if (program[current_operator] == '[' && program[current_operator + 1] != '|')
+        if (program[current_operator] == OPEN_GOTO && program[current_operator + 1] != GOTO_MARKER)
         {
             current_operator++;
             size_t t;
@@ -123,40 +123,12 @@ void VirtualMachine::val_in()
     }
 }
 
-void VirtualMachine::open_loop()
-{
-    if (!*memory_ptr)
-    {
-        int corresponding = corresponding_par(program, '[', ']', current_operator);
-        if (corresponding != -1) current_operator = (unsigned int) corresponding;
-        else
-        {
-            error(UNMATCHED_OPEN_BRACKET);
-            return;
-        }
-    }
-}
-
-void VirtualMachine::close_loop()
-{
-    if (*memory_ptr)
-    {
-        int corresponding = corresponding_par_backward(program, '[', ']', current_operator);
-        if (corresponding != -1) current_operator = (unsigned int) corresponding;
-        else
-        {
-            error(UNMATCHED_CLOSED_BRACKET);
-            return;
-        }
-    }
-}
-
 void VirtualMachine::handle_bracket()
 {
     current_operator++;
     switch (program[current_operator])
     {
-        case '|':
+        case GOTO_MARKER:
             current_operator++;
             go_to_cond();
             break;
@@ -168,7 +140,7 @@ void VirtualMachine::handle_bracket()
 
 void VirtualMachine::go_to_cond()
 {
-    if (program[current_operator] == '=')
+    if (program[current_operator] == COND_EQUAL)
     {
         if (*memory_ptr == 0)
         {
@@ -176,7 +148,7 @@ void VirtualMachine::go_to_cond()
             go_to();
             return;
         } else exit_goto();
-    } else if (program[current_operator] == '>')
+    } else if (program[current_operator] == COND_GREATER)
     {
         if (*memory_ptr > 0)
         {
@@ -184,7 +156,7 @@ void VirtualMachine::go_to_cond()
             go_to();
             return;
         } else exit_goto();
-    } else if (program[current_operator] == '/')
+    } else if (program[current_operator] == COND_DIFF)
     {
         if (*memory_ptr != 0)
         {
@@ -192,7 +164,7 @@ void VirtualMachine::go_to_cond()
             go_to();
             return;
         } else exit_goto();
-    } else if (program[current_operator] == '<')
+    } else if (program[current_operator] == COND_LESSER)
     {
         if (*memory_ptr < 0)
         {
@@ -220,7 +192,7 @@ void VirtualMachine::go_to_anchor(int anchor)
 
 void VirtualMachine::exit_goto()
 {
-    int i = corresponding_par(program, '[', ']', current_operator - 1);
+    int i = corresponding_par(program, OPEN_GOTO, CLOSE_GOTO, current_operator - 1);
     if (i == -1)
     {
         error(UNMATCHED_OPEN_BRACKET);
@@ -244,17 +216,6 @@ void VirtualMachine::val_reset()
     *memory_ptr = 0;
 }
 
-void VirtualMachine::mem_dump()
-{
-    for (int j = 0; j < 255; j++)
-    {
-        if (memory + j == memory_ptr)
-            cout << "[ " << memory[j] << " ] ";
-        else cout << memory[j] << " ";
-    }
-    cout << endl;
-}
-
 void VirtualMachine::do_n_time()
 {
     string number = program.substr(current_operator + 1);
@@ -272,7 +233,7 @@ void VirtualMachine::do_n_time()
 void VirtualMachine::call_procedure()
 {
 
-    int i = corresponding_par(program, '{', '}', current_operator);
+    int i = corresponding_par(program, OPEN_PROC, CLOSE_PROC, current_operator);
     if (i == -1)
     {
         error(UNMATCHED_CURLY_BRACKET);
@@ -281,7 +242,7 @@ void VirtualMachine::call_procedure()
     string procedure = program.substr(current_operator + 1, (unsigned int) i - current_operator);
     current_operator = (unsigned int) i;
     string code;
-    if (procedure[0] == '~')
+    if (procedure[0] == FILE_MARKER)
     {
         code = file_to_string(procedure.substr(1, procedure.size() - 2));
         if (status == ERROR) return;
@@ -289,7 +250,7 @@ void VirtualMachine::call_procedure()
     {
         code = procedure;
     }
-    if (verbose_procedure) cout << "[ START PROCEDURE ]" << endl;
+    if (verbose_procedure) message(STARTING_PROCEDURE);
     procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr);
     if (verbose_procedure) procedure_call->be_verbose();
     loop_procedure();
@@ -309,7 +270,10 @@ string VirtualMachine::file_to_string(string filename)
 
 void VirtualMachine::loop_procedure()
 {
-    assert(procedure_call != nullptr);
+    if (procedure_call == nullptr){
+        error(LOOP_NONEXISTING_PROC);
+        return;
+    }
     procedure_call->loop();
     if (procedure_call->status == PAUSED)
     {
@@ -348,15 +312,15 @@ void VirtualMachine::error(int code)
             break;
 
         case UNMATCHED_OPEN_BRACKET:
-            cout << "Syntax error : unmatched '['.";
+            cout << "Syntax error : unmatched '" << OPEN_GOTO << "'.";
             break;
 
         case UNMATCHED_CLOSED_BRACKET:
-            cout << "Syntax error : unmatched ']'.";
+            cout << "Syntax error : unmatched '" << CLOSE_GOTO << "'.";
             break;
 
         case UNMATCHED_CURLY_BRACKET:
-            cout << "Syntax error : unmatched '{'.";
+            cout << "Syntax error : unmatched '" << OPEN_PROC << "'.";
             break;
 
         case PROC_ASK_OUTPUT_WITHOUT_INPUT:
@@ -403,83 +367,73 @@ void VirtualMachine::do_one_iteration(bool advance)
         default:
             break;
 
-        case '>':
+        case PTR_INCR:
             // This operator make the pointer point to the cell after the current cell
             ptr_incr();
             break;
 
-        case '<':
+        case PTR_DINCR:
             // This operator make the pointer point to the cell before the current cell
             ptr_dincr();
             break;
 
-        case '+':
+        case VAL_INCR:
             // This operator increment the current value
             val_incr();
             break;
 
-        case '-':
+        case VAL_DINCR:
             // This operator decrement the current value
             val_dincr();
             break;
 
-        case '.':
+        case VAL_OUT:
             // This operator output the current value as an int
             val_out();
             break;
-        case ':':
+        case CHAR_OUT:
             // This operator output the current value as a char
             char_out();
             break;
 
-        case ',':
+        case VAL_IN:
             // This operator input a value into the current cell
             val_in();
             break;
 
-        case '[':
+        case OPEN_GOTO:
             // This operator jumps to the corresponding ']' if the current cell contains a 0
             handle_bracket();
             //if (status != 1) return;
             break;
 
-            /*case ']':
-                // This operator jumps to the corresponding '[' if the current cell does not contains 0
-                close_loop();
-                if (status != 1) return;
-                break;
-            */
-        case '^':
+        case PTR_JUMP:
             // This operator treats the current cell's content as a pointer and jumps to it.
             ptr_jump();
             break;
 
-        case '#':
+        case PTR_RESET:
             // This operator make the pointed cell the cell 0
             ptr_reset();
             break;
 
-        case '_':
+        case VAL_RESET:
             // This operator set the pointed cell's content to 0
             val_reset();
             break;
 
-        case '*':
+        case DO_N_TIME:
             // This operator's syntax is as follow : *NUMBER[OPERATOR]
             // for instance *100> will jump a 100 case to the right.
             // #*100> will set the current pointed case to be the 100th.
             do_n_time();
             break;
 
-        case '@':
-            mem_dump();
-            break;
-
-        case '{':
+        case OPEN_PROC:
             call_procedure();
             break;
 
-        case '!':
+        case TERMINATE_PROC:
             terminate_procedure();
             break;
     }
@@ -582,21 +536,9 @@ int VirtualMachine::extract_number_from_program(unsigned int start_address, size
     return r;
 }
 
-void VirtualMachine::message(int code)
+void VirtualMachine::message(const string &message)
 {
-
-    switch (code)
-    {
-        default:
-            break;
-        case LAUNCHING:
-            cout << "Lauching the Virtual Machine now" << endl;
-            break;
-        case FINISHED:
-            cout << "The execution is finished" << endl;
-            break;
-
-    }
+    cout << message << endl;
 }
 
 string VirtualMachine::program_to_string()

@@ -30,10 +30,10 @@ void VirtualMachineProcedure::error(int code)
     VirtualMachine::error(code);
 }
 
-void VirtualMachineProcedure::message(int code)
+void VirtualMachineProcedure::message(const string &message)
 {
     cout << PROC_PRINTING_MESSAGE;
-    VirtualMachine::error(code);
+    VirtualMachine::message(message);
 }
 
 void VirtualMachineProcedure::input(int inpt)

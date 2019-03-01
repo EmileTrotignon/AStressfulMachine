@@ -29,11 +29,36 @@
 #define TERMINATE_NONEXISTING_PROC    9
 #define ERROR_IN_PROC                 10
 #define INVALID_NUMBER                11
+#define LOOP_NONEXISTING_PROC         12
 
-// Message code macros
-#define LAUNCHING 1
-#define FINISHED  2
+// Message macros
+#define LAUNCHING          "Lauching the Virtual Machine now"
+#define FINISHED           "The execution is finished"
+#define STARTING_PROCEDURE "[ START PROCEDURE ]"
 
+// Syntax macro
+#define PTR_INCR       '>'
+#define PTR_DINCR      '<'
+#define VAL_INCR       '+'
+#define VAL_DINCR      '-'
+#define VAL_OUT        '.'
+#define CHAR_OUT       ':'
+#define VAL_IN         ','
+#define OPEN_GOTO      '['
+#define CLOSE_GOTO     ']'
+#define GOTO_MARKER    '|'
+#define COND_GREATER   '>'
+#define COND_LESSER    '<'
+#define COND_EQUAL     '='
+#define COND_DIFF      '/'
+#define PTR_JUMP       '^'
+#define PTR_RESET      '#'
+#define VAL_RESET      '_'
+#define DO_N_TIME      '*'
+#define OPEN_PROC      '{'
+#define CLOSE_PROC     '}'
+#define TERMINATE_PROC '!'
+#define FILE_MARKER    '~'
 using namespace std;
 
 class VirtualMachineProcedure;
@@ -72,10 +97,6 @@ protected:
 
     virtual void val_in();
 
-    void open_loop();
-
-    void close_loop();
-
     void handle_bracket();
 
     void go_to_cond();
@@ -92,8 +113,6 @@ protected:
 
     void val_reset();
 
-    void mem_dump();
-
     void do_n_time();
 
     void call_procedure();
@@ -108,7 +127,7 @@ protected:
 
     int extract_number_from_program(unsigned int start_address, size_t *t=nullptr);
 
-    virtual void message(int code);
+    virtual void message(const string &message);
 
     virtual string memory_to_string();
 

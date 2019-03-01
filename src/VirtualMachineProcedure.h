@@ -24,7 +24,7 @@ protected:
 
     void error(int code) override;
 
-    void message(int code) override;
+    void message(const string &message) override;
 
 public:
     VirtualMachineProcedure(const string &program, istream *in, ostream *out, size_t size = 30000,
