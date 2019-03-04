@@ -15,14 +15,14 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
     out = o;
     size = s;
     memory = m;
+    if (program[0] == FILE_MARKER) program = file_to_string(program.substr(1));
     if (isdigit(program[0]))
     {
         size_t t;
         size = (size_t) extract_number_from_program(0, &t);
         program = program.substr(t);
     }
-    if (program[0] == FILE_MARKER) program = file_to_string(program.substr(1));
-    if (m == nullptr) memory = new int[size];
+    if (m == nullptr) memory = new int[size]{0};
     memory_ptr = memory;
     current_operator = 0;
     procedure_call = nullptr;
@@ -109,16 +109,10 @@ void VirtualMachine::val_in()
             *memory_ptr = procedure_call->output;
         } else
         {
-            loop_procedure();
-            if (procedure_call == nullptr) val_in();
-            if (procedure_call->status == OUTPUTTING) *memory_ptr = procedure_call->output;
-            else
-            {
-                if (procedure_call->status == INPUTTING)
-                    error(PROC_ASK_OUTPUT_WITHOUT_INPUT);
-                else if (procedure_call->status == PAUSED)
-                    error(PROC_ASK_OUPUT_WHEN_FINISHED);
-            }
+            if (procedure_call->status == INPUTTING)
+                error(PROC_ASK_OUTPUT_WITHOUT_INPUT);
+            else if (procedure_call->status == PAUSED)
+                error(PROC_ASK_OUPUT_WHEN_FINISHED);
         }
     }
 }
@@ -239,19 +233,26 @@ void VirtualMachine::call_procedure()
         error(UNMATCHED_CURLY_BRACKET);
         return;
     }
+
     string procedure = program.substr(current_operator + 1, (unsigned int) i - current_operator);
-    current_operator = (unsigned int) i;
     string code;
-    if (procedure[0] == FILE_MARKER)
+    if (i - 1 == current_operator) // If there is no filename it mean a recursive call
     {
-        code = file_to_string(procedure.substr(1, procedure.size() - 2));
-        if (status == ERROR) return;
+        code = program;
     } else
     {
-        code = procedure;
+        current_operator = (unsigned int) i;
+        if (procedure[0] == FILE_MARKER)
+        {
+            code = file_to_string(procedure.substr(1, procedure.size() - 2));
+            if (status == ERROR) return;
+        } else
+        {
+            code = procedure;
+        }
     }
     if (verbose_procedure) message(STARTING_PROCEDURE);
-    procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr);
+    procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr, 1);
     if (verbose_procedure) procedure_call->be_verbose();
     loop_procedure();
 }
@@ -270,7 +271,8 @@ string VirtualMachine::file_to_string(string filename)
 
 void VirtualMachine::loop_procedure()
 {
-    if (procedure_call == nullptr){
+    if (procedure_call == nullptr)
+    {
         error(LOOP_NONEXISTING_PROC);
         return;
     }
@@ -359,6 +361,7 @@ void VirtualMachine::do_one_iteration(bool advance)
     {
         if (verbose) message(FINISHED);
         status = PAUSED;
+        return;
     }
     if (status != RUNNING) return;
     //cout << program[current_operator] << endl;
@@ -448,7 +451,7 @@ void VirtualMachine::do_one_iteration(bool advance)
         return;
     }
     if (advance) current_operator++;
-    if (verbose) cout << (string) (*this);
+    if (verbose && status == RUNNING) cout << (string) (*this);
 
 }
 

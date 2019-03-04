@@ -10,10 +10,12 @@ all: ./build/Makefile
 	@ ($(MKDIR) build)
 	@  (cd build && cmake ..)
 
+.PHONY: clean
 clean:
 	rm -r build/CMake*
 	rm -r build/cmake*
 
 ifeq ($(findstring clean, $(MAKECMDGOALS)),)
+$(MAKECMDGOALS): ./build/Makefile
 	@ $(MAKE) -C build $(MAKECMDGOALS)
 endif

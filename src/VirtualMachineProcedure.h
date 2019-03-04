@@ -8,7 +8,7 @@
 
 #include "VirtualMachine.h"
 
-#define PROC_PRINTING_MESSAGE (string)"[ PROC ]    "
+#define PROC_PRINTING_MESSAGE (string)"[ PROC ]"
 
 //Status macros
 #define OUTPUTTING 101
@@ -27,7 +27,7 @@ protected:
     void message(const string &message) override;
 
 public:
-    VirtualMachineProcedure(const string &program, istream *in, ostream *out, size_t size = 30000,
+    VirtualMachineProcedure(const string &program, istream *in, ostream *out, int d, size_t size = 30000,
                             int *memory = nullptr);
 
     int output;
@@ -35,6 +35,8 @@ public:
     void input(int inpt);
 
     explicit operator string() override;
+
+    int depth;
 };
 
 
