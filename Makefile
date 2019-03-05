@@ -6,9 +6,9 @@ MKDIR := mkdir -p
 all: ./build/Makefile
 	@ $(MAKE) -C build
 
-./build/Makefile:
+./build/Makefile: CMakeList.txt
 	@ ($(MKDIR) build)
-	@  (cd build && cmake ..)
+	(cd build && cmake ..)
 
 .PHONY: clean
 clean:
