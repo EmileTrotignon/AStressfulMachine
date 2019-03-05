@@ -11,6 +11,9 @@
 
 #define LEVELFILES_FOLDER "data/gamefiles/levels"
 
+/**
+ * This class enable the player to complete a level.
+ */
 class GameLevel
 {
 private:
@@ -18,10 +21,13 @@ private:
     string solution;
     string instructions;
     ifstream input;
+
     bool attempt(const string & program, int verbose_level = 0);
+
     void play_sequence();
 public:
     GameLevel(const string &level_name);
+
     void play();
 };
 

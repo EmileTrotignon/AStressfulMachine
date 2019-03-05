@@ -1,0 +1,85 @@
+\hypertarget{classVirtualMachineProcedure}{}\section{Virtual\+Machine\+Procedure Class Reference}
+\label{classVirtualMachineProcedure}\index{Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}}
+
+
+{\ttfamily \#include $<$Virtual\+Machine\+Procedure.\+h$>$}
+
+
+
+Inheritance diagram for Virtual\+Machine\+Procedure\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=205pt]{classVirtualMachineProcedure__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Virtual\+Machine\+Procedure\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=205pt]{classVirtualMachineProcedure__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_ac7493ad6378b1c184c15fb1bcdd903ef}\label{classVirtualMachineProcedure_ac7493ad6378b1c184c15fb1bcdd903ef}} 
+{\bfseries Virtual\+Machine\+Procedure} (const string \&program, istream $\ast$in, ostream $\ast$out, int d, size\+\_\+t size=30000, int $\ast$memory=nullptr)
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_a71d8552422569e57903212d51f38c6ee}\label{classVirtualMachineProcedure_a71d8552422569e57903212d51f38c6ee}} 
+void {\bfseries input} (int inpt)
+\item 
+\hyperlink{classVirtualMachineProcedure_aea6310148a612586e5fd9e30650decb6}{operator string} () override
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_a0d82fcd19a990a5ad6d0bc51d25b5977}\label{classVirtualMachineProcedure_a0d82fcd19a990a5ad6d0bc51d25b5977}} 
+int {\bfseries output}
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_a95e6694d96087741291ca2ecf3009b97}\label{classVirtualMachineProcedure_a95e6694d96087741291ca2ecf3009b97}} 
+int {\bfseries depth}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_aa6f5e4488e0b6a09da5d27fa2cf8e156}\label{classVirtualMachineProcedure_aa6f5e4488e0b6a09da5d27fa2cf8e156}} 
+void {\bfseries val\+\_\+out} () override
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_a868e4133bc5fcfb969de2d3d6f6008fe}\label{classVirtualMachineProcedure_a868e4133bc5fcfb969de2d3d6f6008fe}} 
+void {\bfseries val\+\_\+in} () override
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_a20aa263ac34a0e01d5a11cbfe919cb4f}\label{classVirtualMachineProcedure_a20aa263ac34a0e01d5a11cbfe919cb4f}} 
+void {\bfseries error} (int code) override
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_a755d40765bb540503a9bea5ffd091a46}\label{classVirtualMachineProcedure_a755d40765bb540503a9bea5ffd091a46}} 
+void {\bfseries message} (const string \&message) override
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+This class is used by \hyperlink{classVirtualMachine}{Virtual\+Machine} to perform procedure calls. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classVirtualMachineProcedure_aea6310148a612586e5fd9e30650decb6}\label{classVirtualMachineProcedure_aea6310148a612586e5fd9e30650decb6}} 
+\index{Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}!operator string@{operator string}}
+\index{operator string@{operator string}!Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}}
+\subsubsection{\texorpdfstring{operator string()}{operator string()}}
+{\footnotesize\ttfamily Virtual\+Machine\+Procedure\+::operator string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Convert the VM\textquotesingle{}s current state into a string. \begin{DoxyReturn}{Returns}
+The VM\textquotesingle{}s string representation 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classVirtualMachine_ab12bb31d1f511018a0a8e956efb72591}{Virtual\+Machine}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/emile/etudes/\+L\+I\+F\+A\+P4/\+A\+Stressful\+Machine/src/Virtual\+Machine\+Procedure.\+h\item 
+/home/emile/etudes/\+L\+I\+F\+A\+P4/\+A\+Stressful\+Machine/src/Virtual\+Machine\+Procedure.\+cpp\end{DoxyCompactItemize}

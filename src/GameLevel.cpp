@@ -6,8 +6,9 @@
 
 using namespace std;
 
-GameLevel::GameLevel(const string &level_name)
+GameLevel::GameLevel(const string &ln)
 {
+    level_name = ln;
     solution = file_to_string(LEVELFILES_FOLDER "/" + level_name + "/solution");
     instructions = file_to_string(LEVELFILES_FOLDER "/" + level_name + "/instructions");
     input = ifstream(LEVELFILES_FOLDER "/" + level_name + "/input");
