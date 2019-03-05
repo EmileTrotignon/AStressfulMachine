@@ -8,7 +8,6 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include <ncurses.h>
 
 #include "utilities.h"
 
