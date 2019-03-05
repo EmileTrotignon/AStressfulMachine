@@ -2,8 +2,8 @@
 // Created by emile on 25/02/19.
 //
 
-#ifndef BRAINFUCK_BRAINFUCK_ITERATION_H
-#define BRAINFUCK_BRAINFUCK_ITERATION_H
+#ifndef ASTRESSFULMACHINE_VIRTUALMACHINE_H
+#define ASTRESSFULMACHINE_VIRTUALMACHINE_H
 
 #include <iostream>
 #include <vector>
@@ -171,4 +171,4 @@ public:
 };
 
 
-#endif //BRAINFUCK_BRAINFUCK_ITERATION_H
+#endif //_VIRTUAL_MACHINE_H

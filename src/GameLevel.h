@@ -2,8 +2,8 @@
 // Created by emile on 04/03/19.
 //
 
-#ifndef LIFAP4_PROJECT_GAMELEVEL_H
-#define LIFAP4_PROJECT_GAMELEVEL_H
+#ifndef ASTRESSFULMACHINE_GAMELEVEL_H
+#define ASTRESSFULMACHINE_GAMELEVEL_H
 
 #include <fstream>
 #include "VirtualMachine.h"
@@ -26,4 +26,4 @@ public:
 };
 
 
-#endif //LIFAP4_PROJECT_GAMELEVEL_H
+#endif //ASTRESSFULMACHINE_GAMELEVEL_H
