@@ -6,7 +6,7 @@ MKDIR := mkdir -p
 all: ./build/Makefile
 	@ $(MAKE) -C build
 
-./build/Makefile: CMakeList.txt
+./build/Makefile: CMakeLists.txt
 	@ ($(MKDIR) build)
 	(cd build && cmake ..)
 
