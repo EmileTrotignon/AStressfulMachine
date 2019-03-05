@@ -29,6 +29,8 @@ bool GameLevel::attempt(const string &program, int verbose_level)
         if (verbose_level >= 2) vm_attempt.be_verbose_procedure();
         VirtualMachine vm_sol(solution, &whole_input, &output_sol);
         vm_sol.loop();
+        whole_input.clear();
+        whole_input.seekg(0);
         vm_attempt.loop();
         if (output_attempt.str() != output_sol.str())
         {
@@ -36,10 +38,14 @@ bool GameLevel::attempt(const string &program, int verbose_level)
                     "\n Input: " << input_str
                  << "\n Attempt output: " << output_attempt.str()
                  << "\n Expected output: " << output_sol.str() << endl;
+            input.clear();
+            input.seekg(0);
             return false;
         }
         input_str = "";
     }
+    input.clear();
+    input.seekg(0);
     return true;
 }
 
@@ -64,6 +70,13 @@ void GameLevel::play_sequence()
             cout << "Oh no you were defeated :(" << endl;
             play_sequence();
         }
+    } else if (code == "Q" || code == "q")
+    {
+        cout << "See you later :)" << endl;
+    } else
+    {
+        cout << "Please input one of the code" << endl;
+        play_sequence();
     }
 }
 
