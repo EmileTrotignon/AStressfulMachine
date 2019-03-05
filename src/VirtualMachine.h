@@ -8,9 +8,12 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <ncurses.h>
+
 #include "utilities.h"
 
 #define MAX_SIZE_MEMORY_PRINT 10
+#define PRINTING_POINTER "^\n"
 
 // Status macros
 #define ERROR -1
@@ -32,9 +35,10 @@
 #define LOOP_NONEXISTING_PROC         12
 
 // Message macros
-#define LAUNCHING          "Lauching the Virtual Machine now"
+#define LAUNCHING          "[ UNPAUSING VM ]"
 #define FINISHED           "The execution is finished"
 #define STARTING_PROCEDURE "[ START PROCEDURE ]"
+#define DEPTH              "[ DEPTH " + to_string(depth) + " ]"
 
 // Syntax macro
 #define PTR_INCR       '>'
@@ -78,6 +82,7 @@ protected:
     bool verbose;
     bool verbose_procedure;
     map<unsigned int, unsigned int> anchor_map;
+    int depth;
 
     VirtualMachineProcedure *procedure_call;
 

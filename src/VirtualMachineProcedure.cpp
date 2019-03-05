@@ -22,18 +22,18 @@ void VirtualMachineProcedure::val_out()
 void VirtualMachineProcedure::val_in()
 {
     status = INPUTTING;
-    if (verbose) cout << "[ PROC INPUTTING ] [ DEPTH " << depth << " ] " << endl;
+    if (verbose) cout << "[ PROC INPUTTING ] " DEPTH " " << endl;
 }
 
 void VirtualMachineProcedure::error(int code)
 {
-    cout << PROC_PRINTING_MESSAGE << " [ DEPTH " << depth << " ] ";
+    cout << PROC_PRINTING_MESSAGE " " DEPTH " ";
     VirtualMachine::error(code);
 }
 
 void VirtualMachineProcedure::message(const string &message)
 {
-    cout << PROC_PRINTING_MESSAGE  << " [ DEPTH " << depth << " ] ";
+    cout << PROC_PRINTING_MESSAGE " " DEPTH " ";
     VirtualMachine::message(message);
 }
 
@@ -46,6 +46,6 @@ void VirtualMachineProcedure::input(int inpt)
 
 VirtualMachineProcedure::operator string()
 {
-    return add_message_before_each_line(VirtualMachine::operator string(), PROC_PRINTING_MESSAGE  + " [ DEPTH " + to_string(depth) + " ] ");
+    return add_message_before_each_line(VirtualMachine::operator string(), PROC_PRINTING_MESSAGE " " DEPTH "  ");
 }
 

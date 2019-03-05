@@ -2,7 +2,11 @@
 // Created by emile on 25/02/19.
 //
 
+#include <stdio.h>
+#include <fstream>
 #include "utilities.h"
+
+using namespace std;
 
 int corresponding_par(const string &s, char open, char close, unsigned int par_address)
 {
@@ -43,4 +47,15 @@ string add_message_before_each_line(string s, string message)
         line = "";
     }
     return r;
+}
+
+string file_to_string(const string &filename)
+{
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+        throw invalid_argument("Unable to open file '" + filename + "'");
+    }
+    string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+    return c;
 }

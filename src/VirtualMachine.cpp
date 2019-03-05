@@ -28,6 +28,7 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
     procedure_call = nullptr;
     verbose = false;
     verbose_procedure = false;
+    depth = 0;
     initialize_anchor_map();
 }
 
@@ -251,8 +252,8 @@ void VirtualMachine::call_procedure()
             code = procedure;
         }
     }
-    if (verbose_procedure) message(STARTING_PROCEDURE);
-    procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr, 1);
+    if (verbose_procedure) message(STARTING_PROCEDURE DEPTH);
+    procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr, depth + 1);
     if (verbose_procedure) procedure_call->be_verbose();
     loop_procedure();
 }
@@ -549,7 +550,7 @@ string VirtualMachine::program_to_string()
     string s = "\n" + program;
     s += "\n";
     for (int i = 0; i < current_operator; i++) s += " ";
-    s += "^\n";
+    s += PRINTING_POINTER;
     return s;
 }
 
@@ -564,7 +565,7 @@ string VirtualMachine::memory_to_string()
     }
     s += "\n";
     for (int i = 0; i < k; i++) s += " ";
-    s += "^\n";
+    s += PRINTING_POINTER;
     return s;
 
 }
