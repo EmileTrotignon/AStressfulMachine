@@ -99,14 +99,12 @@
         <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define STATUS_PROC_INPUTTING 102</span>
         </div>
         <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-        <div class="line"><a name="l00020"></a><span class="lineno"><a class="line"
-                                                                       href="classVirtualMachineProcedure.html">   20</a></span>&#160;<span
+        <div class="line"><a name="l00021"></a><span class="lineno"><a class="line"
+                                                                       href="classVirtualMachineProcedure.html">   21</a></span>&#160;<span
                 class="keyword">class </span><a class="code" href="classVirtualMachineProcedure.html">VirtualMachineProcedure</a>
             : <span class="keyword">public</span> <a class="code" href="classVirtualMachine.html">VirtualMachine</a>
         </div>
-        <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
-        <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; <span class="comment">//Status have special code in this class starting at 100.</span>
-        </div>
+        <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
         <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span
                 class="keyword">protected</span>:
         </div>
@@ -127,45 +125,64 @@
             &amp;message) <span class="keyword">override</span>;
         </div>
         <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-        <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span
-                class="keyword">public</span>:
-        </div>
-        <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; <a class="code"
-                                                                                          href="classVirtualMachineProcedure.html">VirtualMachineProcedure</a>(<span
-                class="keyword">const</span> <span class="keywordtype">string</span> &amp;program, istream *in, ostream
-            *out, <span class="keywordtype">int</span> d, <span class="keywordtype">size_t</span> size = 30000,
-        </div>
-        <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; <span
-                class="keywordtype">int</span> *memory = <span class="keyword">nullptr</span>);
-        </div>
-        <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-        <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span
+        <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; <span
                 class="keywordtype">int</span> output;
         </div>
-        <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-        <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; <span
+        <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+        <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span
+                class="keyword">public</span>:
+        </div>
+        <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; <a class="code"
+                                                                                          href="classVirtualMachineProcedure.html#a3db90b62f4165b9d334134c361ebdc30">VirtualMachineProcedure</a>(<span
+                class="keyword">const</span> <span class="keywordtype">string</span> &amp;program, istream *in, ostream
+            *out, <span class="keywordtype">int</span> depth, <span class="keywordtype">size_t</span> size = 30000,
+        </div>
+        <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; <span
+                class="keywordtype">int</span> *memory = <span class="keyword">nullptr</span>);
+        </div>
+        <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+        <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; <span
+                class="keywordtype">int</span> <a class="code"
+                                                  href="classVirtualMachineProcedure.html#a608e8e83938e5b29a11c5b26671d3654">get_output</a>();
+        </div>
+        <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+        <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; <span
                 class="keywordtype">void</span> input(<span class="keywordtype">int</span> inpt);
         </div>
-        <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-        <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; <span
+        <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+        <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; <span
                 class="keyword">explicit</span> <span class="keyword">operator</span> string() <span class="keyword">override</span>;
         </div>
-        <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-        <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; <span
+        <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+        <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; <span
                 class="keywordtype">int</span> depth;
         </div>
-        <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
-        <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-        <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-        <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif //ASTRESSFULMACHINE_VIRTUALMACHINEPROCEDURE_H</span>
+        <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
+        <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+        <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+        <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif //ASTRESSFULMACHINE_VIRTUALMACHINEPROCEDURE_H</span>
+        </div>
+        <div class="ttc" id="classVirtualMachineProcedure_html_a3db90b62f4165b9d334134c361ebdc30">
+            <div class="ttname"><a href="classVirtualMachineProcedure.html#a3db90b62f4165b9d334134c361ebdc30">VirtualMachineProcedure::VirtualMachineProcedure</a>
+            </div>
+            <div class="ttdeci">VirtualMachineProcedure(const string &amp;program, istream *in, ostream *out, int depth,
+                size_t size=30000, int *memory=nullptr)
+            </div>
+            <div class="ttdef"><b>Definition:</b> VirtualMachineProcedure.cpp:7</div>
+        </div>
+        <div class="ttc" id="classVirtualMachineProcedure_html_a608e8e83938e5b29a11c5b26671d3654">
+            <div class="ttname"><a href="classVirtualMachineProcedure.html#a608e8e83938e5b29a11c5b26671d3654">VirtualMachineProcedure::get_output</a>
+            </div>
+            <div class="ttdeci">int get_output()</div>
+            <div class="ttdef"><b>Definition:</b> VirtualMachineProcedure.cpp:46</div>
         </div>
         <div class="ttc" id="classVirtualMachine_html">
             <div class="ttname"><a href="classVirtualMachine.html">VirtualMachine</a></div>
-            <div class="ttdef"><b>Definition:</b> VirtualMachine.h:73</div>
+            <div class="ttdef"><b>Definition:</b> VirtualMachine.h:75</div>
         </div>
         <div class="ttc" id="classVirtualMachineProcedure_html">
             <div class="ttname"><a href="classVirtualMachineProcedure.html">VirtualMachineProcedure</a></div>
-            <div class="ttdef"><b>Definition:</b> VirtualMachineProcedure.h:20</div>
+            <div class="ttdef"><b>Definition:</b> VirtualMachineProcedure.h:21</div>
         </div>
     </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

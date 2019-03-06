@@ -165,8 +165,21 @@ public:
 
     /**
      * This execute the program until it halts.
+     * @param func A function to be executed at each step of the loop. Basic use would be to slow down execution.
      */
-    virtual void loop();
+    void loop(void (*func)() = nullptr);
+
+    /**
+     * Getter for member program
+     * @return the program
+     */
+    string get_program();
+
+    /**
+     * Setter for the program
+     * @param program The new value
+     */
+    void set_program(const string &program);
 
     /**
      * Getter for member size

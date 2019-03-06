@@ -353,6 +353,7 @@ void VirtualMachine::error(int code)
 
 void VirtualMachine::do_one_iteration(bool advance)
 {
+    if (status != STATUS_RUNNING) return;
     if (current_operator >= program.size())
     {
         if (verbose) message(MESSAGE_FINISHED);
@@ -451,7 +452,7 @@ void VirtualMachine::do_one_iteration(bool advance)
 
 }
 
-void VirtualMachine::loop()
+void VirtualMachine::loop(void (*func)())
 {
     if (verbose)
     {
@@ -461,6 +462,7 @@ void VirtualMachine::loop()
     status = STATUS_RUNNING;
     while (status == STATUS_RUNNING)
     {
+        if (func != nullptr) func();
         do_one_iteration();
     }
 }

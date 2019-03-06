@@ -12,6 +12,39 @@ GameLevel::GameLevel(const string &ln)
     solution = file_to_string(LEVELFILES_FOLDER "/" + level_name + "/solution");
     instructions = file_to_string(LEVELFILES_FOLDER "/" + level_name + "/instructions");
     input = ifstream(LEVELFILES_FOLDER "/" + level_name + "/input");
+    vm_attempt = nullptr;
+    vm_sol = nullptr;
+    program_attempt = "";
+}
+
+void GameLevel::reset_input()
+{
+    input.clear();
+    input.seekg(0);
+}
+
+bool GameLevel::attempt_one_input(int verbose_level)
+{
+    ostringstream output_attempt;
+    ostringstream output_sol;
+    string input_str;
+
+    getline(input, input_str);
+    istringstream whole_input(input_str);
+
+    vm_attempt = new VirtualMachine(program_attempt, &whole_input, &output_attempt);
+    if (verbose_level >= 1) vm_attempt->be_verbose();
+    if (verbose_level >= 2) vm_attempt->be_verbose_procedure();
+
+    vm_sol = new VirtualMachine(solution, &whole_input, &output_sol);
+    vm_sol->loop();
+
+    whole_input.clear();
+    whole_input.seekg(0);
+
+    vm_attempt->loop();
+
+    return (output_attempt.str() == output_sol.str());
 }
 
 bool GameLevel::attempt(const string &program, int verbose_level)
@@ -20,33 +53,9 @@ bool GameLevel::attempt(const string &program, int verbose_level)
 
     while(!input.eof())
     {
-        ostringstream output_attempt;
-        ostringstream output_sol;
-        string input_str;
-        getline(input, input_str);
-        istringstream whole_input(input_str);
-        VirtualMachine vm_attempt(program, &whole_input, &output_attempt);
-        if (verbose_level >= 1) vm_attempt.be_verbose();
-        if (verbose_level >= 2) vm_attempt.be_verbose_procedure();
-        VirtualMachine vm_sol(solution, &whole_input, &output_sol);
-        vm_sol.loop();
-        whole_input.clear();
-        whole_input.seekg(0);
-        vm_attempt.loop();
-        if (output_attempt.str() != output_sol.str())
-        {
-            cout << "The outputs differs :"
-                    "\n Input: " << input_str
-                 << "\n Attempt output: " << output_attempt.str()
-                 << "\n Expected output: " << output_sol.str() << endl;
-            input.clear();
-            input.seekg(0);
-            return false;
-        }
-        input_str = "";
+        if (!attempt_one_input(verbose_level)) return false;
     }
-    input.clear();
-    input.seekg(0);
+    reset_input();
     return true;
 }
 
@@ -81,7 +90,7 @@ void GameLevel::play_sequence()
     }
 }
 
-void GameLevel::play()
+void GameLevel::text_play()
 {
     cout << instructions << endl;
     play_sequence();

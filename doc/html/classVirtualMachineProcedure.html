@@ -65,6 +65,7 @@
         <a href="#pub-methods">Public Member Functions</a> &#124;
         <a href="#pub-attribs">Public Attributes</a> &#124;
         <a href="#pro-methods">Protected Member Functions</a> &#124;
+        <a href="#pro-attribs">Protected Attributes</a> &#124;
         <a href="classVirtualMachineProcedure-members.html">List of all members</a></div>
     <div class="headertitle">
         <div class="title">VirtualMachineProcedure Class Reference</div>
@@ -103,15 +104,25 @@
             <td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
                 Public Member Functions</h2></td>
         </tr>
-        <tr class="memitem:ac7493ad6378b1c184c15fb1bcdd903ef">
-            <td class="memItemLeft" align="right" valign="top"><a id="ac7493ad6378b1c184c15fb1bcdd903ef"></a>
-                &#160;
-            </td>
-            <td class="memItemRight" valign="bottom"><b>VirtualMachineProcedure</b> (const string &amp;program, istream
-                *in, ostream *out, int d, size_t size=30000, int *memory=nullptr)
+        <tr class="memitem:a3db90b62f4165b9d334134c361ebdc30">
+            <td class="memItemLeft" align="right" valign="top">&#160;</td>
+            <td class="memItemRight" valign="bottom"><a class="el"
+                                                        href="classVirtualMachineProcedure.html#a3db90b62f4165b9d334134c361ebdc30">VirtualMachineProcedure</a>
+                (const string &amp;program, istream *in, ostream *out, int depth, size_t size=30000, int
+                *memory=nullptr)
             </td>
         </tr>
-        <tr class="separator:ac7493ad6378b1c184c15fb1bcdd903ef">
+        <tr class="separator:a3db90b62f4165b9d334134c361ebdc30">
+            <td class="memSeparator" colspan="2">&#160;</td>
+        </tr>
+        <tr class="memitem:a608e8e83938e5b29a11c5b26671d3654">
+            <td class="memItemLeft" align="right" valign="top">int&#160;</td>
+            <td class="memItemRight" valign="bottom"><a class="el"
+                                                        href="classVirtualMachineProcedure.html#a608e8e83938e5b29a11c5b26671d3654">get_output</a>
+                ()
+            </td>
+        </tr>
+        <tr class="separator:a608e8e83938e5b29a11c5b26671d3654">
             <td class="memSeparator" colspan="2">&#160;</td>
         </tr>
         <tr class="memitem:a71d8552422569e57903212d51f38c6ee">
@@ -272,15 +283,6 @@
         <tr class="heading">
             <td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
                 Public Attributes</h2></td>
-        </tr>
-        <tr class="memitem:a0d82fcd19a990a5ad6d0bc51d25b5977">
-            <td class="memItemLeft" align="right" valign="top"><a id="a0d82fcd19a990a5ad6d0bc51d25b5977"></a>
-                int&#160;
-            </td>
-            <td class="memItemRight" valign="bottom"><b>output</b></td>
-        </tr>
-        <tr class="separator:a0d82fcd19a990a5ad6d0bc51d25b5977">
-            <td class="memSeparator" colspan="2">&#160;</td>
         </tr>
         <tr class="memitem:a95e6694d96087741291ca2ecf3009b97">
             <td class="memItemLeft" align="right" valign="top"><a id="a95e6694d96087741291ca2ecf3009b97"></a>
@@ -541,8 +543,17 @@
     </table>
     <table class="memberdecls">
         <tr class="heading">
-            <td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-                Additional Inherited Members</h2></td>
+            <td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+                Protected Attributes</h2></td>
+        </tr>
+        <tr class="memitem:a0d82fcd19a990a5ad6d0bc51d25b5977">
+            <td class="memItemLeft" align="right" valign="top"><a id="a0d82fcd19a990a5ad6d0bc51d25b5977"></a>
+                int&#160;
+            </td>
+            <td class="memItemRight" valign="bottom"><b>output</b></td>
+        </tr>
+        <tr class="separator:a0d82fcd19a990a5ad6d0bc51d25b5977">
+            <td class="memSeparator" colspan="2">&#160;</td>
         </tr>
         <tr class="inherit_header pro_attribs_classVirtualMachine">
             <td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classVirtualMachine')"><img src="closed.png"
@@ -670,9 +681,123 @@
     <a name="details" id="details"></a>
     <h2 class="groupheader">Detailed Description</h2>
     <div class="textblock"><p>This class is used by <a class="el" href="classVirtualMachine.html">VirtualMachine</a> to
-        perform procedure calls. </p>
+        perform procedure calls. It is only the input and output and the verbose/error printing that are changed. </p>
+    </div>
+    <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+    <a id="a3db90b62f4165b9d334134c361ebdc30"></a>
+    <h2 class="memtitle"><span class="permalink"><a href="#a3db90b62f4165b9d334134c361ebdc30">&#9670;&nbsp;</a></span>VirtualMachineProcedure()
+    </h2>
+
+    <div class="memitem">
+        <div class="memproto">
+            <table class="memname">
+                <tr>
+                    <td class="memname">VirtualMachineProcedure::VirtualMachineProcedure</td>
+                    <td>(</td>
+                    <td class="paramtype">const string &amp;&#160;</td>
+                    <td class="paramname"><em>program</em>,</td>
+        </tr>
+                <tr>
+                    <td class="paramkey"></td>
+                    <td></td>
+                    <td class="paramtype">istream *&#160;</td>
+                    <td class="paramname"><em>in</em>,</td>
+        </tr>
+                <tr>
+                    <td class="paramkey"></td>
+                    <td></td>
+                    <td class="paramtype">ostream *&#160;</td>
+                    <td class="paramname"><em>out</em>,</td>
+        </tr>
+                <tr>
+                    <td class="paramkey"></td>
+                    <td></td>
+                    <td class="paramtype">int&#160;</td>
+                    <td class="paramname"><em>depth</em>,</td>
+        </tr>
+                <tr>
+                    <td class="paramkey"></td>
+                    <td></td>
+                    <td class="paramtype">size_t&#160;</td>
+                    <td class="paramname"><em>size</em> = <code>30000</code>,</td>
+        </tr>
+                <tr>
+                    <td class="paramkey"></td>
+                    <td></td>
+                    <td class="paramtype">int *&#160;</td>
+                    <td class="paramname"><em>memory</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+                <tr>
+                    <td></td>
+                    <td>)</td>
+                    <td></td>
+                    <td></td>
+        </tr>
+            </table>
+        </div>
+        <div class="memdoc">
+            <p>This call the <a class="el" href="classVirtualMachine.html">VirtualMachine</a> constructor as a delegate
+                constructor and initialize the new fields. </p>
+            <dl class="params">
+                <dt>Parameters</dt>
+                <dd>
+                    <table class="params">
+                        <tr>
+                            <td class="paramname">program</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="paramname">in</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="paramname">out</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="paramname">depth</td>
+                            <td>The recursive depth of the procedure.</td>
+                        </tr>
+                        <tr>
+                            <td class="paramname">size</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="paramname">memory</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </dd>
+            </dl>
+
+        </div>
     </div>
     <h2 class="groupheader">Member Function Documentation</h2>
+    <a id="a608e8e83938e5b29a11c5b26671d3654"></a>
+    <h2 class="memtitle"><span class="permalink"><a href="#a608e8e83938e5b29a11c5b26671d3654">&#9670;&nbsp;</a></span>get_output()
+    </h2>
+
+    <div class="memitem">
+        <div class="memproto">
+            <table class="memname">
+                <tr>
+                    <td class="memname">int VirtualMachineProcedure::get_output</td>
+                    <td>(</td>
+                    <td class="paramname"></td>
+                    <td>)</td>
+                    <td></td>
+        </tr>
+            </table>
+        </div>
+        <div class="memdoc">
+            <p>This should be used to access the output of the procedure. </p>
+            <dl class="section return">
+                <dt>Returns</dt>
+                <dd>The output of the procedure</dd>
+            </dl>
+
+        </div>
+    </div>
     <a id="aea6310148a612586e5fd9e30650decb6"></a>
     <h2 class="memtitle"><span class="permalink"><a href="#aea6310148a612586e5fd9e30650decb6">&#9670;&nbsp;</a></span>operator
         string()</h2>

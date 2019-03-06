@@ -13,7 +13,10 @@
 class GameSequence
 {
 private:
+
     map<string, GameLevel *> available_levels;
+
+    GameLevel current_level;
 
     void load_from_save();
 

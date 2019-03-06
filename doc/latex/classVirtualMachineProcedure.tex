@@ -25,8 +25,9 @@ Collaboration diagram for Virtual\+Machine\+Procedure\+:\nopagebreak
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classVirtualMachineProcedure_ac7493ad6378b1c184c15fb1bcdd903ef}\label{classVirtualMachineProcedure_ac7493ad6378b1c184c15fb1bcdd903ef}} 
-{\bfseries Virtual\+Machine\+Procedure} (const string \&program, istream $\ast$in, ostream $\ast$out, int d, size\+\_\+t size=30000, int $\ast$memory=nullptr)
+\hyperlink{classVirtualMachineProcedure_a3db90b62f4165b9d334134c361ebdc30}{Virtual\+Machine\+Procedure} (const string \&program, istream $\ast$in, ostream $\ast$out, int depth, size\+\_\+t size=30000, int $\ast$memory=nullptr)
+\item 
+int \hyperlink{classVirtualMachineProcedure_a608e8e83938e5b29a11c5b26671d3654}{get\+\_\+output} ()
 \item 
 \mbox{\Hypertarget{classVirtualMachineProcedure_a71d8552422569e57903212d51f38c6ee}\label{classVirtualMachineProcedure_a71d8552422569e57903212d51f38c6ee}} 
 void {\bfseries input} (int inpt)
@@ -35,9 +36,6 @@ void {\bfseries input} (int inpt)
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{classVirtualMachineProcedure_a0d82fcd19a990a5ad6d0bc51d25b5977}\label{classVirtualMachineProcedure_a0d82fcd19a990a5ad6d0bc51d25b5977}} 
-int {\bfseries output}
 \item 
 \mbox{\Hypertarget{classVirtualMachineProcedure_a95e6694d96087741291ca2ecf3009b97}\label{classVirtualMachineProcedure_a95e6694d96087741291ca2ecf3009b97}} 
 int {\bfseries depth}
@@ -57,13 +55,51 @@ void {\bfseries error} (int code) override
 \mbox{\Hypertarget{classVirtualMachineProcedure_a755d40765bb540503a9bea5ffd091a46}\label{classVirtualMachineProcedure_a755d40765bb540503a9bea5ffd091a46}} 
 void {\bfseries message} (const string \&message) override
 \end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classVirtualMachineProcedure_a0d82fcd19a990a5ad6d0bc51d25b5977}\label{classVirtualMachineProcedure_a0d82fcd19a990a5ad6d0bc51d25b5977}} 
+int {\bfseries output}
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-This class is used by \hyperlink{classVirtualMachine}{Virtual\+Machine} to perform procedure calls. 
+This class is used by \hyperlink{classVirtualMachine}{Virtual\+Machine} to perform procedure calls. It is only the input and output and the verbose/error printing that are changed. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classVirtualMachineProcedure_a3db90b62f4165b9d334134c361ebdc30}\label{classVirtualMachineProcedure_a3db90b62f4165b9d334134c361ebdc30}} 
+\index{Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}!Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}}
+\index{Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}!Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}}
+\subsubsection{\texorpdfstring{Virtual\+Machine\+Procedure()}{VirtualMachineProcedure()}}
+{\footnotesize\ttfamily Virtual\+Machine\+Procedure\+::\+Virtual\+Machine\+Procedure (\begin{DoxyParamCaption}\item[{const string \&}]{program,  }\item[{istream $\ast$}]{in,  }\item[{ostream $\ast$}]{out,  }\item[{int}]{depth,  }\item[{size\+\_\+t}]{size = {\ttfamily 30000},  }\item[{int $\ast$}]{memory = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+This call the \hyperlink{classVirtualMachine}{Virtual\+Machine} constructor as a delegate constructor and initialize the new fields. 
+\begin{DoxyParams}{Parameters}
+{\em program} & \\
+\hline
+{\em in} & \\
+\hline
+{\em out} & \\
+\hline
+{\em depth} & The recursive depth of the procedure. \\
+\hline
+{\em size} & \\
+\hline
+{\em memory} & \\
+\hline
+\end{DoxyParams}
+
 
 \subsection{Member Function Documentation}
+\mbox{\Hypertarget{classVirtualMachineProcedure_a608e8e83938e5b29a11c5b26671d3654}\label{classVirtualMachineProcedure_a608e8e83938e5b29a11c5b26671d3654}} 
+\index{Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}!get\+\_\+output@{get\+\_\+output}}
+\index{get\+\_\+output@{get\+\_\+output}!Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}}
+\subsubsection{\texorpdfstring{get\+\_\+output()}{get\_output()}}
+{\footnotesize\ttfamily int Virtual\+Machine\+Procedure\+::get\+\_\+output (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This should be used to access the output of the procedure. \begin{DoxyReturn}{Returns}
+The output of the procedure 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classVirtualMachineProcedure_aea6310148a612586e5fd9e30650decb6}\label{classVirtualMachineProcedure_aea6310148a612586e5fd9e30650decb6}} 
 \index{Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}!operator string@{operator string}}
 \index{operator string@{operator string}!Virtual\+Machine\+Procedure@{Virtual\+Machine\+Procedure}}
