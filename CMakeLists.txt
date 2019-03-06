@@ -8,7 +8,7 @@ add_executable(interpreter
         src/interpreter.cpp
         src/VirtualMachine.cpp src/VirtualMachine.h
         src/utilities.cpp src/utilities.h
-        src/VirtualMachineProcedure.cpp src/VirtualMachineProcedure.h)
+        src/VirtualMachineProcedure.cpp src/VirtualMachineProcedure.h src/VirtualMachineException.cpp src/VirtualMachineException.h)
 #target_link_libraries(interpreter ${CURSES_LIBRARIES})
 
 add_executable(play_level
@@ -16,4 +16,4 @@ add_executable(play_level
         src/VirtualMachine.cpp src/VirtualMachine.h
         src/utilities.cpp src/utilities.h
         src/VirtualMachineProcedure.cpp src/VirtualMachineProcedure.h
-        src/GameLevel.cpp src/GameLevel.h)
+        src/GameLevel.cpp src/GameLevel.h src/VirtualMachineException.cpp src/VirtualMachineException.h)

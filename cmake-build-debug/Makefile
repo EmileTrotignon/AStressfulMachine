@@ -193,6 +193,36 @@ src/VirtualMachine.cpp.s:
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachine.cpp.s
 .PHONY : src/VirtualMachine.cpp.s
 
+src/VirtualMachineException.o: src/VirtualMachineException.cpp.o
+
+.PHONY : src/VirtualMachineException.o
+
+# target to build an object file
+src/VirtualMachineException.cpp.o:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.o
+	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineException.cpp.o
+.PHONY : src/VirtualMachineException.cpp.o
+
+src/VirtualMachineException.i: src/VirtualMachineException.cpp.i
+
+.PHONY : src/VirtualMachineException.i
+
+# target to preprocess a source file
+src/VirtualMachineException.cpp.i:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.i
+	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineException.cpp.i
+.PHONY : src/VirtualMachineException.cpp.i
+
+src/VirtualMachineException.s: src/VirtualMachineException.cpp.s
+
+.PHONY : src/VirtualMachineException.s
+
+# target to generate assembly for a file
+src/VirtualMachineException.cpp.s:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.s
+	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineException.cpp.s
+.PHONY : src/VirtualMachineException.cpp.s
+
 src/VirtualMachineProcedure.o: src/VirtualMachineProcedure.cpp.o
 
 .PHONY : src/VirtualMachineProcedure.o
@@ -323,6 +353,9 @@ help:
 	@echo "... src/VirtualMachine.o"
 	@echo "... src/VirtualMachine.i"
 	@echo "... src/VirtualMachine.s"
+	@echo "... src/VirtualMachineException.o"
+	@echo "... src/VirtualMachineException.i"
+	@echo "... src/VirtualMachineException.s"
 	@echo "... src/VirtualMachineProcedure.o"
 	@echo "... src/VirtualMachineProcedure.i"
 	@echo "... src/VirtualMachineProcedure.s"

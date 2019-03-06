@@ -16,6 +16,6 @@ int main(int argc, char **argv)
     }
     string level(argv[1]);
     GameLevel gl(level);
-    gl.text_play();
+    gl.tui_play();
     return 0;
 }

@@ -90,7 +90,7 @@ void GameLevel::play_sequence()
     }
 }
 
-void GameLevel::text_play()
+void GameLevel::tui_play()
 {
     cout << instructions << endl;
     play_sequence();

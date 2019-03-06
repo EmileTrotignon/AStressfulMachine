@@ -8,7 +8,7 @@
 #include "GameLevel.h"
 
 /**
- * This class is used to represent a game of A Stressful Virtual Machine once the player choose a savefile.
+ * This class is used to represent a game of A Stressful Virtual Machine once the player choose a save file.
  */
 class GameSequence
 {
@@ -22,6 +22,9 @@ private:
 
 public:
     GameSequence(const string &savename);
+
+    void select_level(const string &level);
+
 
 };
 

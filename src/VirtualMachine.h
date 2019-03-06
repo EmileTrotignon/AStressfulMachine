@@ -15,9 +15,9 @@
 #define PRINTING_POINTER "^\n"
 
 // Status macros
-#define STATUS_ERROR -1
+#define STATUS_ERROR  -1
 #define STATUS_RUNNING 1
-#define STATUS_PAUSED 0
+#define STATUS_PAUSED  0
 
 // Error code macros
 #define ERROR_RUNTIME                       0
@@ -65,6 +65,8 @@
 #define SYNTAX_FILE_MARKER    '~'
 
 using namespace std;
+
+typedef int vm_error;
 
 class VirtualMachineProcedure;
 

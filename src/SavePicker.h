@@ -21,6 +21,8 @@ public:
     map <string, string> get_saves();
 
     GameSequence select_save(string save);
+
+    GameSequence tui_select_save();
 };
 
 

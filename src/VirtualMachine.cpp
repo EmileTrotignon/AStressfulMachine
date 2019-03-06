@@ -47,8 +47,8 @@ void VirtualMachine::initialize_anchor_map()
             current_operator++;
             size_t t;
             int anchor = extract_number_from_program(current_operator, &t);
-            if (status == STATUS_ERROR) return;
             anchor_map[anchor] = (int) t + current_operator;
+
         }
         current_operator++;
     }
@@ -109,8 +109,7 @@ void VirtualMachine::val_in()
         *memory_ptr = procedure_call->get_output();
         if (procedure_call->status == STATUS_ERROR)
         {
-            error(ERROR_IN_PROC);
-            return;
+            throw ERROR_IN_PROC;
         }
     }
 }
@@ -185,11 +184,8 @@ void VirtualMachine::go_to_anchor(int anchor)
 void VirtualMachine::exit_goto()
 {
     int i = corresponding_par(program, SYNTAX_OPEN_GOTO, SYNTAX_CLOSE_GOTO, current_operator - 1);
-    if (i == -1)
-    {
-        error(ERROR_UNMATCHED_OPEN_BRACKET);
-        return;
-    }
+    if (i == -1) throw ERROR_UNMATCHED_OPEN_BRACKET;
+
     current_operator = (unsigned int) i;
 }
 
@@ -228,7 +224,7 @@ void VirtualMachine::call_procedure()
     int i = corresponding_par(program, SYNTAX_OPEN_PROC, SYNTAX_CLOSE_PROC, current_operator);
     if (i == -1)
     {
-        error(ERROR_UNMATCHED_CURLY_BRACKET);
+        throw ERROR_UNMATCHED_CURLY_BRACKET;
         return;
     }
 
@@ -260,8 +256,7 @@ string VirtualMachine::file_to_string(string filename)
     ifstream file(filename);
     if (!file.is_open())
     {
-        error(ERROR_UNABLE_TO_OPEN_FILE);
-        return "";
+        throw ERROR_UNABLE_TO_OPEN_FILE;
     }
     string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
     return c;
@@ -271,18 +266,19 @@ void VirtualMachine::loop_procedure()
 {
     if (procedure_call == nullptr)
     {
-        error(ERROR_LOOP_NONEXISTING_PROC);
-        return;
+        throw ERROR_LOOP_NONEXISTING_PROC;
     }
-    procedure_call->loop();
+    try
+    {
+        procedure_call->loop();
+    } catch (vm_error e)
+    {
+        throw ERROR_IN_PROC;
+    }
     if (procedure_call->status == STATUS_PAUSED)
     {
         delete procedure_call;
         procedure_call = nullptr;
-    } else if (procedure_call->status == STATUS_ERROR)
-    {
-        error(ERROR_IN_PROC);
-        return;
     }
 }
 
@@ -290,8 +286,7 @@ void VirtualMachine::terminate_procedure()
 {
     if (procedure_call == nullptr)
     {
-        error(ERROR_TERMINATE_NONEXISTING_PROC);
-        return;
+        throw (ERROR_TERMINATE_NONEXISTING_PROC);
     }
     delete procedure_call;
     procedure_call = nullptr;
@@ -439,13 +434,11 @@ void VirtualMachine::do_one_iteration(bool advance)
     }
     if (memory_ptr >= memory + size)
     {
-        error(ERROR_OUT_OF_MEMORY);
-        return;
+        throw ERROR_OUT_OF_MEMORY;
     }
     if (memory_ptr < memory)
     {
-        error(ERROR_NEGATIVE_MEMORY_ACCESS);
-        return;
+        throw ERROR_NEGATIVE_MEMORY_ACCESS;
     }
     if (advance) current_operator++;
     if (verbose && status == STATUS_RUNNING) cout << (string) (*this);
@@ -463,7 +456,15 @@ void VirtualMachine::loop(void (*func)())
     while (status == STATUS_RUNNING)
     {
         if (func != nullptr) func();
-        do_one_iteration();
+        try
+        {
+            do_one_iteration();
+        } catch (vm_error e)
+        {
+            error(e);
+            throw (ERROR_RUNTIME);
+        }
+
     }
 }
 
@@ -528,10 +529,10 @@ int VirtualMachine::extract_number_from_program(unsigned int start_address, size
         }
     } catch (invalid_argument const &e)
     {
-        error(ERROR_INVALID_NUMBER);
+        throw ERROR_INVALID_NUMBER;
     } catch (out_of_range const &e)
     {
-        error(ERROR_INVALID_NUMBER);
+        throw ERROR_INVALID_NUMBER;
     }
 
     return r;

@@ -63,7 +63,7 @@ public:
     bool attempt(const string &program, int verbose_level = 0);
 
 
-    void text_play();
+    void tui_play();
 };
 
 
