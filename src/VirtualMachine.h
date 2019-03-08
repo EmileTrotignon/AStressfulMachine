@@ -10,6 +10,7 @@
 #include <map>
 
 #include "utilities.h"
+#include "VirtualMachineException.h"
 
 #define MAX_SIZE_MEMORY_PRINT 10
 #define PRINTING_POINTER "^\n"
@@ -20,6 +21,7 @@
 #define STATUS_PAUSED  0
 
 // Error code macros
+/*
 #define ERROR_RUNTIME                       0
 #define ERROR_OUT_OF_MEMORY                 1
 #define ERROR_NEGATIVE_MEMORY_ACCESS        2
@@ -33,7 +35,7 @@
 #define ERROR_IN_PROC                       10
 #define ERROR_INVALID_NUMBER                11
 #define ERROR_LOOP_NONEXISTING_PROC         12
-
+*/
 // Message macros
 #define MESSAGE_LAUNCHING          "[ UNPAUSING VM ]"
 #define MESSAGE_FINISHED           "The execution is finished"
@@ -41,6 +43,7 @@
 #define MESSAGE_DEPTH              "[ DEPTH " + to_string(depth) + " ]"
 
 // Syntax macro
+
 #define SYNTAX_PTR_INCR       '>'
 #define SYNTAX_PTR_DINCR      '<'
 #define SYNTAX_VAL_INCR       '+'
@@ -141,21 +144,23 @@ protected:
 
     virtual void message(const string &message);
 
-    virtual string memory_to_string();
+    virtual string memory_to_string() const;
 
-    virtual string program_to_string();
+    virtual string program_to_string() const;
 
 public:
 
     /**
      * Constructor that initializes all the fields
-     * @param program The code to be executed
-     * @param in The input stream
-     * @param out The output stream
-     * @param size The size of the memory. If the program starts with a number, this will be ignored
-     * @param memory The memory to be used by the machine. Allocated automatically if not specified.
+     * @param program_ The code to be executed
+     * @param in_ The input stream
+     * @param out_ The output stream
+     * @param size_ The size of the memory. If the program starts with a number, this will be ignored
+     * @param memory_ The memory to be used by the machine. Allocated automatically if not specified.
      */
-    VirtualMachine(const string &program, istream *in, ostream *out, size_t size = 30000, int *memory = nullptr);
+    VirtualMachine(const string &program_, istream *in_, ostream *out_, size_t size_ = 30000, int *memory_ = nullptr);
+
+    VirtualMachine(const VirtualMachine &vm);
 
     ~VirtualMachine();
 
@@ -175,7 +180,7 @@ public:
      * Getter for member program
      * @return the program
      */
-    string get_program();
+    string get_program() const;
 
     /**
      * Setter for the program
@@ -187,31 +192,31 @@ public:
      * Getter for member size
      * @return size
      */
-    size_t get_size();
+    size_t get_size() const;
 
     /**
      * Getter for member current_operator
      * @return current_operator
      */
-    int get_current_operator();
+    int get_current_operator() const;
 
     /**
      * Getter for member status
      * @return status
      */
-    int get_status();
+    int get_status() const;
 
     /**
      * Getter for member memory
      * @return memory
      */
-    int *get_memory();
+    int *get_memory() const;
 
     /**
      * Getter for member memory_ptr
      * @return memory_ptr
      */
-    int *get_memory_ptr();
+    int *get_memory_ptr() const;
 
     /**
      * Makes the VM verbose.
@@ -223,6 +228,7 @@ public:
      */
     void stop_verbose();
 
+    bool is_verbose() const;
     /**
      * Make the VM and its procedures verbose.
      */
@@ -233,13 +239,15 @@ public:
      */
     void stop_verbose_procedure();
 
+    bool is_verbose_procedure() const;
+
     /**
      * Convert the VM's current state into a string.
      * @return The VM's string representation
      */
-    virtual explicit operator string();
+    virtual explicit operator string() const;
 
-    ostream &operator<<(ostream &o);
+    ostream &operator<<(ostream &o) const;
 };
 
 

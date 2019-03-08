@@ -34,15 +34,15 @@ protected:
 public:
     /**
      * This call the VirtualMachine constructor as a delegate constructor and initialize the new fields.
-     * @param program
-     * @param in
-     * @param out
-     * @param depth The recursive depth of the procedure.
-     * @param size
-     * @param memory
+     * @param program_
+     * @param in_
+     * @param out_
+     * @param depth_ The recursive depth of the procedure.
+     * @param size_
+     * @param memory_
      */
-    VirtualMachineProcedure(const string &program, istream *in, ostream *out, int depth, size_t size = 30000,
-                            int *memory = nullptr);
+    VirtualMachineProcedure(const string &program_, istream *in_, ostream *out_, int depth_, size_t size_ = 30000,
+                            int *memory_ = nullptr);
 
     /**
      * This should be used to access the output of the procedure.

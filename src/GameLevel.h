@@ -32,9 +32,9 @@ private:
 public:
     /**
      * Basic constructor that uses the level name to open the correct file.
-     * @param level_name The name of the level (it is the directory, you cannot put anything here)
+     * @param level_name_ The name of the level (it is the directory, you cannot put anything here)
      */
-    explicit GameLevel(const string &level_name);
+    explicit GameLevel(const string &level_name_);
 
     /**
      * Reset the input to it's just opened state.

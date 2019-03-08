@@ -7,14 +7,10 @@
 #include "VirtualMachine.h"
 #include "VirtualMachineProcedure.h"
 
-VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s, int *m)
+VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *out_, size_t size_, int *memory_) :
+        program(program_), size(size_), in(in_), out(out_), memory(memory_)
 {
     status = STATUS_PAUSED;
-    program = p;
-    in = i;
-    out = o;
-    size = s;
-    memory = m;
     if (program[0] == SYNTAX_FILE_MARKER) program = file_to_string(program.substr(1));
     if (isdigit(program[0]))
     {
@@ -22,7 +18,7 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
         size = (size_t) extract_number_from_program(0, &t);
         program = program.substr(t);
     }
-    if (m == nullptr) memory = new int[size]{0};
+    if (memory_ == nullptr) memory = new int[size]{0};
     memory_ptr = memory;
     current_operator = 0;
     procedure_call = nullptr;
@@ -30,6 +26,11 @@ VirtualMachine::VirtualMachine(const string &p, istream *i, ostream *o, size_t s
     verbose_procedure = false;
     depth = 0;
     initialize_anchor_map();
+}
+
+VirtualMachine::VirtualMachine(const VirtualMachine &vm_)
+{
+
 }
 
 VirtualMachine::~VirtualMachine()
@@ -109,7 +110,7 @@ void VirtualMachine::val_in()
         *memory_ptr = procedure_call->get_output();
         if (procedure_call->status == STATUS_ERROR)
         {
-            throw ERROR_IN_PROC;
+            throw VM_ErrorInProc(this);
         }
     }
 }
@@ -468,27 +469,27 @@ void VirtualMachine::loop(void (*func)())
     }
 }
 
-size_t VirtualMachine::get_size()
+size_t VirtualMachine::get_size() const
 {
     return size;
 }
 
-int VirtualMachine::get_current_operator()
+int VirtualMachine::get_current_operator() const
 {
     return current_operator;
 }
 
-int VirtualMachine::get_status()
+int VirtualMachine::get_status() const
 {
     return status;
 }
 
-int *VirtualMachine::get_memory()
+int *VirtualMachine::get_memory() const
 {
     return memory;
 }
 
-int *VirtualMachine::get_memory_ptr()
+int *VirtualMachine::get_memory_ptr() const
 {
     return memory_ptr;
 }
@@ -543,7 +544,7 @@ void VirtualMachine::message(const string &message)
     cout << message << endl;
 }
 
-string VirtualMachine::program_to_string()
+string VirtualMachine::program_to_string() const
 {
     string s = "\n" + program;
     s += "\n";
@@ -552,7 +553,7 @@ string VirtualMachine::program_to_string()
     return s;
 }
 
-string VirtualMachine::memory_to_string()
+string VirtualMachine::memory_to_string() const
 {
     string s;
     int k = 0;
@@ -565,15 +566,14 @@ string VirtualMachine::memory_to_string()
     for (int i = 0; i < k; i++) s += " ";
     s += PRINTING_POINTER;
     return s;
-
 }
 
-VirtualMachine::operator string()
+VirtualMachine::operator string() const
 {
     return program_to_string() + memory_to_string();
 }
 
-ostream &VirtualMachine::operator<<(ostream &o)
+ostream &VirtualMachine::operator<<(ostream &o) const
 {
     o << (string) (*this);
     return o;

@@ -4,12 +4,13 @@
 
 #include "VirtualMachineProcedure.h"
 
-VirtualMachineProcedure::VirtualMachineProcedure(const string &program, istream *in, ostream *out, int d, size_t size,
-                                                 int *memory) : VirtualMachine(program, in, out, size, memory)
+VirtualMachineProcedure::VirtualMachineProcedure(const string &program_, istream *in_, ostream *out_, int depth_,
+                                                 size_t size_,
+                                                 int *memory_) : VirtualMachine(program_, in_, out_, size_, memory_),
+                                                                 depth(depth_)
 {
     //Delegate constructor
     output = 0;
-    depth = d;
 }
 
 void VirtualMachineProcedure::val_out()

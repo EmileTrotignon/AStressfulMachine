@@ -6,9 +6,8 @@
 
 using namespace std;
 
-GameLevel::GameLevel(const string &ln)
+GameLevel::GameLevel(const string &level_name_) : level_name(level_name_)
 {
-    level_name = ln;
     solution = file_to_string(LEVELFILES_FOLDER "/" + level_name + "/solution");
     instructions = file_to_string(LEVELFILES_FOLDER "/" + level_name + "/instructions");
     input = ifstream(LEVELFILES_FOLDER "/" + level_name + "/input");
@@ -87,6 +86,13 @@ void GameLevel::play_sequence()
     {
         cout << "Please input one of the code" << endl;
         play_sequence();
+    }
+    try
+    {
+        int *t = new int[1000000000];
+    } catch (const exception &e)
+    {
+        cout << e.what();
     }
 }
 
