@@ -14,36 +14,20 @@
 
 #define MAX_SIZE_MEMORY_PRINT 10
 #define PRINTING_POINTER "^\n"
+#define DEFAULT_MEMORY_SIZE 30000
 
 // Status macros
 #define STATUS_ERROR  -1
 #define STATUS_RUNNING 1
 #define STATUS_PAUSED  0
 
-// Error code macros
-/*
-#define ERROR_RUNTIME                       0
-#define ERROR_OUT_OF_MEMORY                 1
-#define ERROR_NEGATIVE_MEMORY_ACCESS        2
-#define ERROR_UNMATCHED_OPEN_BRACKET        3
-#define ERROR_UNMATCHED_CLOSED_BRACKET      4
-#define ERROR_UNMATCHED_CURLY_BRACKET       5
-#define ERROR_PROC_ASK_OUTPUT_WITHOUT_INPUT 6
-#define ERROR_PROC_ASK_OUPUT_WHEN_FINISHED  7
-#define ERROR_UNABLE_TO_OPEN_FILE           8
-#define ERROR_TERMINATE_NONEXISTING_PROC    9
-#define ERROR_IN_PROC                       10
-#define ERROR_INVALID_NUMBER                11
-#define ERROR_LOOP_NONEXISTING_PROC         12
-*/
 // Message macros
 #define MESSAGE_LAUNCHING          "[ UNPAUSING VM ]"
 #define MESSAGE_FINISHED           "The execution is finished"
 #define MESSAGE_STARTING_PROCEDURE "[ START PROCEDURE ]"
 #define MESSAGE_DEPTH              "[ DEPTH " + to_string(depth) + " ]"
 
-// Syntax macro
-
+// Syntax macros
 #define SYNTAX_PTR_INCR       '>'
 #define SYNTAX_PTR_DINCR      '<'
 #define SYNTAX_VAL_INCR       '+'
@@ -69,8 +53,6 @@
 
 using namespace std;
 
-typedef int vm_error;
-
 class VirtualMachineProcedure;
 
 
@@ -88,7 +70,8 @@ protected:
     int *memory;
     int *memory_ptr;
     unsigned int current_operator;
-    int status; // 1 means running, 0 means stopped, and -1 mean an error occurred.
+    int status; // 1 means running, 0 means stopped, and -1 mean an error_handler occurred.
+    bool print_errors;
     bool verbose;
     bool verbose_procedure;
     map<unsigned int, unsigned int> anchor_map;
@@ -138,7 +121,7 @@ protected:
 
     void terminate_procedure();
 
-    virtual void error(int code);
+    virtual void error_handler(const VirtualMachineException &error);
 
     int extract_number_from_program(unsigned int start_address, size_t *t=nullptr);
 
@@ -153,12 +136,13 @@ public:
     /**
      * Constructor that initializes all the fields
      * @param program_ The code to be executed
-     * @param in_ The input stream
-     * @param out_ The output stream
-     * @param size_ The size of the memory. If the program starts with a number, this will be ignored
-     * @param memory_ The memory to be used by the machine. Allocated automatically if not specified.
+     * @param in The input stream
+     * @param out The output stream
+     * @param size The size of the memory. If the program starts with a number, this will be ignored
+     * @param memory The memory to be used by the machine. Allocated automatically if not specified.
      */
-    VirtualMachine(const string &program_, istream *in_, ostream *out_, size_t size_ = 30000, int *memory_ = nullptr);
+    VirtualMachine(const string &program, istream *in, ostream *out, size_t size = DEFAULT_MEMORY_SIZE,
+                   int *memory = nullptr);
 
     VirtualMachine(const VirtualMachine &vm);
 
@@ -240,6 +224,12 @@ public:
     void stop_verbose_procedure();
 
     bool is_verbose_procedure() const;
+
+    void start_printing_errors();
+
+    void stop_printing_errors();
+
+    bool is_printing_errors() const;
 
     /**
      * Convert the VM's current state into a string.

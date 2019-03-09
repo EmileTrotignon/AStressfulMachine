@@ -106,12 +106,7 @@ void VirtualMachine::val_in()
         *in >> *memory_ptr;
     } else
     {
-
         *memory_ptr = procedure_call->get_output();
-        if (procedure_call->status == STATUS_ERROR)
-        {
-            throw VM_ErrorInProc(this);
-        }
     }
 }
 
@@ -185,7 +180,7 @@ void VirtualMachine::go_to_anchor(int anchor)
 void VirtualMachine::exit_goto()
 {
     int i = corresponding_par(program, SYNTAX_OPEN_GOTO, SYNTAX_CLOSE_GOTO, current_operator - 1);
-    if (i == -1) throw ERROR_UNMATCHED_OPEN_BRACKET;
+    if (i == -1) throw VM_UnmatchedBrackets(this);
 
     current_operator = (unsigned int) i;
 }
@@ -225,8 +220,7 @@ void VirtualMachine::call_procedure()
     int i = corresponding_par(program, SYNTAX_OPEN_PROC, SYNTAX_CLOSE_PROC, current_operator);
     if (i == -1)
     {
-        throw ERROR_UNMATCHED_CURLY_BRACKET;
-        return;
+        throw VM_UnmatchedCurlyBrackets(this);
     }
 
     string procedure = program.substr(current_operator + 1, (unsigned int) i - current_operator);
@@ -247,7 +241,7 @@ void VirtualMachine::call_procedure()
         }
     }
     if (verbose_procedure) message(MESSAGE_STARTING_PROCEDURE MESSAGE_DEPTH);
-    procedure_call = new VirtualMachineProcedure(code, nullptr, nullptr, depth + 1);
+    procedure_call = new VirtualMachineProcedure(this, code, nullptr, nullptr, depth + 1);
     if (verbose_procedure) procedure_call->be_verbose();
     loop_procedure();
 }
@@ -257,7 +251,7 @@ string VirtualMachine::file_to_string(string filename)
     ifstream file(filename);
     if (!file.is_open())
     {
-        throw ERROR_UNABLE_TO_OPEN_FILE;
+        throw VM_UnableToOpenFile(this, filename);
     }
     string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
     return c;
@@ -265,17 +259,7 @@ string VirtualMachine::file_to_string(string filename)
 
 void VirtualMachine::loop_procedure()
 {
-    if (procedure_call == nullptr)
-    {
-        throw ERROR_LOOP_NONEXISTING_PROC;
-    }
-    try
-    {
-        procedure_call->loop();
-    } catch (vm_error e)
-    {
-        throw ERROR_IN_PROC;
-    }
+    procedure_call->loop();
     if (procedure_call->status == STATUS_PAUSED)
     {
         delete procedure_call;
@@ -285,65 +269,13 @@ void VirtualMachine::loop_procedure()
 
 void VirtualMachine::terminate_procedure()
 {
-    if (procedure_call == nullptr)
-    {
-        throw (ERROR_TERMINATE_NONEXISTING_PROC);
-    }
     delete procedure_call;
     procedure_call = nullptr;
 }
 
-void VirtualMachine::error(int code)
+void VirtualMachine::error_handler(const VirtualMachineException &error)
 {
-    switch (code)
-    {
-        default:
-            break;
-        case ERROR_OUT_OF_MEMORY:
-            cout << "Runtime error : The VirtualMachine is out of memory.";
-            break;
-
-        case ERROR_NEGATIVE_MEMORY_ACCESS:
-            cout << "Runtime error : The program tried to access negative memory.";
-            break;
-
-        case ERROR_UNMATCHED_OPEN_BRACKET:
-            cout << "Syntax error : unmatched '" << SYNTAX_OPEN_GOTO << "'.";
-            break;
-
-        case ERROR_UNMATCHED_CLOSED_BRACKET:
-            cout << "Syntax error : unmatched '" << SYNTAX_CLOSE_GOTO << "'.";
-            break;
-
-        case ERROR_UNMATCHED_CURLY_BRACKET:
-            cout << "Syntax error : unmatched '" << SYNTAX_OPEN_PROC << "'.";
-            break;
-
-        case ERROR_PROC_ASK_OUTPUT_WITHOUT_INPUT:
-            cout << "Procedure error: tried to access procedure output when it still needed input.";
-            break;
-
-        case ERROR_PROC_ASK_OUPUT_WHEN_FINISHED:
-            cout << "Procedure error: tried to access procedure output its execution was finished.";
-            break;
-
-        case ERROR_UNABLE_TO_OPEN_FILE:
-            cout << "Runtime error: the virtual machine is unable to open a file.";
-            break;
-
-        case ERROR_TERMINATE_NONEXISTING_PROC:
-            cout << "Procedure error: trying to terminate a procedure that does not exist.";
-            break;
-
-        case ERROR_IN_PROC:
-            cout << "Procedure error: another error occurred in the current procedure.";
-            break;
-        case ERROR_INVALID_NUMBER:
-            cout << "Syntax error : invalid number.";
-            break;
-    }
-    if (verbose) cout << endl << (string) (*this);
-    else cout << " This Happened at char #" << current_operator << endl;
+    cout << error.what();
     status = STATUS_ERROR;
 }
 
@@ -435,11 +367,11 @@ void VirtualMachine::do_one_iteration(bool advance)
     }
     if (memory_ptr >= memory + size)
     {
-        throw ERROR_OUT_OF_MEMORY;
+        throw VM_OutOfMemory(this);
     }
     if (memory_ptr < memory)
     {
-        throw ERROR_NEGATIVE_MEMORY_ACCESS;
+        throw VM_NegativeMemoryAccess(this);
     }
     if (advance) current_operator++;
     if (verbose && status == STATUS_RUNNING) cout << (string) (*this);
@@ -460,10 +392,10 @@ void VirtualMachine::loop(void (*func)())
         try
         {
             do_one_iteration();
-        } catch (vm_error e)
+        } catch (const VirtualMachineException &e)
         {
-            error(e);
-            throw (ERROR_RUNTIME);
+            error_handler(e);
+            return;
         }
 
     }
@@ -530,10 +462,10 @@ int VirtualMachine::extract_number_from_program(unsigned int start_address, size
         }
     } catch (invalid_argument const &e)
     {
-        throw ERROR_INVALID_NUMBER;
+        throw VM_InvalidNumber(this);
     } catch (out_of_range const &e)
     {
-        throw ERROR_INVALID_NUMBER;
+        throw VM_InvalidNumber(this);
     }
 
     return r;

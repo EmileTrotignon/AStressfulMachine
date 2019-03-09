@@ -111,19 +111,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named interpreter
-
-# Build rule for target.
-interpreter: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 interpreter
-.PHONY : interpreter
-
-# fast build rule for target.
-interpreter/fast:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/build
-.PHONY : interpreter/fast
-
-#=============================================================================
 # Target rules for targets named play_level
 
 # Build rule for target.
@@ -136,6 +123,86 @@ play_level/fast:
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/build
 .PHONY : play_level/fast
 
+#=============================================================================
+# Target rules for targets named a_stressful_machine_lib
+
+# Build rule for target.
+a_stressful_machine_lib: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 a_stressful_machine_lib
+.PHONY : a_stressful_machine_lib
+
+# fast build rule for target.
+a_stressful_machine_lib/fast:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/build
+.PHONY : a_stressful_machine_lib/fast
+
+#=============================================================================
+# Target rules for targets named interpreter
+
+# Build rule for target.
+interpreter: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 interpreter
+.PHONY : interpreter
+
+# fast build rule for target.
+interpreter/fast:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/build
+.PHONY : interpreter/fast
+
+src/Game.o: src/Game.cpp.o
+
+.PHONY : src/Game.o
+
+# target to build an object file
+src/Game.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/Game.cpp.o
+.PHONY : src/Game.cpp.o
+
+src/Game.i: src/Game.cpp.i
+
+.PHONY : src/Game.i
+
+# target to preprocess a source file
+src/Game.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/Game.cpp.i
+.PHONY : src/Game.cpp.i
+
+src/Game.s: src/Game.cpp.s
+
+.PHONY : src/Game.s
+
+# target to generate assembly for a file
+src/Game.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/Game.cpp.s
+.PHONY : src/Game.cpp.s
+
+src/GameGUI.o: src/GameGUI.cpp.o
+
+.PHONY : src/GameGUI.o
+
+# target to build an object file
+src/GameGUI.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameGUI.cpp.o
+.PHONY : src/GameGUI.cpp.o
+
+src/GameGUI.i: src/GameGUI.cpp.i
+
+.PHONY : src/GameGUI.i
+
+# target to preprocess a source file
+src/GameGUI.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameGUI.cpp.i
+.PHONY : src/GameGUI.cpp.i
+
+src/GameGUI.s: src/GameGUI.cpp.s
+
+.PHONY : src/GameGUI.s
+
+# target to generate assembly for a file
+src/GameGUI.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameGUI.cpp.s
+.PHONY : src/GameGUI.cpp.s
+
 src/GameLevel.o: src/GameLevel.cpp.o
 
 .PHONY : src/GameLevel.o
@@ -143,6 +210,7 @@ src/GameLevel.o: src/GameLevel.cpp.o
 # target to build an object file
 src/GameLevel.cpp.o:
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/GameLevel.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameLevel.cpp.o
 .PHONY : src/GameLevel.cpp.o
 
 src/GameLevel.i: src/GameLevel.cpp.i
@@ -152,6 +220,7 @@ src/GameLevel.i: src/GameLevel.cpp.i
 # target to preprocess a source file
 src/GameLevel.cpp.i:
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/GameLevel.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameLevel.cpp.i
 .PHONY : src/GameLevel.cpp.i
 
 src/GameLevel.s: src/GameLevel.cpp.s
@@ -161,7 +230,62 @@ src/GameLevel.s: src/GameLevel.cpp.s
 # target to generate assembly for a file
 src/GameLevel.cpp.s:
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/GameLevel.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameLevel.cpp.s
 .PHONY : src/GameLevel.cpp.s
+
+src/GameSequence.o: src/GameSequence.cpp.o
+
+.PHONY : src/GameSequence.o
+
+# target to build an object file
+src/GameSequence.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameSequence.cpp.o
+.PHONY : src/GameSequence.cpp.o
+
+src/GameSequence.i: src/GameSequence.cpp.i
+
+.PHONY : src/GameSequence.i
+
+# target to preprocess a source file
+src/GameSequence.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameSequence.cpp.i
+.PHONY : src/GameSequence.cpp.i
+
+src/GameSequence.s: src/GameSequence.cpp.s
+
+.PHONY : src/GameSequence.s
+
+# target to generate assembly for a file
+src/GameSequence.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameSequence.cpp.s
+.PHONY : src/GameSequence.cpp.s
+
+src/SavePicker.o: src/SavePicker.cpp.o
+
+.PHONY : src/SavePicker.o
+
+# target to build an object file
+src/SavePicker.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/SavePicker.cpp.o
+.PHONY : src/SavePicker.cpp.o
+
+src/SavePicker.i: src/SavePicker.cpp.i
+
+.PHONY : src/SavePicker.i
+
+# target to preprocess a source file
+src/SavePicker.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/SavePicker.cpp.i
+.PHONY : src/SavePicker.cpp.i
+
+src/SavePicker.s: src/SavePicker.cpp.s
+
+.PHONY : src/SavePicker.s
+
+# target to generate assembly for a file
+src/SavePicker.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/SavePicker.cpp.s
+.PHONY : src/SavePicker.cpp.s
 
 src/VirtualMachine.o: src/VirtualMachine.cpp.o
 
@@ -169,8 +293,9 @@ src/VirtualMachine.o: src/VirtualMachine.cpp.o
 
 # target to build an object file
 src/VirtualMachine.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.o
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachine.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.o
 .PHONY : src/VirtualMachine.cpp.o
 
 src/VirtualMachine.i: src/VirtualMachine.cpp.i
@@ -179,8 +304,9 @@ src/VirtualMachine.i: src/VirtualMachine.cpp.i
 
 # target to preprocess a source file
 src/VirtualMachine.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.i
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachine.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.i
 .PHONY : src/VirtualMachine.cpp.i
 
 src/VirtualMachine.s: src/VirtualMachine.cpp.s
@@ -189,8 +315,9 @@ src/VirtualMachine.s: src/VirtualMachine.cpp.s
 
 # target to generate assembly for a file
 src/VirtualMachine.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.s
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachine.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.s
 .PHONY : src/VirtualMachine.cpp.s
 
 src/VirtualMachineException.o: src/VirtualMachineException.cpp.o
@@ -199,8 +326,9 @@ src/VirtualMachineException.o: src/VirtualMachineException.cpp.o
 
 # target to build an object file
 src/VirtualMachineException.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.o
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineException.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.o
 .PHONY : src/VirtualMachineException.cpp.o
 
 src/VirtualMachineException.i: src/VirtualMachineException.cpp.i
@@ -209,8 +337,9 @@ src/VirtualMachineException.i: src/VirtualMachineException.cpp.i
 
 # target to preprocess a source file
 src/VirtualMachineException.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.i
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineException.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.i
 .PHONY : src/VirtualMachineException.cpp.i
 
 src/VirtualMachineException.s: src/VirtualMachineException.cpp.s
@@ -219,8 +348,9 @@ src/VirtualMachineException.s: src/VirtualMachineException.cpp.s
 
 # target to generate assembly for a file
 src/VirtualMachineException.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.s
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineException.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.s
 .PHONY : src/VirtualMachineException.cpp.s
 
 src/VirtualMachineProcedure.o: src/VirtualMachineProcedure.cpp.o
@@ -229,8 +359,9 @@ src/VirtualMachineProcedure.o: src/VirtualMachineProcedure.cpp.o
 
 # target to build an object file
 src/VirtualMachineProcedure.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.o
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineProcedure.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.o
 .PHONY : src/VirtualMachineProcedure.cpp.o
 
 src/VirtualMachineProcedure.i: src/VirtualMachineProcedure.cpp.i
@@ -239,8 +370,9 @@ src/VirtualMachineProcedure.i: src/VirtualMachineProcedure.cpp.i
 
 # target to preprocess a source file
 src/VirtualMachineProcedure.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.i
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineProcedure.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.i
 .PHONY : src/VirtualMachineProcedure.cpp.i
 
 src/VirtualMachineProcedure.s: src/VirtualMachineProcedure.cpp.s
@@ -249,8 +381,9 @@ src/VirtualMachineProcedure.s: src/VirtualMachineProcedure.cpp.s
 
 # target to generate assembly for a file
 src/VirtualMachineProcedure.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.s
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/VirtualMachineProcedure.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.s
 .PHONY : src/VirtualMachineProcedure.cpp.s
 
 src/interpreter.o: src/interpreter.cpp.o
@@ -313,8 +446,9 @@ src/utilities.o: src/utilities.cpp.o
 
 # target to build an object file
 src/utilities.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.o
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/utilities.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.o
 .PHONY : src/utilities.cpp.o
 
 src/utilities.i: src/utilities.cpp.i
@@ -323,8 +457,9 @@ src/utilities.i: src/utilities.cpp.i
 
 # target to preprocess a source file
 src/utilities.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.i
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/utilities.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.i
 .PHONY : src/utilities.cpp.i
 
 src/utilities.s: src/utilities.cpp.s
@@ -333,8 +468,9 @@ src/utilities.s: src/utilities.cpp.s
 
 # target to generate assembly for a file
 src/utilities.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.s
 	$(MAKE) -f CMakeFiles/play_level.dir/build.make CMakeFiles/play_level.dir/src/utilities.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.s
 .PHONY : src/utilities.cpp.s
 
 # Help Target
@@ -345,11 +481,24 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... interpreter"
 	@echo "... play_level"
+	@echo "... a_stressful_machine_lib"
+	@echo "... interpreter"
+	@echo "... src/Game.o"
+	@echo "... src/Game.i"
+	@echo "... src/Game.s"
+	@echo "... src/GameGUI.o"
+	@echo "... src/GameGUI.i"
+	@echo "... src/GameGUI.s"
 	@echo "... src/GameLevel.o"
 	@echo "... src/GameLevel.i"
 	@echo "... src/GameLevel.s"
+	@echo "... src/GameSequence.o"
+	@echo "... src/GameSequence.i"
+	@echo "... src/GameSequence.s"
+	@echo "... src/SavePicker.o"
+	@echo "... src/SavePicker.i"
+	@echo "... src/SavePicker.s"
 	@echo "... src/VirtualMachine.o"
 	@echo "... src/VirtualMachine.i"
 	@echo "... src/VirtualMachine.s"

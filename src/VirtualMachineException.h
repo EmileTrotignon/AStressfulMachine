@@ -93,6 +93,12 @@ public:
 
 };
 
+class VM_InvalidNumber : public VM_SyntaxError
+{
+public:
+    explicit VM_InvalidNumber(VirtualMachine *vm);
+};
+
 class VM_ProcError : public VirtualMachineException
 {
 
@@ -120,8 +126,10 @@ public:
 
 class VM_ErrorInProc : public VirtualMachineException
 {
+protected:
+    const VirtualMachineException *error_in_proc;
 public:
-    explicit VM_ErrorInProc(VirtualMachine *vm);
+    explicit VM_ErrorInProc(VirtualMachine *vm, const VirtualMachineException *error_in_proc);
 };
 
 #endif //A_STRESSFUL_MACHINE_VIRTUALMACHINEEXCEPTION_H

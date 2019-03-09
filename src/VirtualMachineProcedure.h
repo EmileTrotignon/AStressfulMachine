@@ -21,15 +21,18 @@
 class VirtualMachineProcedure : public VirtualMachine
 {
 protected:
+
+    int output;
+    VirtualMachine *master_vm;
+
     void val_out() override;
 
     void val_in() override;
 
-    void error(int code) override;
+    void error_handler(const VirtualMachineException &error) override;
 
     void message(const string &message) override;
 
-    int output;
 
 public:
     /**
@@ -41,7 +44,8 @@ public:
      * @param size_
      * @param memory_
      */
-    VirtualMachineProcedure(const string &program_, istream *in_, ostream *out_, int depth_, size_t size_ = 30000,
+    VirtualMachineProcedure(VirtualMachine *master_vm, const string &program_, istream *in_, ostream *out_, int depth_,
+                            size_t size_ = 30000,
                             int *memory_ = nullptr);
 
     /**
@@ -52,7 +56,7 @@ public:
 
     void input(int inpt);
 
-    explicit operator string() override;
+    explicit operator string() const override;
 
     int depth;
 };

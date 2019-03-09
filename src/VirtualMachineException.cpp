@@ -9,7 +9,7 @@
 VirtualMachineException::VirtualMachineException(const VirtualMachine *vm_) :
         exception(), vm(vm_)
 {
-    message = "Virtual Machine error";
+    message = "Virtual Machine error_handler";
 }
 
 string VirtualMachineException::vm_state() const
@@ -27,7 +27,7 @@ const char *VirtualMachineException::what() const noexcept
 
 VM_MemoryError::VM_MemoryError(const VirtualMachine *vm_) : VirtualMachineException(vm_)
 {
-    message = "Memory error.";
+    message = "Memory error_handler.";
 }
 
 VM_OutOfMemory::VM_OutOfMemory(const VirtualMachine *vm_) : VM_MemoryError(vm_)
@@ -60,9 +60,14 @@ VM_UnmatchedCurlyBrackets::VM_UnmatchedCurlyBrackets(const VirtualMachine *vm_) 
     message = "Unmatched curly brackets.";
 }
 
+VM_InvalidNumber::VM_InvalidNumber(VirtualMachine *vm_) : VM_SyntaxError(vm_)
+{
+    message = "Invalid number.";
+}
+
 VM_ProcError::VM_ProcError(const VirtualMachine *vm_) : VirtualMachineException(vm_)
 {
-    message = "Procedure related error";
+    message = "Procedure related error_handler";
 }
 
 VM_AskedOutputWhenInputting::VM_AskedOutputWhenInputting(const VirtualMachine *vm_) : VM_ProcError(vm_)
@@ -76,7 +81,9 @@ VM_UnableToOpenFile::VM_UnableToOpenFile(const VirtualMachine *vm_, const string
 
 }
 
-VM_ErrorInProc::VM_ErrorInProc(VirtualMachine *vm_) : VirtualMachineException(vm_)
+VM_ErrorInProc::VM_ErrorInProc(VirtualMachine *vm_, const VirtualMachineException *error_in_proc_)
+        : VirtualMachineException(
+        vm_), error_in_proc(error_in_proc_)
 {
-    message = "An error occured in child procedure.";
+    message = "An error_handler occured in child procedure.";
 }
