@@ -3,3 +3,8 @@
 //
 
 #include "GameSequence.h"
+
+GameSequence::GameSequence(const string &savename, const string &gamefiles_dir)
+{
+
+}

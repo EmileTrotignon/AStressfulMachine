@@ -6,11 +6,12 @@
 
 using namespace std;
 
-GameLevel::GameLevel(const string &level_name_) : level_name(level_name_)
+GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_) : gamefiles_dir(gamefiles_dir_),
+                                                                                level_name(level_name_)
 {
-    solution = file_to_string(LEVELFILES_FOLDER "/" + level_name + "/solution");
-    instructions = file_to_string(LEVELFILES_FOLDER "/" + level_name + "/instructions");
-    input = ifstream(LEVELFILES_FOLDER "/" + level_name + "/input");
+    solution = file_to_string(gamefiles_dir + "/levels/" + level_name + "/solution");
+    instructions = file_to_string(gamefiles_dir + "/levels/" + level_name + "/instructions");
+    input = ifstream(gamefiles_dir + "/levels/" + level_name + "/input");
     vm_attempt = nullptr;
     vm_sol = nullptr;
     program_attempt = "";

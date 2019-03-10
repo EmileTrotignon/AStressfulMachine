@@ -1,8 +1,9 @@
 # CMake project wrapper
 # https://stackoverflow.com/questions/11143062/getting-cmake-to-build-out-of-source-without-wrapping-scripts
 
+COMPILER := g++-8
 MKDIR := mkdir -p
-CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Release
+CMAKE_FLAGS := -D CMAKE_BUILD_TYPE=Release -D CMAKE_CXX_COMPILER=g++-8
 
 all: ./build/Makefile
 	@ $(MAKE) -C build
@@ -17,8 +18,10 @@ clean:
 	rm -r build/cmake*
 
 ifeq ($(findstring clean, $(MAKECMDGOALS)),)
+ifeq ($(findstring doc, $(MAKECMDGOALS)),)
 $(MAKECMDGOALS): ./build/Makefile
 	@ $(MAKE) -C build $(MAKECMDGOALS)
+endif
 endif
 
 doc: src/*.h

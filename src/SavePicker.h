@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <map>
+#include <filesystem>
 
 #include "GameSequence.h"
 
@@ -20,17 +21,16 @@ class SavePicker
 {
 private:
 
-    map<string, string> saves;
+    vector<string> saves;
 
 public:
 
-    SavePicker(const string &save_dir, const string &gamefiles_dir);
+    SavePicker(const string &save_dir);
 
-    map <string, string> get_saves();
+    vector<string> get_saves() const;
 
-    GameSequence select_save(string save);
+    GameSequence select_save(string save) const;
 
-    GameSequence tui_select_save();
 };
 
 

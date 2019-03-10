@@ -9,13 +9,18 @@
 
 class Game
 {
-private:
+protected:
 
     SavePicker *save_picker;
     GameSequence *game_sequence;
 
 public:
 
+    /**
+     * SavePicker
+     * @param save_dir
+     * @param gamefiles_dir
+     */
     Game(const string &save_dir, const string &gamefiles_dir);
 
     virtual void play();

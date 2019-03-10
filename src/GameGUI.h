@@ -7,9 +7,10 @@
 
 #include "Game.h"
 
-class GameGUI : public Game
+class GameGUI
 {
-
+private:
+    Game *game;
 };
 
 

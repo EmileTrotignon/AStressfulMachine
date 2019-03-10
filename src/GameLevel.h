@@ -9,7 +9,7 @@
 #include "VirtualMachine.h"
 #include "utilities.h"
 
-#define LEVELFILES_FOLDER "data/gamefiles/levels"
+/*#define LEVELFILES_FOLDER "data/gamefiles/levels"*/
 
 /**
  * This class enable the player to complete a level.
@@ -17,6 +17,7 @@
 class GameLevel
 {
 private:
+    string gamefiles_dir;
     string level_name;
     string solution;
     string instructions;
@@ -32,9 +33,9 @@ private:
 public:
     /**
      * Basic constructor that uses the level name to open the correct file.
-     * @param level_name_ The name of the level (it is the directory, you cannot put anything here)
+     * @param level_name The name of the level (it is the directory, you cannot put anything here)
      */
-    explicit GameLevel(const string &level_name_);
+    explicit GameLevel(const string &gamefiles_dir, const string &level_name);
 
     /**
      * Reset the input to it's just opened state.

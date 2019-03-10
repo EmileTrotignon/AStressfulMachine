@@ -4,9 +4,12 @@
 
 #include <stdio.h>
 #include <fstream>
+#include <filesystem>
 #include "utilities.h"
 
+
 using namespace std;
+namespace fs = std::filesystem;
 
 int corresponding_par(const string &s, char open, char close, unsigned int par_address)
 {
@@ -58,4 +61,12 @@ string file_to_string(const string &filename)
     }
     string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
     return c;
+}
+
+vector<string> filesystem_ls(const string &dir)
+{
+    vector<string> saves;
+    for (const auto &entry : fs::directory_iterator(dir))
+        saves.push_back(entry.path());
+    return saves;
 }
