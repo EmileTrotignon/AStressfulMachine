@@ -23,7 +23,7 @@ void GameLevel::reset_input()
     input.seekg(0);
 }
 
-bool GameLevel::attempt_one_input(int verbose_level)
+bool GameLevel::attempt_one_input(int verbose_level, function<void(VirtualMachine *)> looper)
 {
     ostringstream output_attempt;
     ostringstream output_sol;
@@ -37,23 +37,23 @@ bool GameLevel::attempt_one_input(int verbose_level)
     if (verbose_level >= 2) vm_attempt->be_verbose_procedure();
 
     vm_sol = new VirtualMachine(solution, &whole_input, &output_sol);
-    vm_sol->loop();
+    vm_sol->loop(looper);
 
     whole_input.clear();
     whole_input.seekg(0);
 
-    vm_attempt->loop();
+    vm_attempt->loop(looper);
 
     return (output_attempt.str() == output_sol.str());
 }
 
-bool GameLevel::attempt(const string &program, int verbose_level)
+bool GameLevel::attempt(const string &program, function<void(VirtualMachine *)> looper, int verbose_level)
 {
 
 
     while(!input.eof())
     {
-        if (!attempt_one_input(verbose_level)) return false;
+        if (!attempt_one_input(verbose_level, looper)) return false;
     }
     reset_input();
     return true;
@@ -70,7 +70,7 @@ void GameLevel::play_sequence()
         string program;
         cin >> program;
         bool success;
-        if (code == "V" || code == "v") success = attempt(program, 1);
+        if (code == "V" || code == "v") success = attempt(program, nullptr, 1);
         else success = attempt(program);
         if (success)
         {

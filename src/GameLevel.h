@@ -6,6 +6,7 @@
 #define ASTRESSFULMACHINE_GAMELEVEL_H
 
 #include <fstream>
+#include <functional>
 #include "VirtualMachine.h"
 #include "utilities.h"
 
@@ -59,10 +60,11 @@ public:
      * @param verbose_level
      * @return
      */
-    bool attempt_one_input(int verbose_level);
+    bool attempt_one_input(int verbose_level, function<void(VirtualMachine *)> looper);
 
-    bool attempt(const string &program, int verbose_level = 0);
+    bool attempt(const string &program, function<void(VirtualMachine *)> looper = nullptr, int verbose_level = 0);
 
+    string get_instructions();
 
     void tui_play();
 };

@@ -378,7 +378,7 @@ void VirtualMachine::do_one_iteration(bool advance)
 
 }
 
-void VirtualMachine::loop(void (*func)())
+void VirtualMachine::loop(function<void(VirtualMachine *)> looper)
 {
     if (verbose)
     {
@@ -388,7 +388,7 @@ void VirtualMachine::loop(void (*func)())
     status = STATUS_RUNNING;
     while (status == STATUS_RUNNING)
     {
-        if (func != nullptr) func();
+        if (looper != nullptr) looper(this);
         try
         {
             do_one_iteration();

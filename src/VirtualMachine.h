@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <functional>
 
 #include "utilities.h"
 #include "VirtualMachineException.h"
@@ -127,10 +128,6 @@ protected:
 
     virtual void message(const string &message);
 
-    virtual string memory_to_string() const;
-
-    virtual string program_to_string() const;
-
 public:
 
     /**
@@ -158,7 +155,7 @@ public:
      * This execute the program until it halts.
      * @param func A function to be executed at each step of the loop. Basic use would be to slow down execution.
      */
-    void loop(void (*func)() = nullptr);
+    void loop(function<void(VirtualMachine *)> looper = nullptr);
 
     /**
      * Getter for member program
@@ -230,6 +227,11 @@ public:
     void stop_printing_errors();
 
     bool is_printing_errors() const;
+
+
+    virtual string memory_to_string() const;
+
+    virtual string program_to_string() const;
 
     /**
      * Convert the VM's current state into a string.

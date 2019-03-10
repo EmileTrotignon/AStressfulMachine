@@ -14,9 +14,9 @@ class GameSequence
 {
 private:
 
-    map<string, GameLevel *> available_levels;
-
-    GameLevel current_level;
+    vector<string> available_levels;
+    GameLevel *current_level;
+    string gamefiles_dir;
 
     void load_from_save();
 
@@ -24,6 +24,10 @@ public:
     GameSequence(const string &savename, const string &gamefiles_dir);
 
     void select_level(const string &level);
+
+    vector<string> get_available_levels() const;
+
+    GameLevel *get_current_level();
 
 
 };
