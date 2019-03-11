@@ -3,6 +3,8 @@
 //
 
 #include "SavePicker.h"
+#include <ncurses.h>
+#include <assert.h>
 
 namespace fs = std::filesystem;
 

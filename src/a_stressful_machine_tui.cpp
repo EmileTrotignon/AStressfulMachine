@@ -4,3 +4,10 @@
 
 #include "GameTUI.h"
 
+int main()
+{
+    GameTUI game("data/saves", "data/gamefiles");
+    cout << "coucou" << endl;
+    game.play();
+    return 0;
+}

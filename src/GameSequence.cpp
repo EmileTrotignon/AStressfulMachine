@@ -6,7 +6,7 @@
 
 GameSequence::GameSequence(const string &savename, const string &gamefiles_dir_) : gamefiles_dir(gamefiles_dir_)
 {
-
+    available_levels = filesystem_ls(gamefiles_dir + "/levels");
 }
 
 void GameSequence::select_level(const string &level)

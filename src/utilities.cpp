@@ -6,6 +6,7 @@
 #include <fstream>
 #include <filesystem>
 #include "utilities.h"
+#include <ncurses.h>
 
 
 using namespace std;
@@ -65,8 +66,14 @@ string file_to_string(const string &filename)
 
 vector<string> filesystem_ls(const string &dir)
 {
+
+    if (!fs::exists(dir)) throw runtime_error("dossier inexistant");
+
+
     vector<string> saves;
-    for (const auto &entry : fs::directory_iterator(dir))
+    for (auto &entry : fs::directory_iterator(dir))
         saves.push_back(entry.path());
+
     return saves;
+
 }

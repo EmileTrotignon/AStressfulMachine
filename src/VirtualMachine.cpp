@@ -401,6 +401,16 @@ void VirtualMachine::loop(function<void(VirtualMachine *)> looper)
     }
 }
 
+string VirtualMachine::get_program() const
+{
+    return program;
+}
+
+void VirtualMachine::set_program(const string &program_)
+{
+    program = program_;
+}
+
 size_t VirtualMachine::get_size() const
 {
     return size;
@@ -437,6 +447,11 @@ void VirtualMachine::stop_verbose()
     verbose_procedure = false;
 }
 
+bool VirtualMachine::is_verbose() const
+{
+    return verbose;
+}
+
 void VirtualMachine::be_verbose_procedure()
 {
     verbose = true;
@@ -448,9 +463,29 @@ void VirtualMachine::stop_verbose_procedure()
     verbose_procedure = false;
 }
 
+bool VirtualMachine::is_verbose_procedure() const
+{
+    return verbose_procedure;
+}
+
+void VirtualMachine::start_printing_errors()
+{
+    print_errors = true;
+}
+
+void VirtualMachine::stop_printing_errors()
+{
+    print_errors = false;
+}
+
+bool VirtualMachine::is_printing_errors() const
+{
+    return print_errors;
+}
+
 int VirtualMachine::extract_number_from_program(unsigned int start_address, size_t *t)
 {
-    int r = -1;
+    int r;
     try
     {
         if (t == nullptr)

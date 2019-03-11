@@ -7,28 +7,35 @@
 #include "GameTUI.h"
 #include "ncurses_utilities.h"
 
-WINDOW *create_newwin(int height, int width, int starty, int startx);
-
-void destroy_win(WINDOW *local_win);
-
-GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(saves_dir_, gamefiles_dir_), typing_win(
-        nullptr), instruction_win(nullptr), vm_input_win(nullptr), vm_output_win(nullptr), vm_memory_win(nullptr),
-                                                                           vm_program_win(nullptr), looper(nullptr),
-                                                                           field_content(
-                                                                                   "")
+GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(saves_dir_, gamefiles_dir_),
+                                                                           typing_win(nullptr),
+                                                                           instruction_win(nullptr),
+                                                                           vm_input_win(nullptr),
+                                                                           vm_output_win(nullptr),
+                                                                           vm_memory_win(nullptr),
+                                                                           vm_program_win(nullptr),
+                                                                           looper(nullptr),
+                                                                           field_content("")
 {
 }
 
 void GameTUI::pick_saves()
 {
     vector<string> possible_saves = save_picker->get_saves();
-    string selected_save = possible_saves[menu(possible_saves, stdscr)];
+    int height = (int) possible_saves.size() + 2;
+    WINDOW *save_picking = create_newwin(height, 25, 4, 4);
+    string selected_save = possible_saves[menu(possible_saves, save_picking)];
+    destroy_win(save_picking);
+    refresh();
     game_sequence = new GameSequence(selected_save, "data/gamefiles/");
 }
 
 void GameTUI::pick_level()
 {
+    getch();
+
     vector<string> possible_levels = game_sequence->get_available_levels();
+    getch();
     game_sequence->select_level(possible_levels[menu(possible_levels, stdscr)]);
 }
 
@@ -53,7 +60,8 @@ void GameTUI::play_level()
 
     vm_memory_win = create_newwin(LINES / 4, COLS / 2, LINES / 4, COLS / 2);
     box(vm_memory_win, ACS_VLINE, ACS_HLINE);
-    looper = bind2nd(vm_looper, this);
+    auto lol = bind2nd(function<void(VirtualMachine *, GameTUI *)>(vm_looper), this);
+    looper = lol;
     handle_typing();
 }
 
@@ -70,7 +78,7 @@ void GameTUI::initialize_typing_win()
 
 void GameTUI::fill_instructions()
 {
-    mvwprintw(instruction_win, 1, 1, game_sequence->get_current_level().get_instructions().c_str());
+    mvwprintw(instruction_win, 1, 1, game_sequence->get_current_level()->get_instructions().c_str());
 }
 
 void GameTUI::handle_typing()
@@ -85,7 +93,7 @@ void GameTUI::handle_typing()
     bool b = false;
     try
     {
-        b = game_sequence->get_current_level().attempt(field_content);
+        b = game_sequence->get_current_level()->attempt(field_content);
     } catch (const VirtualMachineException &e)
     {
 
@@ -106,10 +114,14 @@ void GameTUI::play()
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
-    box(stdscr, 0, 0);
-    printw("Starting game of A Stressful Machine\n");
+    curs_set(0);
+    box(stdscr, ACS_VLINE, ACS_HLINE);
+    mvaddstr(1, 5, "A Stressful Machine\n");
+    box(stdscr, ACS_VLINE, ACS_HLINE);
+    getch();
     pick_saves();
     pick_level();
+    play_level();
     endwin();
 }
 
@@ -118,4 +130,9 @@ void vm_looper(VirtualMachine *vm, GameTUI *gi)
     mvwprintw(gi->vm_program_win, LINES / 8, 2, vm->program_to_string().c_str());
     mvwprintw(gi->vm_memory_win, LINES / 8, 8, vm->program_to_string().c_str());
 
+}
+
+void Looper::operator()(VirtualMachine *vm, GameTUI *gt)
+{
+    vm_looper(vm, gt);
 }

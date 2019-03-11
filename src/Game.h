@@ -23,9 +23,7 @@ public:
      */
     Game(const string &save_dir, const string &gamefiles_dir);
 
-    virtual void play();
-
-    virtual void display();
+    virtual void play() = 0;
 
 };
 

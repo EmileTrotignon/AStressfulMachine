@@ -51,4 +51,10 @@ public:
 
 void vm_looper(VirtualMachine *vm, GameTUI *gi);
 
+class Looper : public binary_function<VirtualMachine *, GameTUI *, void>
+{
+public:
+    void operator()(VirtualMachine *vm, GameTUI *gt);
+};
+
 #endif //A_STRESSFUL_MACHINE_GAMETUI_H

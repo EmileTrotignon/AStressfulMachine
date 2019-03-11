@@ -97,6 +97,11 @@ void GameLevel::play_sequence()
     }
 }
 
+string GameLevel::get_instructions()
+{
+    return instructions;
+}
+
 void GameLevel::tui_play()
 {
     cout << instructions << endl;

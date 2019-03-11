@@ -1,7 +1,7 @@
 # CMake project wrapper
 # https://stackoverflow.com/questions/11143062/getting-cmake-to-build-out-of-source-without-wrapping-scripts
 
-COMPILER := g++-8
+COMPILER := clang++
 MKDIR := mkdir -p
 CMAKE_FLAGS := -D CMAKE_BUILD_TYPE=Release -D CMAKE_CXX_COMPILER=g++-8
 

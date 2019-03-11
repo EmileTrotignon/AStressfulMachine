@@ -17,6 +17,7 @@ add_library(a_stressful_machine_lib
         src/VirtualMachineException.cpp src/VirtualMachineException.h
         src/a_stressful_machine_tui.cpp)
 
+
 add_executable(interpreter
         src/interpreter.cpp
         src/VirtualMachine.cpp src/VirtualMachine.h
@@ -37,6 +38,8 @@ add_executable(a_stressful_machine_tui
         src/GameTUI.cpp src/GameTUI.h
         src/ncurses_utilities.cpp src/ncurses_utilities.h)
 target_link_libraries(a_stressful_machine_tui a_stressful_machine_lib)
+target_link_libraries(a_stressful_machine_tui libstdc++fs.a)
+
 target_link_libraries(a_stressful_machine_tui ${CURSES_LIBRARIES})
 
 add_executable(test
