@@ -72,7 +72,7 @@ vector<string> filesystem_ls(const string &dir)
 
     vector<string> saves;
     for (auto &entry : fs::directory_iterator(dir))
-        saves.push_back(entry.path());
+        saves.push_back(entry.path().filename());
 
     return saves;
 

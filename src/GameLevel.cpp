@@ -37,12 +37,12 @@ bool GameLevel::attempt_one_input(int verbose_level, function<void(VirtualMachin
     if (verbose_level >= 2) vm_attempt->be_verbose_procedure();
 
     vm_sol = new VirtualMachine(solution, &whole_input, &output_sol);
-    vm_sol->loop(looper);
+    vm_sol->loop();
 
     whole_input.clear();
     whole_input.seekg(0);
 
-    vm_attempt->loop(looper);
+    vm_attempt->loop();
 
     return (output_attempt.str() == output_sol.str());
 }

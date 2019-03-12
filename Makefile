@@ -3,7 +3,7 @@
 
 COMPILER := clang++
 MKDIR := mkdir -p
-CMAKE_FLAGS := -D CMAKE_BUILD_TYPE=Release -D CMAKE_CXX_COMPILER=g++-8
+CMAKE_FLAGS := -D CMAKE_BUILD_TYPE=Debug -D CMAKE_CXX_COMPILER=g++-8
 
 all: ./build/Makefile
 	@ $(MAKE) -C build

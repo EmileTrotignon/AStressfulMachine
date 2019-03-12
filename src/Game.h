@@ -13,6 +13,7 @@ protected:
 
     SavePicker *save_picker;
     GameSequence *game_sequence;
+    string gamefiles_dir;
 
 public:
 

@@ -11,6 +11,7 @@
 #include <functional>
 
 #include "Game.h"
+#include "VirtualMachineTUI.h"
 
 class GameTUI : public Game
 {
@@ -23,9 +24,7 @@ private:
     WINDOW *vm_memory_win;
     WINDOW *vm_program_win;
     function<void(VirtualMachine *)> looper;
-    string field_content;
-    FORM *typing_form;
-    FIELD *typing_field;
+    string typed_text;
 
 
     void pick_saves();
@@ -47,6 +46,7 @@ public:
 
     friend void vm_looper(VirtualMachine *vm, GameTUI *gi);
 
+    friend VirtualMachineTUI;
 };
 
 void vm_looper(VirtualMachine *vm, GameTUI *gi);
@@ -55,6 +55,7 @@ class Looper : public binary_function<VirtualMachine *, GameTUI *, void>
 {
 public:
     void operator()(VirtualMachine *vm, GameTUI *gt);
+
 };
 
 #endif //A_STRESSFUL_MACHINE_GAMETUI_H

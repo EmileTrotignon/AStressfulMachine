@@ -3,6 +3,7 @@
 //
 
 #include <form.h>
+#include <assert.h>
 
 #include "GameTUI.h"
 #include "ncurses_utilities.h"
@@ -14,9 +15,9 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            vm_output_win(nullptr),
                                                                            vm_memory_win(nullptr),
                                                                            vm_program_win(nullptr),
-                                                                           looper(nullptr),
-                                                                           field_content("")
+                                                                           looper(nullptr)
 {
+    typed_text = "";
 }
 
 void GameTUI::pick_saves()
@@ -27,53 +28,55 @@ void GameTUI::pick_saves()
     string selected_save = possible_saves[menu(possible_saves, save_picking)];
     destroy_win(save_picking);
     refresh();
-    game_sequence = new GameSequence(selected_save, "data/gamefiles/");
+    game_sequence = new GameSequence(selected_save, gamefiles_dir);
 }
 
 void GameTUI::pick_level()
 {
-    getch();
 
     vector<string> possible_levels = game_sequence->get_available_levels();
-    getch();
     game_sequence->select_level(possible_levels[menu(possible_levels, stdscr)]);
 }
 
 void GameTUI::play_level()
 {
     typing_win = create_newwin(LINES / 2, COLS / 2, 0, COLS / 2);
-    box(typing_win, ACS_VLINE, ACS_HLINE);
     initialize_typing_win();
+    keypad(typing_win, TRUE);
 
     instruction_win = create_newwin(LINES / 2, COLS / 2, 0, 0);
-    box(instruction_win, ACS_VLINE, ACS_HLINE);
     fill_instructions();
 
     vm_input_win = create_newwin(LINES / 2, COLS / 4, LINES / 2, 0);
-    box(vm_input_win, ACS_VLINE, ACS_HLINE);
-
-    vm_output_win = create_newwin(LINES / 2, COLS / 2, COLS / 4, LINES / 2);
-    box(vm_output_win, ACS_VLINE, ACS_HLINE);
+    vm_output_win = create_newwin(LINES / 2, COLS / 4, LINES / 2, COLS / 4);
 
     vm_program_win = create_newwin(LINES / 4, COLS / 2, LINES / 2, COLS / 2);
-    box(vm_program_win, ACS_VLINE, ACS_HLINE);
+    vm_memory_win = create_newwin(LINES / 4, COLS / 2, LINES / 2 + LINES / 4, COLS / 2);
 
-    vm_memory_win = create_newwin(LINES / 4, COLS / 2, LINES / 4, COLS / 2);
+    looper = bind2nd(function<void(VirtualMachine *, GameTUI *)>(vm_looper), this);
+
+    box(instruction_win, ACS_VLINE, ACS_HLINE);
+    box(vm_input_win, ACS_VLINE, ACS_HLINE);
+    box(vm_output_win, ACS_VLINE, ACS_HLINE);
+    box(vm_program_win, ACS_VLINE, ACS_HLINE);
     box(vm_memory_win, ACS_VLINE, ACS_HLINE);
-    auto lol = bind2nd(function<void(VirtualMachine *, GameTUI *)>(vm_looper), this);
-    looper = lol;
+    box(typing_win, ACS_VLINE, ACS_HLINE);
+
+    wrefresh(typing_win);
+    wrefresh(instruction_win);
+    wrefresh(vm_input_win);
+    wrefresh(vm_output_win);
+    wrefresh(vm_memory_win);
+    wrefresh(vm_program_win);
+    curs_set(1);
+    wmove(typing_win, 2, 2);
     handle_typing();
 }
 
 void GameTUI::initialize_typing_win()
 {
-    typing_field = new_field(LINES / 2 - 2, COLS / 2 - 2, 1, 1, 0, 0);
-
-
-    typing_form = new_form(&typing_field);
-    set_form_win(typing_form, typing_win);
-    post_form(typing_form);
     wrefresh(typing_win);
+
 }
 
 void GameTUI::fill_instructions()
@@ -85,15 +88,57 @@ void GameTUI::handle_typing()
 {
     /* char *(FIELD *field, int buffer_index); */
     int ch;
+    refresh();
+    auto cursor = typed_text.end();
     while ((ch = wgetch(typing_win)) != KEY_F(5))
     {
-        if (isprint(ch)) form_driver(typing_form, ch);
+        switch (ch)
+        {
+            case KEY_RIGHT:
+                if (cursor != typed_text.end())
+                {
+                    cursor++;
+                }
+                break;
+
+            case KEY_LEFT:
+                if (cursor != typed_text.begin())
+                {
+                    cursor--;
+                }
+                break;
+
+            case KEY_BACKSPACE:
+                if (cursor != typed_text.begin())
+                {
+                    typed_text.erase(cursor - 1, cursor);
+                    cursor--;
+                }
+                break;
+            default:
+                if (isprint(ch))
+                {
+                    //if (cursor - typed_text.begin() > 15) getch();
+
+                    //if (cursor - typed_text.begin() >= typed_text.capacity()) typed_text.resize(typed_text.capacity() * 2);
+                    if (cursor < typed_text.end()) typed_text.insert(cursor, (char) ch);
+                    else typed_text.append(string(1, (char) ch));
+                    //if (cursor - typed_text.begin() > 15) getch();
+                    cursor++;
+                }
+                break;
+
+        }
+        //getch();
+        mvwprintw(typing_win, 2, 2, typed_text.c_str());
+        wclrtoeol(typing_win);
+        wmove(typing_win, 2, (int) (2 + cursor - typed_text.begin()));
+
     }
-    field_content = (string) field_buffer(typing_field, 0);
     bool b = false;
     try
     {
-        b = game_sequence->get_current_level()->attempt(field_content);
+        b = game_sequence->get_current_level()->attempt(typed_text, looper);
     } catch (const VirtualMachineException &e)
     {
 
@@ -111,8 +156,8 @@ void GameTUI::handle_typing()
 void GameTUI::play()
 {
     initscr();
-    noecho();
     cbreak();
+    noecho();
     keypad(stdscr, TRUE);
     curs_set(0);
     box(stdscr, ACS_VLINE, ACS_HLINE);
@@ -127,12 +172,10 @@ void GameTUI::play()
 
 void vm_looper(VirtualMachine *vm, GameTUI *gi)
 {
+    mvwprintw(gi->vm_output_win, 2, 2, "looper here");
+    getch();
     mvwprintw(gi->vm_program_win, LINES / 8, 2, vm->program_to_string().c_str());
     mvwprintw(gi->vm_memory_win, LINES / 8, 8, vm->program_to_string().c_str());
 
 }
 
-void Looper::operator()(VirtualMachine *vm, GameTUI *gt)
-{
-    vm_looper(vm, gt);
-}
