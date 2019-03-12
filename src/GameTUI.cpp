@@ -35,7 +35,11 @@ void GameTUI::pick_level()
 {
 
     vector<string> possible_levels = game_sequence->get_available_levels();
-    game_sequence->select_level(possible_levels[menu(possible_levels, stdscr)]);
+    int height = (int) possible_levels.size() + 2;
+    WINDOW *level_picking = create_newwin(height, 25, 4, 4);
+    game_sequence->select_level(possible_levels[menu(possible_levels, level_picking)]);
+    destroy_win(level_picking);
+    refresh();
 }
 
 void GameTUI::play_level()
@@ -95,14 +99,14 @@ void GameTUI::handle_typing()
         switch (ch)
         {
             case KEY_RIGHT:
-                if (cursor != typed_text.end())
+                if (cursor < typed_text.end())
                 {
                     cursor++;
                 }
                 break;
 
             case KEY_LEFT:
-                if (cursor != typed_text.begin())
+                if (cursor > typed_text.begin())
                 {
                     cursor--;
                 }
@@ -115,6 +119,7 @@ void GameTUI::handle_typing()
                     cursor--;
                 }
                 break;
+
             default:
                 if (isprint(ch))
                 {

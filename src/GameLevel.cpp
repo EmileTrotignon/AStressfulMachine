@@ -48,9 +48,9 @@ bool GameLevel::attempt_one_input(int verbose_level, function<void(VirtualMachin
     return (output_attempt.str() == output_sol.str());
 }
 
-bool GameLevel::attempt(const string &program, function<void(VirtualMachine *)> looper, int verbose_level)
+bool GameLevel::attempt(const string &program_, function<void(VirtualMachine *)> looper, int verbose_level)
 {
-
+    program_attempt = program_;
 
     while(!input.eof())
     {
