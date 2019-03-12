@@ -16,7 +16,7 @@ string VirtualMachineException::vm_state() const
 {
     string r;
     if (vm->is_verbose()) r += "\n" + string((*vm));
-    else r += " This Happened at char #" + to_string(vm->get_current_operator()) + "\n";
+    else r += " This Happened at char #" + to_string(*(vm->get_current_operator())) + "\n";
     return r;
 }
 

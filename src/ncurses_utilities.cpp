@@ -84,12 +84,26 @@ void print_program_to_win(WINDOW *win, VirtualMachine *vm)
 {
     string program = vm->get_program();
     mvwprintw(win, 2, 2, "size : %d", program.size());
-    for (int i = 0; i < program.size(); i++)
+    for (auto i = program.begin(); i < program.end(); i++)
     {
-        if (i == vm->get_current_operator()) attron(COLOR_PAIR(1));
-        mvwaddch(win, LINES / 8, 2 + i, (const chtype) program[i]);
-        if (i == vm->get_current_operator()) attroff(COLOR_PAIR(1));
+        if (i == vm->get_current_operator()) wattron(win, COLOR_PAIR(1));
+        mvwaddch(win, LINES / 8, (int) (2 + i - program.begin()), (const chtype) *i);
+        if (i == vm->get_current_operator()) wattroff(win, COLOR_PAIR(1));
 
+    }
+    wrefresh(win);
+}
+
+void print_memory_to_win(WINDOW *win, VirtualMachine *vm)
+{
+    vector<int> memory = vm->get_memory();
+    wmove(win, LINES / 8, 2);
+    for (auto i = memory.begin(); i < memory.end(); i++)
+    {
+        if (i == vm->get_memory_ptr()) wattron(win, COLOR_PAIR(1));
+        wprintw(win, "%d", *i);
+        if (i == vm->get_memory_ptr()) wattroff(win, COLOR_PAIR(1));
+        wprintw(win, " ");
     }
     wrefresh(win);
 }

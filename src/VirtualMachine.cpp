@@ -7,8 +7,8 @@
 #include "VirtualMachine.h"
 #include "VirtualMachineProcedure.h"
 
-VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *out_, size_t size_, int *memory_) :
-        program(program_), size(size_), in(in_), out(out_), memory(memory_)
+VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *out_) :
+        program(program_), in(in_), out(out_)
 {
     status = STATUS_PAUSED;
 
@@ -16,16 +16,18 @@ VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *ou
     if (program[0] == SYNTAX_FILE_MARKER) program = file_to_string(program.substr(1));
 
     // If the program begins
+
+    current_operator = program.begin();
+    memory = vector<int>{0};
     if (isdigit(program[0]))
     {
         size_t t;
-        size = (size_t) extract_number_from_program(0, &t);
+        size_t size;
+        size = (size_t) extract_number_from_program(&t);
+        memory.resize(size, 0);
         program = program.substr(t);
     }
-
-    if (memory_ == nullptr) memory = new int[size]{0};
-    memory_ptr = memory;
-    current_operator = 0;
+    memory_ptr = memory.begin();
     procedure_call = nullptr;
     verbose = false;
     verbose_procedure = false;
@@ -42,16 +44,15 @@ VirtualMachine::VirtualMachine(const VirtualMachine &vm_)
 
 VirtualMachine::~VirtualMachine()
 {
-    delete[] memory;
     delete procedure_call;
 }
 
 void VirtualMachine::reset(istream *in_)
 {
     in = in_;
-    current_operator = 0;
-    memory_ptr = memory;
-    current_operator = 0;
+    current_operator = program.begin();
+    memory_ptr = memory.begin();
+    delete procedure_call;
     procedure_call = nullptr;
     verbose = false;
     verbose_procedure = false;
@@ -60,24 +61,26 @@ void VirtualMachine::reset(istream *in_)
 
 void VirtualMachine::initialize_anchor_map()
 {
-    while (current_operator < program.size())
+    while (current_operator < program.end())
     {
-        if (program[current_operator] == SYNTAX_OPEN_GOTO && program[current_operator + 1] != SYNTAX_GOTO_MARKER)
+        if (*current_operator == SYNTAX_OPEN_GOTO && *(current_operator + 1) != SYNTAX_GOTO_MARKER)
         {
             current_operator++;
             size_t t;
-            int anchor = extract_number_from_program(current_operator, &t);
+            int anchor = extract_number_from_program(&t);
             anchor_map[anchor] = (int) t + current_operator;
 
         }
         current_operator++;
     }
-    current_operator = 0;
+    current_operator = program.begin();
 }
 
 void VirtualMachine::ptr_incr()
 {
+    if (memory_ptr == memory.end() - 1) memory.push_back(0);
     memory_ptr++;
+
 }
 
 void VirtualMachine::ptr_dincr()
@@ -132,7 +135,7 @@ void VirtualMachine::val_in()
 void VirtualMachine::handle_bracket()
 {
     current_operator++;
-    switch (program[current_operator])
+    switch (*current_operator)
     {
         case SYNTAX_GOTO_MARKER:
             current_operator++;
@@ -146,7 +149,7 @@ void VirtualMachine::handle_bracket()
 
 void VirtualMachine::go_to_cond()
 {
-    if (program[current_operator] == SYNTAX_COND_EQUAL)
+    if (*current_operator == SYNTAX_COND_EQUAL)
     {
         if (*memory_ptr == 0)
         {
@@ -154,7 +157,7 @@ void VirtualMachine::go_to_cond()
             go_to();
             return;
         } else exit_goto();
-    } else if (program[current_operator] == SYNTAX_COND_GREATER)
+    } else if (*current_operator == SYNTAX_COND_GREATER)
     {
         if (*memory_ptr > 0)
         {
@@ -162,7 +165,7 @@ void VirtualMachine::go_to_cond()
             go_to();
             return;
         } else exit_goto();
-    } else if (program[current_operator] == SYNTAX_COND_DIFF)
+    } else if (*current_operator == SYNTAX_COND_DIFF)
     {
         if (*memory_ptr != 0)
         {
@@ -170,7 +173,7 @@ void VirtualMachine::go_to_cond()
             go_to();
             return;
         } else exit_goto();
-    } else if (program[current_operator] == SYNTAX_COND_LESSER)
+    } else if (*current_operator == SYNTAX_COND_LESSER)
     {
         if (*memory_ptr < 0)
         {
@@ -187,7 +190,7 @@ void VirtualMachine::go_to_cond()
 
 void VirtualMachine::go_to()
 {
-    int anchor = extract_number_from_program(current_operator); //stoi(program.substr(current_operator, string::npos));
+    int anchor = extract_number_from_program(); //stoi(program.substr(current_operator, string::npos));
     go_to_anchor(anchor);
 }
 
@@ -198,20 +201,26 @@ void VirtualMachine::go_to_anchor(int anchor)
 
 void VirtualMachine::exit_goto()
 {
-    int i = corresponding_par(program, SYNTAX_OPEN_GOTO, SYNTAX_CLOSE_GOTO, current_operator - 1);
-    if (i == -1) throw VM_UnmatchedBrackets(this);
+    try
+    {
+        string::iterator i = corresponding_par(program, SYNTAX_OPEN_GOTO, SYNTAX_CLOSE_GOTO, current_operator - 1);
+        current_operator = i;
 
-    current_operator = (unsigned int) i;
+    } catch (const invalid_argument &e)
+    {
+        throw VM_UnmatchedBrackets(this);
+    }
+
 }
 
 void VirtualMachine::ptr_jump()
 {
-    memory_ptr = memory + (*memory_ptr);
+    memory_ptr = memory.begin() + (*memory_ptr);
 }
 
 void VirtualMachine::ptr_reset()
 {
-    memory_ptr = memory;
+    memory_ptr = memory.begin();
 }
 
 void VirtualMachine::val_reset()
@@ -221,11 +230,12 @@ void VirtualMachine::val_reset()
 
 void VirtualMachine::do_n_time()
 {
-    string number = program.substr(current_operator + 1);
+    current_operator++;
+    string number = string(current_operator, program.end());
     int n;
     size_t t;
-    n = extract_number_from_program(current_operator + 1, &t); //stoi(number, &t);
-    current_operator = (unsigned int) t + 1;
+    n = extract_number_from_program(&t); //stoi(number, &t);
+    current_operator = program.begin() + t;
     for (int j = 0; j < n; j++)
     {
         do_one_iteration(false);
@@ -235,34 +245,37 @@ void VirtualMachine::do_n_time()
 
 void VirtualMachine::call_procedure()
 {
+    try
+    {
+        string::iterator i = corresponding_par(program, SYNTAX_OPEN_PROC, SYNTAX_CLOSE_PROC, current_operator);
 
-    int i = corresponding_par(program, SYNTAX_OPEN_PROC, SYNTAX_CLOSE_PROC, current_operator);
-    if (i == -1)
+        string procedure = string(current_operator + 1, i);
+        string code;
+        if (i - 1 == current_operator) // If there is no filename it mean a recursive call
+        {
+            code = program;
+        } else
+        {
+            current_operator = i;
+            if (procedure[0] == SYNTAX_FILE_MARKER)
+            {
+                code = file_to_string(procedure.substr(1, procedure.size() - 2));
+                if (status == STATUS_ERROR) return;
+            } else
+            {
+                code = procedure;
+            }
+        }
+        if (verbose_procedure) message(MESSAGE_STARTING_PROCEDURE MESSAGE_DEPTH);
+        procedure_call = new VirtualMachineProcedure(this, code, nullptr, nullptr, depth + 1);
+        if (verbose_procedure) procedure_call->be_verbose();
+        loop_procedure();
+    } catch (const invalid_argument &e)
     {
         throw VM_UnmatchedCurlyBrackets(this);
     }
 
-    string procedure = program.substr(current_operator + 1, (unsigned int) i - current_operator);
-    string code;
-    if (i - 1 == current_operator) // If there is no filename it mean a recursive call
-    {
-        code = program;
-    } else
-    {
-        current_operator = (unsigned int) i;
-        if (procedure[0] == SYNTAX_FILE_MARKER)
-        {
-            code = file_to_string(procedure.substr(1, procedure.size() - 2));
-            if (status == STATUS_ERROR) return;
-        } else
-        {
-            code = procedure;
-        }
-    }
-    if (verbose_procedure) message(MESSAGE_STARTING_PROCEDURE MESSAGE_DEPTH);
-    procedure_call = new VirtualMachineProcedure(this, code, nullptr, nullptr, depth + 1);
-    if (verbose_procedure) procedure_call->be_verbose();
-    loop_procedure();
+
 }
 
 string VirtualMachine::file_to_string(string filename)
@@ -301,7 +314,7 @@ void VirtualMachine::error_handler(const VirtualMachineException &error)
 void VirtualMachine::do_one_iteration(bool advance)
 {
     if (status != STATUS_RUNNING) return;
-    if (current_operator >= program.size())
+    if (current_operator >= program.end())
     {
         if (verbose) message(MESSAGE_FINISHED);
         status = STATUS_PAUSED;
@@ -309,7 +322,7 @@ void VirtualMachine::do_one_iteration(bool advance)
     }
     if (status != STATUS_RUNNING) return;
     //cout << program[current_operator] << endl;
-    switch (program[current_operator])
+    switch (*current_operator)
     {
         default:
             break;
@@ -384,11 +397,7 @@ void VirtualMachine::do_one_iteration(bool advance)
             terminate_procedure();
             break;
     }
-    if (memory_ptr >= memory + size)
-    {
-        throw VM_OutOfMemory(this);
-    }
-    if (memory_ptr < memory)
+    if (memory_ptr < memory.begin())
     {
         throw VM_NegativeMemoryAccess(this);
     }
@@ -430,12 +439,7 @@ void VirtualMachine::set_program(const string &program_)
     program = program_;
 }
 
-size_t VirtualMachine::get_size() const
-{
-    return size;
-}
-
-int VirtualMachine::get_current_operator() const
+string::iterator VirtualMachine::get_current_operator() const
 {
     return current_operator;
 }
@@ -445,12 +449,12 @@ int VirtualMachine::get_status() const
     return status;
 }
 
-int *VirtualMachine::get_memory() const
+vector<int> VirtualMachine::get_memory() const
 {
     return memory;
 }
 
-int *VirtualMachine::get_memory_ptr() const
+vector<int>::iterator VirtualMachine::get_memory_ptr() const
 {
     return memory_ptr;
 }
@@ -502,17 +506,17 @@ bool VirtualMachine::is_printing_errors() const
     return print_errors;
 }
 
-int VirtualMachine::extract_number_from_program(unsigned int start_address, size_t *t)
+int VirtualMachine::extract_number_from_program(size_t *t)
 {
     int r;
     try
     {
         if (t == nullptr)
         {
-            r = stoi(program.substr(start_address));
+            r = stoi(string(current_operator, program.end() - 1));
         } else
         {
-            r = stoi(program.substr(start_address), t);
+            r = stoi(string(current_operator, program.end() - 1), t);
         }
     } catch (invalid_argument const &e)
     {
@@ -534,7 +538,7 @@ string VirtualMachine::program_to_string() const
 {
     string s = "\n" + program;
     s += "\n";
-    for (int i = 0; i < current_operator; i++) s += " ";
+    for (auto i = program.begin(); i < current_operator; i++) s += " ";
     s += PRINTING_POINTER;
     return s;
 }
@@ -543,10 +547,10 @@ string VirtualMachine::memory_to_string() const
 {
     string s;
     int k = 0;
-    for (int j = 0; j < ((size < MAX_SIZE_MEMORY_PRINT) ? size : MAX_SIZE_MEMORY_PRINT); j++)
+    for (auto j = memory.begin(); j < memory.end(); j++)
     {
-        s += (to_string(memory[j]) + " ");
-        if (j == (int) (memory_ptr - memory)) k = (int) s.size() - 2;
+        s += (to_string(*j) + " ");
+        if (j == memory_ptr) k = (int) s.size() - 2;
     }
     s += "\n";
     for (int i = 0; i < k; i++) s += " ";

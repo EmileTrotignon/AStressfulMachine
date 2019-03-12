@@ -67,15 +67,14 @@ protected:
     istream *in;
     ostream *out;
     string program;
-    size_t size;
-    int *memory;
-    int *memory_ptr;
-    unsigned int current_operator;
+    vector<int> memory;
+    vector<int>::iterator memory_ptr;
+    string::iterator current_operator;
     int status; // 1 means running, 0 means stopped, and -1 mean an error_handler occurred.
     bool print_errors;
     bool verbose;
     bool verbose_procedure;
-    map<unsigned int, unsigned int> anchor_map;
+    map<unsigned int, string::iterator> anchor_map;
     int depth;
 
     VirtualMachineProcedure *procedure_call;
@@ -124,7 +123,7 @@ protected:
 
     virtual void error_handler(const VirtualMachineException &error);
 
-    int extract_number_from_program(unsigned int start_address, size_t *t=nullptr);
+    int extract_number_from_program(size_t *t = nullptr);
 
     virtual void message(const string &message);
 
@@ -139,8 +138,7 @@ public:
      * @param size The size of the memory. If the program starts with a number, this will be ignored
      * @param memory The memory to be used by the machine. Allocated automatically if not specified.
      */
-    VirtualMachine(const string &program, istream *in, ostream *out, size_t size = DEFAULT_MEMORY_SIZE,
-                   int *memory = nullptr);
+    VirtualMachine(const string &program, istream *in, ostream *out);
 
     VirtualMachine(const VirtualMachine &vm);
 
@@ -172,17 +170,12 @@ public:
      */
     void set_program(const string &program);
 
-    /**
-     * Getter for member size
-     * @return size
-     */
-    size_t get_size() const;
 
     /**
      * Getter for member current_operator
      * @return current_operator
      */
-    int get_current_operator() const;
+    string::iterator get_current_operator() const;
 
     /**
      * Getter for member status
@@ -194,13 +187,13 @@ public:
      * Getter for member memory
      * @return memory
      */
-    int *get_memory() const;
+    vector<int> get_memory() const;
 
     /**
      * Getter for member memory_ptr
      * @return memory_ptr
      */
-    int *get_memory_ptr() const;
+    vector<int>::iterator get_memory_ptr() const;
 
     /**
      * Makes the VM verbose.

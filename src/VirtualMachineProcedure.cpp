@@ -5,10 +5,8 @@
 #include "VirtualMachineProcedure.h"
 
 VirtualMachineProcedure::VirtualMachineProcedure(VirtualMachine *master_vm_, const string &program_, istream *in_,
-                                                 ostream *out_, int depth_,
-                                                 size_t size_,
-                                                 int *memory_) : VirtualMachine(program_, in_, out_, size_, memory_),
-                                                                 master_vm(master_vm_), depth(depth_)
+                                                 ostream *out_, int depth_) : VirtualMachine(program_, in_, out_),
+                                                                              master_vm(master_vm_), depth(depth_)
 {
     //Delegate constructor
     output = 0;

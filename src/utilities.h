@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int corresponding_par(const string &s, char open, char close, unsigned int par_address);
+string::iterator corresponding_par(const string &s, char open, char close, string::iterator par_address);
 
 int corresponding_par_backward(const string &s, char open, char close, unsigned int par_address);
 

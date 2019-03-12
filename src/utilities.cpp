@@ -12,18 +12,18 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-int corresponding_par(const string &s, char open, char close, unsigned int par_address)
+string::iterator corresponding_par(const string &s, char open, char close, string::iterator par_address)
 {
     int depth = 1;
     int j = 0;
-    while (depth != 0 && par_address + j < s.size())
+    while (depth != 0 && par_address + j < s.end())
     {
         j++;
-        if (s[par_address + j] == open) depth++;
-        if (s[par_address + j] == close) depth--;
+        if (*(par_address + j) == open) depth++;
+        if (*(par_address + j) == close) depth--;
     }
     if (depth == 0) return par_address + j;
-    else return -1;
+    else throw invalid_argument("unmatched parenthesis");
 }
 
 int corresponding_par_backward(const string &s, char open, char close, unsigned int par_address)

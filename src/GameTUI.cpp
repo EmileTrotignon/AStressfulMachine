@@ -93,29 +93,29 @@ void GameTUI::handle_typing()
     /* char *(FIELD *field, int buffer_index); */
     int ch;
     refresh();
-    auto cursor = typed_text.end();
+    unsigned long cursor = typed_text.size();
     while ((ch = wgetch(typing_win)) != KEY_F(5))
     {
         switch (ch)
         {
             case KEY_RIGHT:
-                if (cursor < typed_text.end())
+                if (cursor < typed_text.size())
                 {
                     cursor++;
                 }
                 break;
 
             case KEY_LEFT:
-                if (cursor > typed_text.begin())
+                if (cursor > 0)
                 {
                     cursor--;
                 }
                 break;
 
             case KEY_BACKSPACE:
-                if (cursor != typed_text.begin())
+                if (cursor != 0)
                 {
-                    typed_text.erase(cursor - 1, cursor);
+                    typed_text.erase(cursor - 1, 1);
                     cursor--;
                 }
                 break;
@@ -126,18 +126,18 @@ void GameTUI::handle_typing()
                     //if (cursor - typed_text.begin() > 15) getch();
 
                     //if (cursor - typed_text.begin() >= typed_text.capacity()) typed_text.resize(typed_text.capacity() * 2);
-                    if (cursor < typed_text.end()) typed_text.insert(cursor, (char) ch);
-                    else typed_text.append(string(1, (char) ch));
+                    typed_text.insert(typed_text.begin() + cursor, (char) ch);
+
                     //if (cursor - typed_text.begin() > 15) getch();
                     cursor++;
                 }
                 break;
 
         }
-        //getch();
-        mvwprintw(typing_win, 2, 2, typed_text.c_str());
         wclrtoeol(typing_win);
-        wmove(typing_win, 2, (int) (2 + cursor - typed_text.begin()));
+        mvwprintw(typing_win, 2, 2, typed_text.c_str());
+        wmove(typing_win, 2, (int) (2 + (cursor)));
+
 
     }
     bool b = false;
@@ -164,6 +164,12 @@ void GameTUI::play()
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
+    if (has_colors() == FALSE)
+    {
+        endwin();
+        cout << "Your terminal does not support color" << endl;
+        exit(1);
+    }
     start_color();
     init_pair(1, COLOR_WHITE, COLOR_GREEN);
     curs_set(0);
@@ -179,12 +185,8 @@ void GameTUI::play()
 
 void vm_looper(VirtualMachine *vm, GameTUI *gi)
 {
-    mvwprintw(gi->instruction_win, 10, 2, "looper here");
-    mvwprintw(gi->vm_memory_win, LINES / 8, 8, vm->program_to_string().c_str());
+    print_memory_to_win(gi->vm_memory_win, vm);
     print_program_to_win(gi->vm_program_win, vm);
-    wrefresh(gi->vm_memory_win);
-    wrefresh(gi->instruction_win);
     getch();
-
 }
 

@@ -44,9 +44,7 @@ public:
      * @param size_
      * @param memory_
      */
-    VirtualMachineProcedure(VirtualMachine *master_vm, const string &program_, istream *in_, ostream *out_, int depth_,
-                            size_t size_ = 30000,
-                            int *memory_ = nullptr);
+    VirtualMachineProcedure(VirtualMachine *master_vm, const string &program_, istream *in_, ostream *out_, int depth_);
 
     /**
      * This should be used to access the output of the procedure.
