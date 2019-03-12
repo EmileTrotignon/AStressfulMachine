@@ -6,6 +6,7 @@
 
 int menu(const vector<string> &options, WINDOW *win)
 {
+    keypad(win, TRUE);
     for (unsigned int i = 0; i < options.size(); i++)
     {
         if (i == options.size() - 1) wattron(win, A_STANDOUT);

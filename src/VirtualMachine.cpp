@@ -11,13 +11,18 @@ VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *ou
         program(program_), size(size_), in(in_), out(out_), memory(memory_)
 {
     status = STATUS_PAUSED;
+
+    // If program is a filename, open the file and use that as the program
     if (program[0] == SYNTAX_FILE_MARKER) program = file_to_string(program.substr(1));
+
+    // If the program begins
     if (isdigit(program[0]))
     {
         size_t t;
         size = (size_t) extract_number_from_program(0, &t);
         program = program.substr(t);
     }
+
     if (memory_ == nullptr) memory = new int[size]{0};
     memory_ptr = memory;
     current_operator = 0;
@@ -25,6 +30,8 @@ VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *ou
     verbose = false;
     verbose_procedure = false;
     depth = 0;
+
+    // Anchor map is used for the gotoes
     initialize_anchor_map();
 }
 
