@@ -79,3 +79,17 @@ void destroy_win(WINDOW *local_win)
     delwin(local_win);
 }
 
+void print_program_to_win(WINDOW *win, VirtualMachine *vm)
+{
+    string program = vm->get_program();
+    mvwprintw(win, 2, 2, "size : %d", program.size());
+    for (int i = 0; i < program.size(); i++)
+    {
+        if (i == vm->get_current_operator()) attron(COLOR_PAIR(1));
+        mvwaddch(win, LINES / 8, 2 + i, (const chtype) program[i]);
+        if (i == vm->get_current_operator()) attroff(COLOR_PAIR(1));
+
+    }
+    wrefresh(win);
+}
+

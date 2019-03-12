@@ -30,13 +30,25 @@ VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *ou
 
 VirtualMachine::VirtualMachine(const VirtualMachine &vm_)
 {
-
+    throw runtime_error("Copy constructor not implemented yet");
 }
 
 VirtualMachine::~VirtualMachine()
 {
     delete[] memory;
     delete procedure_call;
+}
+
+void VirtualMachine::reset(istream *in_)
+{
+    in = in_;
+    current_operator = 0;
+    memory_ptr = memory;
+    current_operator = 0;
+    procedure_call = nullptr;
+    verbose = false;
+    verbose_procedure = false;
+    depth = 0;
 }
 
 void VirtualMachine::initialize_anchor_map()
@@ -378,7 +390,7 @@ void VirtualMachine::do_one_iteration(bool advance)
 
 }
 
-void VirtualMachine::loop()
+void VirtualMachine::loop(function<void(VirtualMachine *)> looper)
 {
     if (verbose)
     {
@@ -388,6 +400,7 @@ void VirtualMachine::loop()
     status = STATUS_RUNNING;
     while (status == STATUS_RUNNING)
     {
+        if (looper != nullptr) looper(this);
         try
         {
             do_one_iteration();

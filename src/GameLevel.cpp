@@ -6,13 +6,13 @@
 
 using namespace std;
 
-GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_) : gamefiles_dir(gamefiles_dir_),
-                                                                                level_name(level_name_)
+GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, VirtualMachine *vm_attempt_)
+        : gamefiles_dir(gamefiles_dir_),
+          level_name(level_name_), vm_attempt(vm_attempt_)
 {
     solution = file_to_string(gamefiles_dir + "/levels/" + level_name + "/solution");
     instructions = file_to_string(gamefiles_dir + "/levels/" + level_name + "/instructions");
     input = ifstream(gamefiles_dir + "/levels/" + level_name + "/input");
-    vm_attempt = nullptr;
     vm_sol = nullptr;
     program_attempt = "";
 }
@@ -23,7 +23,7 @@ void GameLevel::reset_input()
     input.seekg(0);
 }
 
-bool GameLevel::attempt_one_input(int verbose_level, function<void(VirtualMachine *)> looper)
+bool GameLevel::attempt_one_input(int verbose_level, function<void(VirtualMachine *)> &looper)
 {
     ostringstream output_attempt;
     ostringstream output_sol;
@@ -33,6 +33,7 @@ bool GameLevel::attempt_one_input(int verbose_level, function<void(VirtualMachin
     istringstream whole_input(input_str);
 
     vm_attempt = new VirtualMachine(program_attempt, &whole_input, &output_attempt);
+    //else vm_attempt->reset(&whole_input);
     if (verbose_level >= 1) vm_attempt->be_verbose();
     if (verbose_level >= 2) vm_attempt->be_verbose_procedure();
 
@@ -42,7 +43,7 @@ bool GameLevel::attempt_one_input(int verbose_level, function<void(VirtualMachin
     whole_input.clear();
     whole_input.seekg(0);
 
-    vm_attempt->loop();
+    vm_attempt->loop(looper);
 
     return (output_attempt.str() == output_sol.str());
 }

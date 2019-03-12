@@ -159,6 +159,8 @@ void GameTUI::play()
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
+    start_color();
+    init_pair(1, COLOR_WHITE, COLOR_GREEN);
     curs_set(0);
     box(stdscr, ACS_VLINE, ACS_HLINE);
     mvaddstr(1, 5, "A Stressful Machine\n");
@@ -172,10 +174,12 @@ void GameTUI::play()
 
 void vm_looper(VirtualMachine *vm, GameTUI *gi)
 {
-    mvwprintw(gi->vm_output_win, 2, 2, "looper here");
-    getch();
-    mvwprintw(gi->vm_program_win, LINES / 8, 2, vm->program_to_string().c_str());
+    mvwprintw(gi->instruction_win, 10, 2, "looper here");
     mvwprintw(gi->vm_memory_win, LINES / 8, 8, vm->program_to_string().c_str());
+    print_program_to_win(gi->vm_program_win, vm);
+    wrefresh(gi->vm_memory_win);
+    wrefresh(gi->instruction_win);
+    getch();
 
 }
 

@@ -36,7 +36,7 @@ public:
      * Basic constructor that uses the level name to open the correct file.
      * @param level_name The name of the level (it is the directory, you cannot put anything here)
      */
-    explicit GameLevel(const string &gamefiles_dir, const string &level_name);
+    explicit GameLevel(const string &gamefiles_dir, const string &level_name, VirtualMachine *vm_attempt = nullptr);
 
     /**
      * Reset the input to it's just opened state.
@@ -60,7 +60,7 @@ public:
      * @param verbose_level
      * @return
      */
-    bool attempt_one_input(int verbose_level, function<void(VirtualMachine *)> looper);
+    bool attempt_one_input(int verbose_level, function<void(VirtualMachine *)> &looper);
 
     bool attempt(const string &program, function<void(VirtualMachine *)> looper = nullptr, int verbose_level = 0);
 

@@ -64,9 +64,9 @@ class VirtualMachine
 {
 protected:
 
-    string program;
     istream *in;
     ostream *out;
+    string program;
     size_t size;
     int *memory;
     int *memory_ptr;
@@ -130,6 +130,7 @@ protected:
 
 public:
 
+
     /**
      * Constructor that initializes all the fields
      * @param program_ The code to be executed
@@ -145,6 +146,8 @@ public:
 
     ~VirtualMachine();
 
+    void reset(istream *in);
+
     /**
      * This do one iteration of the execution
      * @param advance This bool is here to tell the VM if it should advance in the program or redo the same operator next time.
@@ -155,7 +158,7 @@ public:
      * This execute the program until it halts.
      * @param func A function to be executed at each step of the loop. Basic use would be to slow down execution.
      */
-    virtual void loop();
+    void loop(function<void(VirtualMachine *)> looper = nullptr);
 
     /**
      * Getter for member program

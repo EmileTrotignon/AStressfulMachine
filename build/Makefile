@@ -414,33 +414,6 @@ src/VirtualMachineProcedure.cpp.s:
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.s
 .PHONY : src/VirtualMachineProcedure.cpp.s
 
-src/VirtualMachineTUI.o: src/VirtualMachineTUI.cpp.o
-
-.PHONY : src/VirtualMachineTUI.o
-
-# target to build an object file
-src/VirtualMachineTUI.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/VirtualMachineTUI.cpp.o
-.PHONY : src/VirtualMachineTUI.cpp.o
-
-src/VirtualMachineTUI.i: src/VirtualMachineTUI.cpp.i
-
-.PHONY : src/VirtualMachineTUI.i
-
-# target to preprocess a source file
-src/VirtualMachineTUI.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/VirtualMachineTUI.cpp.i
-.PHONY : src/VirtualMachineTUI.cpp.i
-
-src/VirtualMachineTUI.s: src/VirtualMachineTUI.cpp.s
-
-.PHONY : src/VirtualMachineTUI.s
-
-# target to generate assembly for a file
-src/VirtualMachineTUI.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/VirtualMachineTUI.cpp.s
-.PHONY : src/VirtualMachineTUI.cpp.s
-
 src/a_stressful_machine_tui.o: src/a_stressful_machine_tui.cpp.o
 
 .PHONY : src/a_stressful_machine_tui.o
@@ -624,9 +597,6 @@ help:
 	@echo "... src/VirtualMachineProcedure.o"
 	@echo "... src/VirtualMachineProcedure.i"
 	@echo "... src/VirtualMachineProcedure.s"
-	@echo "... src/VirtualMachineTUI.o"
-	@echo "... src/VirtualMachineTUI.i"
-	@echo "... src/VirtualMachineTUI.s"
 	@echo "... src/a_stressful_machine_tui.o"
 	@echo "... src/a_stressful_machine_tui.i"
 	@echo "... src/a_stressful_machine_tui.s"
