@@ -162,7 +162,7 @@ public:
      * Getter for member program
      * @return the program
      */
-    string get_program() const;
+    const string &get_program() const;
 
     /**
      * Setter for the program
@@ -187,7 +187,7 @@ public:
      * Getter for member memory
      * @return memory
      */
-    vector<int> get_memory() const;
+    const vector<int> &get_memory() const;
 
     /**
      * Getter for member memory_ptr

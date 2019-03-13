@@ -3,6 +3,7 @@
 //
 
 #include "ncurses_utilities.h"
+#include "GameLevel.h"
 
 int menu(const vector<string> &options, WINDOW *win)
 {
@@ -82,29 +83,41 @@ void destroy_win(WINDOW *local_win)
 
 void print_program_to_win(WINDOW *win, VirtualMachine *vm)
 {
-    string program = vm->get_program();
-    mvwprintw(win, 2, 2, "size : %d", program.size());
+    const string &program = vm->get_program();
+
     for (auto i = program.begin(); i < program.end(); i++)
     {
-        if (i == vm->get_current_operator()) wattron(win, COLOR_PAIR(1));
+        if (i == vm->get_current_operator())
+        {
+            wattron(win, COLOR_PAIR(1));
+        }
         mvwaddch(win, LINES / 8, (int) (2 + i - program.begin()), (const chtype) *i);
-        if (i == vm->get_current_operator()) wattroff(win, COLOR_PAIR(1));
-
+        if (i == vm->get_current_operator())
+        {
+            wattroff(win, COLOR_PAIR(1));
+        }
     }
     wrefresh(win);
 }
 
 void print_memory_to_win(WINDOW *win, VirtualMachine *vm)
 {
-    vector<int> memory = vm->get_memory();
+    const vector<int> &memory = vm->get_memory();
     wmove(win, LINES / 8, 2);
     for (auto i = memory.begin(); i < memory.end(); i++)
     {
-        if (i == vm->get_memory_ptr()) wattron(win, COLOR_PAIR(1));
+        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) wattron(win, COLOR_PAIR(1));
         wprintw(win, "%d", *i);
-        if (i == vm->get_memory_ptr()) wattroff(win, COLOR_PAIR(1));
+        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) wattroff(win, COLOR_PAIR(1));
         wprintw(win, " ");
     }
     wrefresh(win);
+}
+
+void print_input_to_win(WINDOW *win, GameLevel *gl)
+{
+    string input_line_str;
+    getline(gl->input, input_line_str);
+    istringstream input_line(input_line_str);
 }
 

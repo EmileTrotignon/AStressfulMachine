@@ -23,79 +23,40 @@ void GameLevel::reset_input()
     input.seekg(0);
 }
 
-bool GameLevel::attempt_one_input(int verbose_level, function<void(VirtualMachine *)> &looper)
+bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_callback)
 {
     ostringstream output_attempt;
     ostringstream output_sol;
-    string input_str;
+    string input_line_str;
 
-    getline(input, input_str);
-    istringstream whole_input(input_str);
+    getline(input, input_line_str);
+    istringstream input_line(input_line_str);
 
-    vm_attempt = new VirtualMachine(program_attempt, &whole_input, &output_attempt);
-    //else vm_attempt->reset(&whole_input);
-    if (verbose_level >= 1) vm_attempt->be_verbose();
-    if (verbose_level >= 2) vm_attempt->be_verbose_procedure();
+    vm_attempt = new VirtualMachine(program_attempt, &input_line, &output_attempt);
 
-    vm_sol = new VirtualMachine(solution, &whole_input, &output_sol);
+    vm_sol = new VirtualMachine(solution, &input_line, &output_sol);
     vm_sol->loop();
 
-    whole_input.clear();
-    whole_input.seekg(0);
+    input_line.clear();
+    input_line.seekg(0);
 
-    vm_attempt->loop(looper);
+    vm_attempt->loop(vm_callback);
 
     return (output_attempt.str() == output_sol.str());
 }
 
-bool GameLevel::attempt(const string &program_, function<void(VirtualMachine *)> looper, int verbose_level)
+bool GameLevel::attempt(const string &program_, const function<void(VirtualMachine *)> &vm_callback,
+                        const function<void(GameLevel *)> &gl_callback)
 {
     program_attempt = program_;
 
     while(!input.eof())
     {
-        if (!attempt_one_input(verbose_level, looper)) return false;
+        if (gl_callback != nullptr) gl_callback(this);
+        if (!attempt_one_input(vm_callback)) return false;
     }
     reset_input();
     return true;
-}
-
-void GameLevel::play_sequence()
-{
-    cout << "What do you want to do ?"
-            "\nAttempt to solve [A]; Attempt in verbose mode [V]; Quit [Q]" << endl;
-    string code;
-    cin >> code;
-    if (code == "A" || code == "a" || code == "V" || code == "v")
-    {
-        string program;
-        cin >> program;
-        bool success;
-        if (code == "V" || code == "v") success = attempt(program, nullptr, 1);
-        else success = attempt(program);
-        if (success)
-        {
-            cout << "Great job" << endl;
-        } else
-        {
-            cout << "Oh no you were defeated :(" << endl;
-            play_sequence();
-        }
-    } else if (code == "Q" || code == "q")
-    {
-        cout << "See you later :)" << endl;
-    } else
-    {
-        cout << "Please input one of the code" << endl;
-        play_sequence();
-    }
-    try
-    {
-        int *t = new int[1000000000];
-    } catch (const exception &e)
-    {
-        cout << e.what();
-    }
 }
 
 string GameLevel::get_instructions()
@@ -103,9 +64,7 @@ string GameLevel::get_instructions()
     return instructions;
 }
 
-void GameLevel::tui_play()
+const ifstream &GameLevel::get_input()
 {
-    cout << instructions << endl;
-    play_sequence();
-
+    return input;
 }

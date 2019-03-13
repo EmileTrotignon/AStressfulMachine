@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named interpreter
+
+# Build rule for target.
+interpreter: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 interpreter
+.PHONY : interpreter
+
+# fast build rule for target.
+interpreter/fast:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/build
+.PHONY : interpreter/fast
+
+#=============================================================================
 # Target rules for targets named a_stressful_machine_tui
 
 # Build rule for target.
@@ -124,6 +137,32 @@ a_stressful_machine_tui/fast:
 .PHONY : a_stressful_machine_tui/fast
 
 #=============================================================================
+# Target rules for targets named test
+
+# Build rule for target.
+test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test
+.PHONY : test
+
+# fast build rule for target.
+test/fast:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
+.PHONY : test/fast
+
+#=============================================================================
+# Target rules for targets named scratch
+
+# Build rule for target.
+scratch: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 scratch
+.PHONY : scratch
+
+# fast build rule for target.
+scratch/fast:
+	$(MAKE) -f CMakeFiles/scratch.dir/build.make CMakeFiles/scratch.dir/build
+.PHONY : scratch/fast
+
+#=============================================================================
 # Target rules for targets named a_stressful_machine_lib
 
 # Build rule for target.
@@ -135,19 +174,6 @@ a_stressful_machine_lib: cmake_check_build_system
 a_stressful_machine_lib/fast:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/build
 .PHONY : a_stressful_machine_lib/fast
-
-#=============================================================================
-# Target rules for targets named interpreter
-
-# Build rule for target.
-interpreter: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 interpreter
-.PHONY : interpreter
-
-# fast build rule for target.
-interpreter/fast:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/build
-.PHONY : interpreter/fast
 
 src/Game.o: src/Game.cpp.o
 
@@ -317,8 +343,8 @@ src/VirtualMachine.o: src/VirtualMachine.cpp.o
 
 # target to build an object file
 src/VirtualMachine.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.o
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.o
 .PHONY : src/VirtualMachine.cpp.o
 
 src/VirtualMachine.i: src/VirtualMachine.cpp.i
@@ -327,8 +353,8 @@ src/VirtualMachine.i: src/VirtualMachine.cpp.i
 
 # target to preprocess a source file
 src/VirtualMachine.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.i
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.i
 .PHONY : src/VirtualMachine.cpp.i
 
 src/VirtualMachine.s: src/VirtualMachine.cpp.s
@@ -337,8 +363,8 @@ src/VirtualMachine.s: src/VirtualMachine.cpp.s
 
 # target to generate assembly for a file
 src/VirtualMachine.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.s
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.s
 .PHONY : src/VirtualMachine.cpp.s
 
 src/VirtualMachineException.o: src/VirtualMachineException.cpp.o
@@ -347,8 +373,8 @@ src/VirtualMachineException.o: src/VirtualMachineException.cpp.o
 
 # target to build an object file
 src/VirtualMachineException.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.o
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.o
 .PHONY : src/VirtualMachineException.cpp.o
 
 src/VirtualMachineException.i: src/VirtualMachineException.cpp.i
@@ -357,8 +383,8 @@ src/VirtualMachineException.i: src/VirtualMachineException.cpp.i
 
 # target to preprocess a source file
 src/VirtualMachineException.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.i
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.i
 .PHONY : src/VirtualMachineException.cpp.i
 
 src/VirtualMachineException.s: src/VirtualMachineException.cpp.s
@@ -367,8 +393,8 @@ src/VirtualMachineException.s: src/VirtualMachineException.cpp.s
 
 # target to generate assembly for a file
 src/VirtualMachineException.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.s
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.s
 .PHONY : src/VirtualMachineException.cpp.s
 
 src/VirtualMachineProcedure.o: src/VirtualMachineProcedure.cpp.o
@@ -377,8 +403,8 @@ src/VirtualMachineProcedure.o: src/VirtualMachineProcedure.cpp.o
 
 # target to build an object file
 src/VirtualMachineProcedure.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.o
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.o
 .PHONY : src/VirtualMachineProcedure.cpp.o
 
 src/VirtualMachineProcedure.i: src/VirtualMachineProcedure.cpp.i
@@ -387,8 +413,8 @@ src/VirtualMachineProcedure.i: src/VirtualMachineProcedure.cpp.i
 
 # target to preprocess a source file
 src/VirtualMachineProcedure.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.i
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.i
 .PHONY : src/VirtualMachineProcedure.cpp.i
 
 src/VirtualMachineProcedure.s: src/VirtualMachineProcedure.cpp.s
@@ -397,8 +423,8 @@ src/VirtualMachineProcedure.s: src/VirtualMachineProcedure.cpp.s
 
 # target to generate assembly for a file
 src/VirtualMachineProcedure.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.s
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.s
 .PHONY : src/VirtualMachineProcedure.cpp.s
 
 src/a_stressful_machine_tui.o: src/a_stressful_machine_tui.cpp.o
@@ -458,6 +484,33 @@ src/interpreter.cpp.s:
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/interpreter.cpp.s
 .PHONY : src/interpreter.cpp.s
 
+src/ncurses_scratch.o: src/ncurses_scratch.cpp.o
+
+.PHONY : src/ncurses_scratch.o
+
+# target to build an object file
+src/ncurses_scratch.cpp.o:
+	$(MAKE) -f CMakeFiles/scratch.dir/build.make CMakeFiles/scratch.dir/src/ncurses_scratch.cpp.o
+.PHONY : src/ncurses_scratch.cpp.o
+
+src/ncurses_scratch.i: src/ncurses_scratch.cpp.i
+
+.PHONY : src/ncurses_scratch.i
+
+# target to preprocess a source file
+src/ncurses_scratch.cpp.i:
+	$(MAKE) -f CMakeFiles/scratch.dir/build.make CMakeFiles/scratch.dir/src/ncurses_scratch.cpp.i
+.PHONY : src/ncurses_scratch.cpp.i
+
+src/ncurses_scratch.s: src/ncurses_scratch.cpp.s
+
+.PHONY : src/ncurses_scratch.s
+
+# target to generate assembly for a file
+src/ncurses_scratch.cpp.s:
+	$(MAKE) -f CMakeFiles/scratch.dir/build.make CMakeFiles/scratch.dir/src/ncurses_scratch.cpp.s
+.PHONY : src/ncurses_scratch.cpp.s
+
 src/ncurses_utilities.o: src/ncurses_utilities.cpp.o
 
 .PHONY : src/ncurses_utilities.o
@@ -465,6 +518,7 @@ src/ncurses_utilities.o: src/ncurses_utilities.cpp.o
 # target to build an object file
 src/ncurses_utilities.cpp.o:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.o
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.o
 .PHONY : src/ncurses_utilities.cpp.o
 
 src/ncurses_utilities.i: src/ncurses_utilities.cpp.i
@@ -474,6 +528,7 @@ src/ncurses_utilities.i: src/ncurses_utilities.cpp.i
 # target to preprocess a source file
 src/ncurses_utilities.cpp.i:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.i
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.i
 .PHONY : src/ncurses_utilities.cpp.i
 
 src/ncurses_utilities.s: src/ncurses_utilities.cpp.s
@@ -483,7 +538,35 @@ src/ncurses_utilities.s: src/ncurses_utilities.cpp.s
 # target to generate assembly for a file
 src/ncurses_utilities.cpp.s:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.s
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.s
 .PHONY : src/ncurses_utilities.cpp.s
+
+src/test.o: src/test.cpp.o
+
+.PHONY : src/test.o
+
+# target to build an object file
+src/test.cpp.o:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/test.cpp.o
+.PHONY : src/test.cpp.o
+
+src/test.i: src/test.cpp.i
+
+.PHONY : src/test.i
+
+# target to preprocess a source file
+src/test.cpp.i:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/test.cpp.i
+.PHONY : src/test.cpp.i
+
+src/test.s: src/test.cpp.s
+
+.PHONY : src/test.s
+
+# target to generate assembly for a file
+src/test.cpp.s:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/test.cpp.s
+.PHONY : src/test.cpp.s
 
 src/utilities.o: src/utilities.cpp.o
 
@@ -491,8 +574,8 @@ src/utilities.o: src/utilities.cpp.o
 
 # target to build an object file
 src/utilities.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.o
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.o
 .PHONY : src/utilities.cpp.o
 
 src/utilities.i: src/utilities.cpp.i
@@ -501,8 +584,8 @@ src/utilities.i: src/utilities.cpp.i
 
 # target to preprocess a source file
 src/utilities.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.i
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.i
 .PHONY : src/utilities.cpp.i
 
 src/utilities.s: src/utilities.cpp.s
@@ -511,8 +594,8 @@ src/utilities.s: src/utilities.cpp.s
 
 # target to generate assembly for a file
 src/utilities.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.s
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.s
 .PHONY : src/utilities.cpp.s
 
 # Help Target
@@ -522,10 +605,12 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
-	@echo "... a_stressful_machine_tui"
-	@echo "... a_stressful_machine_lib"
 	@echo "... interpreter"
+	@echo "... a_stressful_machine_tui"
+	@echo "... test"
+	@echo "... scratch"
+	@echo "... a_stressful_machine_lib"
+	@echo "... edit_cache"
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
@@ -559,9 +644,15 @@ help:
 	@echo "... src/interpreter.o"
 	@echo "... src/interpreter.i"
 	@echo "... src/interpreter.s"
+	@echo "... src/ncurses_scratch.o"
+	@echo "... src/ncurses_scratch.i"
+	@echo "... src/ncurses_scratch.s"
 	@echo "... src/ncurses_utilities.o"
 	@echo "... src/ncurses_utilities.i"
 	@echo "... src/ncurses_utilities.s"
+	@echo "... src/test.o"
+	@echo "... src/test.i"
+	@echo "... src/test.s"
 	@echo "... src/utilities.o"
 	@echo "... src/utilities.i"
 	@echo "... src/utilities.s"

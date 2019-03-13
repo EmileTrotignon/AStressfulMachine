@@ -14,8 +14,7 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            vm_input_win(nullptr),
                                                                            vm_output_win(nullptr),
                                                                            vm_memory_win(nullptr),
-                                                                           vm_program_win(nullptr),
-                                                                           looper(nullptr)
+                                                                           vm_program_win(nullptr)
 {
     typed_text = "";
 }
@@ -57,7 +56,6 @@ void GameTUI::play_level()
     vm_program_win = create_newwin(LINES / 4, COLS / 2, LINES / 2, COLS / 2);
     vm_memory_win = create_newwin(LINES / 4, COLS / 2, LINES / 2 + LINES / 4, COLS / 2);
 
-    looper = bind2nd(function<void(VirtualMachine *, GameTUI *)>(vm_looper), this);
 
     box(instruction_win, ACS_VLINE, ACS_HLINE);
     box(vm_input_win, ACS_VLINE, ACS_HLINE);
@@ -143,7 +141,8 @@ void GameTUI::handle_typing()
     bool b = false;
     try
     {
-        b = game_sequence->get_current_level()->attempt(typed_text, looper);
+        vm_callback = bind2nd(function<void(VirtualMachine *, GameTUI *)>(raw_vm_callback), this);
+        b = game_sequence->get_current_level()->attempt(typed_text, vm_callback);
     } catch (const VirtualMachineException &e)
     {
 
@@ -183,7 +182,7 @@ void GameTUI::play()
     endwin();
 }
 
-void vm_looper(VirtualMachine *vm, GameTUI *gi)
+void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
 {
     print_memory_to_win(gi->vm_memory_win, vm);
     print_program_to_win(gi->vm_program_win, vm);

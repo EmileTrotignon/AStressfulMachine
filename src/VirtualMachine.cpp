@@ -78,7 +78,11 @@ void VirtualMachine::initialize_anchor_map()
 
 void VirtualMachine::ptr_incr()
 {
-    if (memory_ptr == memory.end() - 1) memory.push_back(0);
+    if (memory_ptr == memory.end() - 1)
+    {
+        memory.push_back(0);
+        memory_ptr = memory.end() - 2;
+    }
     memory_ptr++;
 
 }
@@ -267,7 +271,7 @@ void VirtualMachine::call_procedure()
             }
         }
         if (verbose_procedure) message(MESSAGE_STARTING_PROCEDURE MESSAGE_DEPTH);
-        procedure_call = new VirtualMachineProcedure(this, code, nullptr, nullptr, depth + 1);
+        procedure_call = new VirtualMachineProcedure(this, code, depth + 1);
         if (verbose_procedure) procedure_call->be_verbose();
         loop_procedure();
     } catch (const invalid_argument &e)
@@ -429,7 +433,7 @@ void VirtualMachine::loop(function<void(VirtualMachine *)> looper)
     }
 }
 
-string VirtualMachine::get_program() const
+const string &VirtualMachine::get_program() const
 {
     return program;
 }
@@ -449,7 +453,7 @@ int VirtualMachine::get_status() const
     return status;
 }
 
-vector<int> VirtualMachine::get_memory() const
+const vector<int> &VirtualMachine::get_memory() const
 {
     return memory;
 }

@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include "VirtualMachine.h"
+#include "GameLevel.h"
 
 using namespace std;
 
@@ -21,5 +22,7 @@ void destroy_win(WINDOW *local_win);
 void print_program_to_win(WINDOW *win, VirtualMachine *vm);
 
 void print_memory_to_win(WINDOW *win, VirtualMachine *vm);
+
+void print_input_to_win(WINDOW *win, GameLevel *gl);
 
 #endif //A_STRESSFUL_MACHINE_NCURSES_UTILITIES_H

@@ -15,6 +15,9 @@
 /**
  * This class enable the player to complete a level.
  */
+
+class WINDOW;
+
 class GameLevel
 {
 private:
@@ -23,15 +26,15 @@ private:
     string solution;
     string instructions;
     string program_attempt;
-    ifstream input;
 
     VirtualMachine *vm_sol;
     VirtualMachine *vm_attempt;
 
 
-    void play_sequence();
-
 public:
+
+    ifstream input;
+
     /**
      * Basic constructor that uses the level name to open the correct file.
      * @param level_name The name of the level (it is the directory, you cannot put anything here)
@@ -44,29 +47,22 @@ public:
     void reset_input();
 
     /**
-     * Set up the level for a step by step attempt to solve.
-     * @param program The program of the attempt.
-     */
-    void initialise_step_by_step_attempt(const string &program);
-
-    /**
-     * Do one step of the step by step attempt.
-     * One step is one iteration of the VM.
-     */
-    void do_one_step();
-
-    /**
      * Check if the line of the input results in the same output for the attempt and the solution.
      * @param verbose_level
      * @return
      */
-    bool attempt_one_input(int verbose_level, function<void(VirtualMachine *)> &looper);
+    bool attempt_one_input(const function<void(VirtualMachine *)> &vm_looper);
 
-    bool attempt(const string &program, function<void(VirtualMachine *)> looper = nullptr, int verbose_level = 0);
+    bool attempt(const string &program, const function<void(VirtualMachine *)> &vm_callback = nullptr,
+                 const function<void(GameLevel *)> &gm_callback = nullptr);
 
     string get_instructions();
 
-    void tui_play();
+    const ifstream &get_input();
+
+    friend void print_input_to_win(WINDOW *win, GameLevel *gl);
+
+
 };
 
 
