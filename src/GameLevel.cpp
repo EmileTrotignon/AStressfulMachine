@@ -17,6 +17,13 @@ GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, Vi
     program_attempt = "";
 }
 
+GameLevel::~GameLevel()
+{
+    delete vm_attempt;
+    delete vm_sol;
+    input.close();
+}
+
 void GameLevel::reset_input(streamoff pos)
 {
     input.clear();
@@ -50,7 +57,7 @@ bool GameLevel::attempt(const string &program_, const function<void(VirtualMachi
 {
     program_attempt = program_;
 
-    while(!input.eof())
+    while (!input.eof())
     {
         if (gl_callback != nullptr) gl_callback(this);
         if (!attempt_one_input(vm_callback)) return false;

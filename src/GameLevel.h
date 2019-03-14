@@ -15,7 +15,7 @@
 
 
 /**
- * This class enable the player to complete a level.
+ * This class enables the player to complete a level.
  */
 
 class GameLevel
@@ -39,7 +39,9 @@ public:
      * Basic constructor that uses the level name to open the correct file.
      * @param level_name The name of the level (it is the directory, you cannot put anything here)
      */
-    explicit GameLevel(const string &gamefiles_dir, const string &level_name, VirtualMachine *vm_attempt = nullptr);
+    GameLevel(const string &gamefiles_dir, const string &level_name, VirtualMachine *vm_attempt = nullptr);
+
+    ~GameLevel();
 
     /**
      * Reset the input to it's just opened state.
