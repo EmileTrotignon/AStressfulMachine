@@ -4,7 +4,6 @@
 
 #include <form.h>
 #include <assert.h>
-#include <zconf.h>
 
 #include "GameTUI.h"
 #include "ncurses_utilities.h"
@@ -192,7 +191,6 @@ void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
 {
     gi->vm_memory_win->print_memory_to_win(vm);
     gi->vm_program_win->print_program_to_win(vm);
-    usleep(200);
     getch();
 }
 
