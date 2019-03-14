@@ -163,17 +163,17 @@ a_stressful_machine_tui/fast:
 .PHONY : a_stressful_machine_tui/fast
 
 #=============================================================================
-# Target rules for targets named test
+# Target rules for targets named unit_test
 
 # Build rule for target.
-test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test
-.PHONY : test
+unit_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 unit_test
+.PHONY : unit_test
 
 # fast build rule for target.
-test/fast:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
-.PHONY : test/fast
+unit_test/fast:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/build
+.PHONY : unit_test/fast
 
 src/Game.o: src/Game.cpp.o
 
@@ -545,7 +545,7 @@ src/ncurses_utilities.o: src/ncurses_utilities.cpp.o
 # target to build an object file
 src/ncurses_utilities.cpp.o:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.o
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.o
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/ncurses_utilities.cpp.o
 .PHONY : src/ncurses_utilities.cpp.o
 
 src/ncurses_utilities.i: src/ncurses_utilities.cpp.i
@@ -555,7 +555,7 @@ src/ncurses_utilities.i: src/ncurses_utilities.cpp.i
 # target to preprocess a source file
 src/ncurses_utilities.cpp.i:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.i
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.i
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/ncurses_utilities.cpp.i
 .PHONY : src/ncurses_utilities.cpp.i
 
 src/ncurses_utilities.s: src/ncurses_utilities.cpp.s
@@ -565,7 +565,7 @@ src/ncurses_utilities.s: src/ncurses_utilities.cpp.s
 # target to generate assembly for a file
 src/ncurses_utilities.cpp.s:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.s
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.s
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/ncurses_utilities.cpp.s
 .PHONY : src/ncurses_utilities.cpp.s
 
 src/test.o: src/test.cpp.o
@@ -574,7 +574,7 @@ src/test.o: src/test.cpp.o
 
 # target to build an object file
 src/test.cpp.o:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/test.cpp.o
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/test.cpp.o
 .PHONY : src/test.cpp.o
 
 src/test.i: src/test.cpp.i
@@ -583,7 +583,7 @@ src/test.i: src/test.cpp.i
 
 # target to preprocess a source file
 src/test.cpp.i:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/test.cpp.i
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/test.cpp.i
 .PHONY : src/test.cpp.i
 
 src/test.s: src/test.cpp.s
@@ -592,7 +592,7 @@ src/test.s: src/test.cpp.s
 
 # target to generate assembly for a file
 src/test.cpp.s:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/test.cpp.s
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/test.cpp.s
 .PHONY : src/test.cpp.s
 
 src/utilities.o: src/utilities.cpp.o
@@ -637,7 +637,7 @@ help:
 	@echo "... a_stressful_machine_lib"
 	@echo "... interpreter"
 	@echo "... a_stressful_machine_tui"
-	@echo "... test"
+	@echo "... unit_test"
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"

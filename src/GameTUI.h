@@ -38,6 +38,8 @@ private:
 
     void handle_typing();
 
+    void handle_success();
+
 public:
 
     GameTUI(const string &saves_dir, const string &gamefiles_dir);

@@ -148,10 +148,28 @@ void GameTUI::handle_typing()
     }
     if (b)
     {
-        pick_level();
+        handle_success();
     } else
     {
         handle_typing();
+    }
+
+}
+
+void GameTUI::handle_success()
+{
+    vector<string> options{"Retry this level", "Play another level", "Quit the game"};
+    int h = 25;
+    int w = (int) options.size();
+    auto menu = new NcursesMenu(options, h, w, COLS / 2 - h, LINES / 2 - w);
+    switch (menu->get_selected_item())
+    {
+        default:
+            break;
+        case 0:
+            play_level();
+        case 1:
+            pick_level();
     }
 
 }

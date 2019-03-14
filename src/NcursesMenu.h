@@ -7,7 +7,7 @@
 
 #include "NcursesWindow.h"
 
-class NcursesMenu : public NcursesWindow
+class NcursesMenu : private NcursesWindow
 {
 private:
     const vector<string> options;
