@@ -113,7 +113,14 @@ void GameTUI::handle_typing()
                 }
                 break;
 
-            default:
+            case KEY_DC:
+                if (cursor != typed_text.size())
+                {
+                    typed_text.erase(cursor, 1);
+                }
+                break;
+
+                    default:
                 if (isprint(ch))
                 {
                     //if (cursor - typed_text.begin() > 15) getch();
