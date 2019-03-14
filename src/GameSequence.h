@@ -18,6 +18,12 @@ private:
     GameLevel *current_level;
     string gamefiles_dir;
 
+    vector<bool> attempted;
+    vector<bool> succeeded_levels;
+    vector<vector<string>> attempts;
+    vector<vector<float>> average_speed;
+    vector<vector<float>> average_memory_use;
+
     void load_from_save();
 
 public:
