@@ -44,12 +44,12 @@ target_link_libraries(a_stressful_machine_tui libstdc++fs.a)
 target_link_libraries(a_stressful_machine_tui ${CURSES_LIBRARIES})
 target_link_libraries(a_stressful_machine_tui ncurses_wrapper)
 
-add_executable(test
+add_executable(unit_test
 
         src/ncurses_utilities.cpp src/ncurses_utilities.h
         src/test.cpp)
 
-target_link_libraries(test ${CURSES_LIBRARIES})
+target_link_libraries(unit_test ${CURSES_LIBRARIES})
 
 #add_executable(scratch
 #        src/ncurses_scratch.cpp)
