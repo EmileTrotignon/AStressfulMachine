@@ -11,7 +11,7 @@
 #include <functional>
 
 #include "Game.h"
-#include "NcursesWindow.h";
+#include "NcursesWindow.h"
 
 class GameTUI : public Game
 {

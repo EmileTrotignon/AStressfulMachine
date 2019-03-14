@@ -111,30 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test
+# Target rules for targets named ncurses_wrapper
 
 # Build rule for target.
-test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test
-.PHONY : test
+ncurses_wrapper: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ncurses_wrapper
+.PHONY : ncurses_wrapper
 
 # fast build rule for target.
-test/fast:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
-.PHONY : test/fast
-
-#=============================================================================
-# Target rules for targets named a_stressful_machine_tui
-
-# Build rule for target.
-a_stressful_machine_tui: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 a_stressful_machine_tui
-.PHONY : a_stressful_machine_tui
-
-# fast build rule for target.
-a_stressful_machine_tui/fast:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/build
-.PHONY : a_stressful_machine_tui/fast
+ncurses_wrapper/fast:
+	$(MAKE) -f CMakeFiles/ncurses_wrapper.dir/build.make CMakeFiles/ncurses_wrapper.dir/build
+.PHONY : ncurses_wrapper/fast
 
 #=============================================================================
 # Target rules for targets named a_stressful_machine_lib
@@ -161,6 +148,32 @@ interpreter: cmake_check_build_system
 interpreter/fast:
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/build
 .PHONY : interpreter/fast
+
+#=============================================================================
+# Target rules for targets named a_stressful_machine_tui
+
+# Build rule for target.
+a_stressful_machine_tui: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 a_stressful_machine_tui
+.PHONY : a_stressful_machine_tui
+
+# fast build rule for target.
+a_stressful_machine_tui/fast:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/build
+.PHONY : a_stressful_machine_tui/fast
+
+#=============================================================================
+# Target rules for targets named test
+
+# Build rule for target.
+test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test
+.PHONY : test
+
+# fast build rule for target.
+test/fast:
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
+.PHONY : test/fast
 
 src/Game.o: src/Game.cpp.o
 
@@ -297,6 +310,60 @@ src/GameTUI.cpp.s:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/GameTUI.cpp.s
 .PHONY : src/GameTUI.cpp.s
 
+src/NcursesMenu.o: src/NcursesMenu.cpp.o
+
+.PHONY : src/NcursesMenu.o
+
+# target to build an object file
+src/NcursesMenu.cpp.o:
+	$(MAKE) -f CMakeFiles/ncurses_wrapper.dir/build.make CMakeFiles/ncurses_wrapper.dir/src/NcursesMenu.cpp.o
+.PHONY : src/NcursesMenu.cpp.o
+
+src/NcursesMenu.i: src/NcursesMenu.cpp.i
+
+.PHONY : src/NcursesMenu.i
+
+# target to preprocess a source file
+src/NcursesMenu.cpp.i:
+	$(MAKE) -f CMakeFiles/ncurses_wrapper.dir/build.make CMakeFiles/ncurses_wrapper.dir/src/NcursesMenu.cpp.i
+.PHONY : src/NcursesMenu.cpp.i
+
+src/NcursesMenu.s: src/NcursesMenu.cpp.s
+
+.PHONY : src/NcursesMenu.s
+
+# target to generate assembly for a file
+src/NcursesMenu.cpp.s:
+	$(MAKE) -f CMakeFiles/ncurses_wrapper.dir/build.make CMakeFiles/ncurses_wrapper.dir/src/NcursesMenu.cpp.s
+.PHONY : src/NcursesMenu.cpp.s
+
+src/NcursesWindow.o: src/NcursesWindow.cpp.o
+
+.PHONY : src/NcursesWindow.o
+
+# target to build an object file
+src/NcursesWindow.cpp.o:
+	$(MAKE) -f CMakeFiles/ncurses_wrapper.dir/build.make CMakeFiles/ncurses_wrapper.dir/src/NcursesWindow.cpp.o
+.PHONY : src/NcursesWindow.cpp.o
+
+src/NcursesWindow.i: src/NcursesWindow.cpp.i
+
+.PHONY : src/NcursesWindow.i
+
+# target to preprocess a source file
+src/NcursesWindow.cpp.i:
+	$(MAKE) -f CMakeFiles/ncurses_wrapper.dir/build.make CMakeFiles/ncurses_wrapper.dir/src/NcursesWindow.cpp.i
+.PHONY : src/NcursesWindow.cpp.i
+
+src/NcursesWindow.s: src/NcursesWindow.cpp.s
+
+.PHONY : src/NcursesWindow.s
+
+# target to generate assembly for a file
+src/NcursesWindow.cpp.s:
+	$(MAKE) -f CMakeFiles/ncurses_wrapper.dir/build.make CMakeFiles/ncurses_wrapper.dir/src/NcursesWindow.cpp.s
+.PHONY : src/NcursesWindow.cpp.s
+
 src/SavePicker.o: src/SavePicker.cpp.o
 
 .PHONY : src/SavePicker.o
@@ -420,8 +487,8 @@ src/a_stressful_machine_tui.o: src/a_stressful_machine_tui.cpp.o
 
 # target to build an object file
 src/a_stressful_machine_tui.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.o
 	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/a_stressful_machine_tui.cpp.o
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.o
 .PHONY : src/a_stressful_machine_tui.cpp.o
 
 src/a_stressful_machine_tui.i: src/a_stressful_machine_tui.cpp.i
@@ -430,8 +497,8 @@ src/a_stressful_machine_tui.i: src/a_stressful_machine_tui.cpp.i
 
 # target to preprocess a source file
 src/a_stressful_machine_tui.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.i
 	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/a_stressful_machine_tui.cpp.i
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.i
 .PHONY : src/a_stressful_machine_tui.cpp.i
 
 src/a_stressful_machine_tui.s: src/a_stressful_machine_tui.cpp.s
@@ -440,8 +507,8 @@ src/a_stressful_machine_tui.s: src/a_stressful_machine_tui.cpp.s
 
 # target to generate assembly for a file
 src/a_stressful_machine_tui.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.s
 	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/a_stressful_machine_tui.cpp.s
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.s
 .PHONY : src/a_stressful_machine_tui.cpp.s
 
 src/interpreter.o: src/interpreter.cpp.o
@@ -477,8 +544,8 @@ src/ncurses_utilities.o: src/ncurses_utilities.cpp.o
 
 # target to build an object file
 src/ncurses_utilities.cpp.o:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.o
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.o
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.o
 .PHONY : src/ncurses_utilities.cpp.o
 
 src/ncurses_utilities.i: src/ncurses_utilities.cpp.i
@@ -487,8 +554,8 @@ src/ncurses_utilities.i: src/ncurses_utilities.cpp.i
 
 # target to preprocess a source file
 src/ncurses_utilities.cpp.i:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.i
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.i
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.i
 .PHONY : src/ncurses_utilities.cpp.i
 
 src/ncurses_utilities.s: src/ncurses_utilities.cpp.s
@@ -497,8 +564,8 @@ src/ncurses_utilities.s: src/ncurses_utilities.cpp.s
 
 # target to generate assembly for a file
 src/ncurses_utilities.cpp.s:
-	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/ncurses_utilities.cpp.s
+	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/ncurses_utilities.cpp.s
 .PHONY : src/ncurses_utilities.cpp.s
 
 src/test.o: src/test.cpp.o
@@ -565,11 +632,12 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... ncurses_wrapper"
 	@echo "... edit_cache"
-	@echo "... test"
-	@echo "... a_stressful_machine_tui"
 	@echo "... a_stressful_machine_lib"
 	@echo "... interpreter"
+	@echo "... a_stressful_machine_tui"
+	@echo "... test"
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
@@ -585,6 +653,12 @@ help:
 	@echo "... src/GameTUI.o"
 	@echo "... src/GameTUI.i"
 	@echo "... src/GameTUI.s"
+	@echo "... src/NcursesMenu.o"
+	@echo "... src/NcursesMenu.i"
+	@echo "... src/NcursesMenu.s"
+	@echo "... src/NcursesWindow.o"
+	@echo "... src/NcursesWindow.i"
+	@echo "... src/NcursesWindow.s"
 	@echo "... src/SavePicker.o"
 	@echo "... src/SavePicker.i"
 	@echo "... src/SavePicker.s"

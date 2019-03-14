@@ -12,10 +12,12 @@ class NcursesMenu : public NcursesWindow
 private:
     const vector<string> options;
 
+    int selected_item;
+
 public:
     NcursesMenu(const vector<string> &options, int height, int width, int startx, int starty, bool boxing = false);
 
-    int get_choice();
+    int get_selected_item();
 };
 
 

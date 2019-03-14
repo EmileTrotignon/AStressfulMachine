@@ -324,7 +324,6 @@ void VirtualMachine::do_one_iteration(bool advance)
         status = STATUS_PAUSED;
         return;
     }
-    if (status != STATUS_RUNNING) return;
     //cout << program[current_operator] << endl;
     switch (*current_operator)
     {

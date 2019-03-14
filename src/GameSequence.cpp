@@ -4,7 +4,8 @@
 
 #include "GameSequence.h"
 
-GameSequence::GameSequence(const string &savename, const string &gamefiles_dir_) : gamefiles_dir(gamefiles_dir_)
+GameSequence::GameSequence(const string &savename, const string &gamefiles_dir_) : gamefiles_dir(gamefiles_dir_),
+                                                                                   current_level(nullptr)
 {
     available_levels = filesystem_ls(gamefiles_dir + "/levels");
 }

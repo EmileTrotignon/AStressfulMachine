@@ -8,6 +8,7 @@
 
 #include "GameTUI.h"
 #include "ncurses_utilities.h"
+#include "NcursesMenu.h"
 
 GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(saves_dir_, gamefiles_dir_),
                                                                            typing_win(nullptr),
@@ -28,52 +29,42 @@ GameTUI::~GameTUI()
     delete vm_output_win;
     delete vm_memory_win;
     delete vm_program_win;
+    delete game_sequence;
 }
 
 void GameTUI::pick_saves()
 {
     vector<string> possible_saves = save_picker->get_saves();
     int height = (int) possible_saves.size() + 2;
-    WINDOW *save_picking = create_newwin(height, 25, 4, 4);
-    string selected_save = possible_saves[menu(possible_saves, save_picking)];
-    destroy_win(save_picking);
-    refresh();
+    auto save_picking = new NcursesMenu(possible_saves, height, 25, 4, 4, true);
+    string selected_save = possible_saves[save_picking->get_selected_item()];
+    delete save_picking;
     game_sequence = new GameSequence(selected_save, gamefiles_dir);
 }
 
 void GameTUI::pick_level()
 {
-
     vector<string> possible_levels = game_sequence->get_available_levels();
     int height = (int) possible_levels.size() + 2;
-    WINDOW *level_picking = create_newwin(height, 25, 4, 4);
-    game_sequence->select_level(possible_levels[menu(possible_levels, level_picking)]);
-    destroy_win(level_picking);
-    refresh();
+    auto level_picking = new NcursesMenu(possible_levels, height, 25, 4, 4, true);
+    game_sequence->select_level(possible_levels[level_picking->get_selected_item()]);
+    delete level_picking;
 }
 
 void GameTUI::play_level()
 {
-    typing_win = new NcursesWindow(LINES / 2, COLS / 2, 0, COLS / 2);
+    typing_win = new NcursesWindow(LINES / 2, COLS / 2, 0, COLS / 2, true);
     initialize_typing_win();
     typing_win->keypad_on();
 
-    instruction_win = new NcursesWindow(LINES / 2, COLS / 2, 0, 0);
+    instruction_win = new NcursesWindow(LINES / 2, COLS / 2, 0, 0, true);
     fill_instructions();
 
-    vm_input_win = new NcursesWindow(LINES / 2, COLS / 4, LINES / 2, 0);
-    vm_output_win = new NcursesWindow(LINES / 2, COLS / 4, LINES / 2, COLS / 4);
+    vm_input_win = new NcursesWindow(LINES / 2, COLS / 4, LINES / 2, 0, true);
+    vm_output_win = new NcursesWindow(LINES / 2, COLS / 4, LINES / 2, COLS / 4, true);
 
-    vm_program_win = new NcursesWindow(LINES / 4, COLS / 2, LINES / 2, COLS / 2);
-    vm_memory_win = new NcursesWindow(LINES / 4, COLS / 2, LINES / 2 + LINES / 4, COLS / 2);
-
-
-    instruction_win->sbox();
-    vm_input_win->sbox();
-    vm_output_win->sbox();
-    vm_program_win->sbox();
-    vm_memory_win->sbox();
-    typing_win->sbox();
+    vm_program_win = new NcursesWindow(LINES / 4, COLS / 2, LINES / 2, COLS / 2, true);
+    vm_memory_win = new NcursesWindow(LINES / 4, COLS / 2, LINES / 2 + LINES / 4, COLS / 2, true);
 
     typing_win->refresh();
     instruction_win->refresh();
@@ -103,7 +94,7 @@ void GameTUI::handle_typing()
     int ch;
     refresh();
     unsigned long cursor = typed_text.size();
-    while ((ch = typing_win->get_ch()) != KEY_F(5))
+    while ((ch = typing_win->getch_()) != KEY_F(5))
     {
         switch (ch)
         {
@@ -199,14 +190,14 @@ void GameTUI::play()
 
 void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
 {
-    print_memory_to_win(gi->vm_memory_win, vm);
-    print_program_to_win(gi->vm_program_win, vm);
+    gi->vm_memory_win->print_memory_to_win(vm);
+    gi->vm_program_win->print_program_to_win(vm);
     usleep(200);
     getch();
 }
 
 void raw_gl_callback(GameLevel *gl, GameTUI *gi)
 {
-    print_input_to_win(gi->vm_input_win, gl);
+    gi->vm_input_win->print_input_to_win(gl);
     //getch();
 }

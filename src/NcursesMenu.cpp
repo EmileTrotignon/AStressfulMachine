@@ -11,18 +11,18 @@ NcursesMenu::NcursesMenu(const vector<string> &options_, int height_, int width_
     keypad_on();
     for (unsigned int i = 0; i < options.size(); i++)
     {
-        if (i == options.size() - 1) wattron(win, A_STANDOUT);
+        if (i == options.size() - 1) attron_(A_STANDOUT);
         else
-            wattroff(win, A_STANDOUT);
-        mvwprintw(win, i + 1, 2, options[i].c_str());
+            attroff_(A_STANDOUT);
+        mvprintw(i + 1, 2, options[i].c_str());
     }
-    wattroff(win, A_STANDOUT);
+    attroff_(A_STANDOUT);
     int ch;
-    int selected_item = (int) options.size() - 1;
-    while ((ch = wgetch(win)) != '\n')
+    selected_item = (int) options.size() - 1;
+    while ((ch = getch_()) != '\n')
     {
         // Reprint selected item in order to redo the highlighting
-        mvwprintw(win, selected_item + 1, 2, options[selected_item].c_str());
+        mvprintw(selected_item + 1, 2, options[selected_item].c_str());
         switch (ch)
         {
             case KEY_UP:
@@ -37,12 +37,16 @@ NcursesMenu::NcursesMenu(const vector<string> &options_, int height_, int width_
                 break;
         }
         //Highlight the current item
-        wattron(win, A_STANDOUT);
-        mvwprintw(win, selected_item + 1, 2, options[selected_item].c_str());
-        wattroff(win, A_STANDOUT);
+        attron_(A_STANDOUT);
+        mvprintw(selected_item + 1, 2, options[selected_item].c_str());
+        attroff_(A_STANDOUT);
+        refresh();
     }
-    werase(win);
-    wrefresh(win);
+}
+
+
+int NcursesMenu::get_selected_item()
+{
     return selected_item;
 }
 

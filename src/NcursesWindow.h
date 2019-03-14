@@ -32,7 +32,9 @@ public:
 
     void mvprintstr(int y, int x, string str);
 
-    int get_ch();
+    void mvaddch_(int y, int x, const chtype ch);
+
+    int getch_();
 
     void sbox();
 
@@ -54,9 +56,15 @@ public:
 
     void color_off(int color_id);
 
-    void toggle_attr(int attr);
+    void attron_(int attr);
 
-    void toggle_attr_off(int attr);
+    void attroff_(int attr);
+
+    void print_program_to_win(VirtualMachine *vm);
+
+    void print_memory_to_win(VirtualMachine *vm);
+
+    void print_input_to_win(GameLevel *gl);
 };
 
 

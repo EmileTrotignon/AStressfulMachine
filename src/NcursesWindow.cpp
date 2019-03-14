@@ -12,7 +12,6 @@ NcursesWindow::NcursesWindow(int height_, int width_, int startx_, int starty_, 
                                                                                                 boxing(boxing_)
 {
     window = newwin(height, width, starty, startx);
-    refresh();
 }
 
 NcursesWindow::~NcursesWindow()
@@ -49,12 +48,17 @@ void NcursesWindow::mvprintstr(int y, int x, string str)
     }
 }
 
+void NcursesWindow::mvaddch_(int y, int x, const chtype ch)
+{
+    mvwaddch(window, y, x, ch);
+}
+
 void NcursesWindow::sbox()
 {
     box(window, ACS_VLINE, ACS_HLINE);
 }
 
-int NcursesWindow::get_ch()
+int NcursesWindow::getch_()
 {
     return wgetch(window);
 }
@@ -107,13 +111,55 @@ void NcursesWindow::color_off(int color_id)
     wattroff(window, COLOR_PAIR(color_id));
 }
 
-void NcursesWindow::toggle_attr(int attr)
+void NcursesWindow::attron_(int attr)
 {
     wattron(window, attr);
 }
 
 
-void NcursesWindow::toggle_attr_off(int attr)
+void NcursesWindow::attroff_(int attr)
 {
     wattroff(window, attr);
 }
+
+void NcursesWindow::print_program_to_win(VirtualMachine *vm)
+{
+    const string &program = vm->get_program();
+
+    for (auto i = program.begin(); i < program.end(); i++)
+    {
+        if (i == vm->get_current_operator())
+        {
+            color_on(1);
+        }
+        mvaddch_(height / 2, (int) (2 + i - program.begin()), (const chtype) *i);
+        if (i == vm->get_current_operator())
+        {
+            color_off(1);
+        }
+    }
+    refresh();
+}
+
+void NcursesWindow::print_memory_to_win(VirtualMachine *vm)
+{
+    const vector<int> &memory = vm->get_memory();
+    move_cursor(get_height() / 2, 2);
+    for (auto i = memory.begin(); i < memory.end(); i++)
+    {
+        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) color_on(1);
+        printw("%d", *i);
+        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) color_off(1);
+        printw(" ");
+    }
+    refresh();
+}
+
+
+void NcursesWindow::print_input_to_win(GameLevel *gl)
+{
+    clear();
+    mvprintstr(2, 2, gl->get_input_as_string());
+    refresh();
+}
+
