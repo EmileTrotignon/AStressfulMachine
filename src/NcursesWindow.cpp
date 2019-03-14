@@ -5,10 +5,10 @@
 #include "NcursesWindow.h"
 
 
-NcursesWindow::NcursesWindow(int height_, int width_, int startx_, int starty_, bool boxing_) : height(height_),
+NcursesWindow::NcursesWindow(int height_, int width_, int starty_, int startx_, bool boxing_) : height(height_),
                                                                                                 width(width_),
-                                                                                                startx(startx_),
                                                                                                 starty(starty_),
+                                                                                                startx(startx_),
                                                                                                 boxing(boxing_)
 {
     window = newwin(height, width, starty, startx);
@@ -46,6 +46,11 @@ void NcursesWindow::mvprintstr(int y, int x, string str)
         buff = "";
         y++;
     }
+}
+
+void NcursesWindow::printstr(const string &str)
+{
+    wprintw(window, str.c_str());
 }
 
 void NcursesWindow::mvaddch_(int y, int x, const chtype ch)
@@ -148,7 +153,7 @@ void NcursesWindow::print_memory_to_win(VirtualMachine *vm)
     for (auto i = memory.begin(); i < memory.end(); i++)
     {
         if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) color_on(1);
-        printw("%d", *i);
+        printstr(to_string(*i));
         if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) color_off(1);
         printw(" ");
     }

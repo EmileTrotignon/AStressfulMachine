@@ -53,7 +53,7 @@ void GameTUI::pick_level()
 void GameTUI::play_level()
 {
     typing_win = new NcursesWindow(LINES / 2, COLS / 2, 0, COLS / 2, true);
-    initialize_typing_win();
+
     typing_win->keypad_on();
 
     instruction_win = new NcursesWindow(LINES / 2, COLS / 2, 0, 0, true);
@@ -73,12 +73,6 @@ void GameTUI::play_level()
     vm_program_win->refresh();
     typing_win->move_cursor(2, 2);
     handle_typing();
-}
-
-void GameTUI::initialize_typing_win()
-{
-    typing_win->refresh();
-
 }
 
 void GameTUI::fill_instructions()

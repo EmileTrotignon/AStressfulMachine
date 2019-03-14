@@ -32,7 +32,9 @@ public:
 
     void mvprintstr(int y, int x, string str);
 
-    void mvaddch_(int y, int x, const chtype ch);
+    void printstr(const string &str);
+
+    void mvaddch_(int y, int x, chtype ch);
 
     int getch_();
 

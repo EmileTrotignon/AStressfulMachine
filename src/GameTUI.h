@@ -36,8 +36,6 @@ private:
 
     void fill_instructions();
 
-    void initialize_typing_win();
-
     void handle_typing();
 
 public:
