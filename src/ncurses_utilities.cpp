@@ -4,6 +4,7 @@
 
 #include "ncurses_utilities.h"
 #include "GameLevel.h"
+#include "NcursesWindow.h"
 
 int menu(const vector<string> &options, WINDOW *win)
 {
@@ -50,12 +51,14 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
     WINDOW *local_win;
 
     local_win = newwin(height, width, starty, startx);
-    box(local_win, ACS_VLINE, ACS_HLINE);        /* 0, 0 gives default characters
-					 * for the vertical and horizontal
-					 * lines			*/
-    wrefresh(local_win);        /* Show that box 		*/
-
+    sbox(local_win);
+    wrefresh(local_win);
     return local_win;
+}
+
+void sbox(WINDOW *win)
+{
+    box(win, ACS_VLINE, ACS_HLINE);
 }
 
 void destroy_win(WINDOW *local_win)
@@ -81,6 +84,19 @@ void destroy_win(WINDOW *local_win)
     delwin(local_win);
 }
 
+void mvwprintstr(WINDOW *win, int y, int x, string str)
+{
+    istringstream strs(str);
+    string buff;
+    while (!strs.eof())
+    {
+        getline(strs, buff);
+        mvwprintw(win, y, x, buff.c_str());
+        buff = "";
+        y++;
+    }
+}
+
 void print_program_to_win(WINDOW *win, VirtualMachine *vm)
 {
     const string &program = vm->get_program();
@@ -100,24 +116,25 @@ void print_program_to_win(WINDOW *win, VirtualMachine *vm)
     wrefresh(win);
 }
 
-void print_memory_to_win(WINDOW *win, VirtualMachine *vm)
+void print_memory_to_win(NcursesWindow *win, VirtualMachine *vm)
 {
     const vector<int> &memory = vm->get_memory();
-    wmove(win, LINES / 8, 2);
+    win->move_cursor(win->get_height() / 2, 2);
     for (auto i = memory.begin(); i < memory.end(); i++)
     {
-        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) wattron(win, COLOR_PAIR(1));
-        wprintw(win, "%d", *i);
-        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) wattroff(win, COLOR_PAIR(1));
-        wprintw(win, " ");
+        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) win->color_on(1);
+        win->printw("%d", *i);
+        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) win->color_off(1);
+        win->printw(" ");
     }
-    wrefresh(win);
+    win->refresh();
 }
 
-void print_input_to_win(WINDOW *win, GameLevel *gl)
+
+void print_input_to_win(NcursesWindow *win, GameLevel *gl)
 {
-    string input_line_str;
-    getline(gl->input, input_line_str);
-    istringstream input_line(input_line_str);
+    win->clear();
+    win->mvprintstr(2, 2, gl->get_input_as_string());
+    win->refresh();
 }
 

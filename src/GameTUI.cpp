@@ -4,6 +4,7 @@
 
 #include <form.h>
 #include <assert.h>
+#include <zconf.h>
 
 #include "GameTUI.h"
 #include "ncurses_utilities.h"
@@ -17,6 +18,16 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            vm_program_win(nullptr)
 {
     typed_text = "";
+}
+
+GameTUI::~GameTUI()
+{
+    delete typing_win;
+    delete instruction_win;
+    delete vm_input_win;
+    delete vm_output_win;
+    delete vm_memory_win;
+    delete vm_program_win;
 }
 
 void GameTUI::pick_saves()
@@ -43,56 +54,56 @@ void GameTUI::pick_level()
 
 void GameTUI::play_level()
 {
-    typing_win = create_newwin(LINES / 2, COLS / 2, 0, COLS / 2);
+    typing_win = new NcursesWindow(LINES / 2, COLS / 2, 0, COLS / 2);
     initialize_typing_win();
-    keypad(typing_win, TRUE);
+    typing_win->keypad_on();
 
-    instruction_win = create_newwin(LINES / 2, COLS / 2, 0, 0);
+    instruction_win = new NcursesWindow(LINES / 2, COLS / 2, 0, 0);
     fill_instructions();
 
-    vm_input_win = create_newwin(LINES / 2, COLS / 4, LINES / 2, 0);
-    vm_output_win = create_newwin(LINES / 2, COLS / 4, LINES / 2, COLS / 4);
+    vm_input_win = new NcursesWindow(LINES / 2, COLS / 4, LINES / 2, 0);
+    vm_output_win = new NcursesWindow(LINES / 2, COLS / 4, LINES / 2, COLS / 4);
 
-    vm_program_win = create_newwin(LINES / 4, COLS / 2, LINES / 2, COLS / 2);
-    vm_memory_win = create_newwin(LINES / 4, COLS / 2, LINES / 2 + LINES / 4, COLS / 2);
+    vm_program_win = new NcursesWindow(LINES / 4, COLS / 2, LINES / 2, COLS / 2);
+    vm_memory_win = new NcursesWindow(LINES / 4, COLS / 2, LINES / 2 + LINES / 4, COLS / 2);
 
 
-    box(instruction_win, ACS_VLINE, ACS_HLINE);
-    box(vm_input_win, ACS_VLINE, ACS_HLINE);
-    box(vm_output_win, ACS_VLINE, ACS_HLINE);
-    box(vm_program_win, ACS_VLINE, ACS_HLINE);
-    box(vm_memory_win, ACS_VLINE, ACS_HLINE);
-    box(typing_win, ACS_VLINE, ACS_HLINE);
+    instruction_win->sbox();
+    vm_input_win->sbox();
+    vm_output_win->sbox();
+    vm_program_win->sbox();
+    vm_memory_win->sbox();
+    typing_win->sbox();
 
-    wrefresh(typing_win);
-    wrefresh(instruction_win);
-    wrefresh(vm_input_win);
-    wrefresh(vm_output_win);
-    wrefresh(vm_memory_win);
-    wrefresh(vm_program_win);
-    curs_set(1);
-    wmove(typing_win, 2, 2);
+    typing_win->refresh();
+    instruction_win->refresh();
+    vm_input_win->refresh();
+    vm_output_win->refresh();
+    vm_memory_win->refresh();
+    vm_program_win->refresh();
+    typing_win->move_cursor(2, 2);
     handle_typing();
 }
 
 void GameTUI::initialize_typing_win()
 {
-    wrefresh(typing_win);
+    typing_win->refresh();
 
 }
 
 void GameTUI::fill_instructions()
 {
-    mvwprintw(instruction_win, 1, 1, game_sequence->get_current_level()->get_instructions().c_str());
+    instruction_win->mvprintstr(1, 1, game_sequence->get_current_level()->get_instructions());
 }
 
 void GameTUI::handle_typing()
 {
     /* char *(FIELD *field, int buffer_index); */
+    curs_set(1);
     int ch;
     refresh();
     unsigned long cursor = typed_text.size();
-    while ((ch = wgetch(typing_win)) != KEY_F(5))
+    while ((ch = typing_win->get_ch()) != KEY_F(5))
     {
         switch (ch)
         {
@@ -132,17 +143,21 @@ void GameTUI::handle_typing()
                 break;
 
         }
-        wclrtoeol(typing_win);
-        mvwprintw(typing_win, 2, 2, typed_text.c_str());
-        wmove(typing_win, 2, (int) (2 + (cursor)));
+        typing_win->move_cursor(2, 2);
+        typing_win->clear_from_cursor_to_eol();
+        typing_win->mvprintstr(2, 2, typed_text);
+        typing_win->refresh();
+        typing_win->move_cursor(2, (int) (2 + (cursor)));
 
 
     }
+    curs_set(0);
     bool b = false;
     try
     {
         vm_callback = bind2nd(function<void(VirtualMachine *, GameTUI *)>(raw_vm_callback), this);
-        b = game_sequence->get_current_level()->attempt(typed_text, vm_callback);
+        gl_callback = bind2nd(function<void(GameLevel *, GameTUI *)>(raw_gl_callback), this);
+        b = game_sequence->get_current_level()->attempt(typed_text, vm_callback, gl_callback);
     } catch (const VirtualMachineException &e)
     {
 
@@ -186,6 +201,12 @@ void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
 {
     print_memory_to_win(gi->vm_memory_win, vm);
     print_program_to_win(gi->vm_program_win, vm);
+    usleep(200);
     getch();
 }
 
+void raw_gl_callback(GameLevel *gl, GameTUI *gi)
+{
+    print_input_to_win(gi->vm_input_win, gl);
+    //getch();
+}

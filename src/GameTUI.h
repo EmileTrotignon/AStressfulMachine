@@ -11,19 +11,20 @@
 #include <functional>
 
 #include "Game.h"
+#include "NcursesWindow.h";
 
 class GameTUI : public Game
 {
 private:
 
-    WINDOW *typing_win;
-    WINDOW *instruction_win;
-    WINDOW *vm_input_win;
-    WINDOW *vm_output_win;
-    WINDOW *vm_memory_win;
-    WINDOW *vm_program_win;
+    NcursesWindow *typing_win;
+    NcursesWindow *instruction_win;
+    NcursesWindow *vm_input_win;
+    NcursesWindow *vm_output_win;
+    NcursesWindow *vm_memory_win;
+    NcursesWindow *vm_program_win;
     function<void(VirtualMachine *)> vm_callback;
-    function<void(GameLevel *)> game_level_callback;
+    function<void(GameLevel *)> gl_callback;
     string typed_text;
 
 
@@ -40,15 +41,21 @@ private:
     void handle_typing();
 
 public:
+
     GameTUI(const string &saves_dir, const string &gamefiles_dir);
+
+    ~GameTUI();
 
     void play() override;
 
     friend void raw_vm_callback(VirtualMachine *vm, GameTUI *gi);
 
+    friend void raw_gl_callback(GameLevel *gl, GameTUI *gi);
+
 };
 
 void raw_vm_callback(VirtualMachine *vm, GameTUI *gi);
 
+void raw_gl_callback(GameLevel *gl, GameTUI *gi);
 
 #endif //A_STRESSFUL_MACHINE_GAMETUI_H

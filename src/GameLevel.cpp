@@ -17,10 +17,10 @@ GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, Vi
     program_attempt = "";
 }
 
-void GameLevel::reset_input()
+void GameLevel::reset_input(streamoff pos)
 {
     input.clear();
-    input.seekg(0);
+    input.seekg(pos);
 }
 
 bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_callback)
@@ -64,7 +64,15 @@ string GameLevel::get_instructions()
     return instructions;
 }
 
-const ifstream &GameLevel::get_input()
+ifstream &GameLevel::get_input()
 {
     return input;
+}
+
+string GameLevel::get_input_as_string()
+{
+    streamoff pos = input.tellg();
+    string in((istreambuf_iterator<char>(input)), istreambuf_iterator<char>());
+    reset_input(pos);
+    return in;
 }

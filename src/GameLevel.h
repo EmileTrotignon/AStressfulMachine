@@ -5,6 +5,7 @@
 #ifndef ASTRESSFULMACHINE_GAMELEVEL_H
 #define ASTRESSFULMACHINE_GAMELEVEL_H
 
+#include <iostream>
 #include <fstream>
 #include <functional>
 #include "VirtualMachine.h"
@@ -12,16 +13,16 @@
 
 /*#define LEVELFILES_FOLDER "data/gamefiles/levels"*/
 
+
 /**
  * This class enable the player to complete a level.
  */
-
-class WINDOW;
 
 class GameLevel
 {
 private:
     string gamefiles_dir;
+    ifstream input;
     string level_name;
     string solution;
     string instructions;
@@ -33,7 +34,6 @@ private:
 
 public:
 
-    ifstream input;
 
     /**
      * Basic constructor that uses the level name to open the correct file.
@@ -44,7 +44,7 @@ public:
     /**
      * Reset the input to it's just opened state.
      */
-    void reset_input();
+    void reset_input(streamoff pos = 0);
 
     /**
      * Check if the line of the input results in the same output for the attempt and the solution.
@@ -58,9 +58,11 @@ public:
 
     string get_instructions();
 
-    const ifstream &get_input();
+    ifstream &get_input();
 
-    friend void print_input_to_win(WINDOW *win, GameLevel *gl);
+    string get_input_as_string();
+
+    //friend void print_input_to_win(WINDOW *win, GameLevel *gl);
 
 
 };
