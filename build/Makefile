@@ -310,86 +310,86 @@ src/GameTUI.cpp.s:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/GameTUI.cpp.s
 .PHONY : src/GameTUI.cpp.s
 
-src/NcursesMenu.o: src/NcursesMenu.cpp.o
+src/Menu.o: src/Menu.cpp.o
 
-.PHONY : src/NcursesMenu.o
-
-# target to build an object file
-src/NcursesMenu.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesMenu.cpp.o
-.PHONY : src/NcursesMenu.cpp.o
-
-src/NcursesMenu.i: src/NcursesMenu.cpp.i
-
-.PHONY : src/NcursesMenu.i
-
-# target to preprocess a source file
-src/NcursesMenu.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesMenu.cpp.i
-.PHONY : src/NcursesMenu.cpp.i
-
-src/NcursesMenu.s: src/NcursesMenu.cpp.s
-
-.PHONY : src/NcursesMenu.s
-
-# target to generate assembly for a file
-src/NcursesMenu.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesMenu.cpp.s
-.PHONY : src/NcursesMenu.cpp.s
-
-src/NcursesTypingField.o: src/NcursesTypingField.cpp.o
-
-.PHONY : src/NcursesTypingField.o
+.PHONY : src/Menu.o
 
 # target to build an object file
-src/NcursesTypingField.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesTypingField.cpp.o
-.PHONY : src/NcursesTypingField.cpp.o
+src/Menu.cpp.o:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Menu.cpp.o
+.PHONY : src/Menu.cpp.o
 
-src/NcursesTypingField.i: src/NcursesTypingField.cpp.i
+src/Menu.i: src/Menu.cpp.i
 
-.PHONY : src/NcursesTypingField.i
+.PHONY : src/Menu.i
 
 # target to preprocess a source file
-src/NcursesTypingField.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesTypingField.cpp.i
-.PHONY : src/NcursesTypingField.cpp.i
+src/Menu.cpp.i:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Menu.cpp.i
+.PHONY : src/Menu.cpp.i
 
-src/NcursesTypingField.s: src/NcursesTypingField.cpp.s
+src/Menu.s: src/Menu.cpp.s
 
-.PHONY : src/NcursesTypingField.s
+.PHONY : src/Menu.s
 
 # target to generate assembly for a file
-src/NcursesTypingField.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesTypingField.cpp.s
-.PHONY : src/NcursesTypingField.cpp.s
+src/Menu.cpp.s:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Menu.cpp.s
+.PHONY : src/Menu.cpp.s
 
-src/NcursesWindow.o: src/NcursesWindow.cpp.o
+src/Field.o: src/Field.cpp.o
 
-.PHONY : src/NcursesWindow.o
+.PHONY : src/Field.o
 
 # target to build an object file
-src/NcursesWindow.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesWindow.cpp.o
-.PHONY : src/NcursesWindow.cpp.o
+src/Field.cpp.o:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.o
+.PHONY : src/Field.cpp.o
 
-src/NcursesWindow.i: src/NcursesWindow.cpp.i
+src/Field.i: src/Field.cpp.i
 
-.PHONY : src/NcursesWindow.i
+.PHONY : src/Field.i
 
 # target to preprocess a source file
-src/NcursesWindow.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesWindow.cpp.i
-.PHONY : src/NcursesWindow.cpp.i
+src/Field.cpp.i:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.i
+.PHONY : src/Field.cpp.i
 
-src/NcursesWindow.s: src/NcursesWindow.cpp.s
+src/Field.s: src/Field.cpp.s
 
-.PHONY : src/NcursesWindow.s
+.PHONY : src/Field.s
 
 # target to generate assembly for a file
-src/NcursesWindow.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesWindow.cpp.s
-.PHONY : src/NcursesWindow.cpp.s
+src/Field.cpp.s:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.s
+.PHONY : src/Field.cpp.s
+
+src/Window.o: src/Window.cpp.o
+
+.PHONY : src/Window.o
+
+# target to build an object file
+src/Window.cpp.o:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.o
+.PHONY : src/Window.cpp.o
+
+src/Window.i: src/Window.cpp.i
+
+.PHONY : src/Window.i
+
+# target to preprocess a source file
+src/Window.cpp.i:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.i
+.PHONY : src/Window.cpp.i
+
+src/Window.s: src/Window.cpp.s
+
+.PHONY : src/Window.s
+
+# target to generate assembly for a file
+src/Window.cpp.s:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.s
+.PHONY : src/Window.cpp.s
 
 src/SavePicker.o: src/SavePicker.cpp.o
 
@@ -731,15 +731,15 @@ help:
 	@echo "... src/GameTUI.o"
 	@echo "... src/GameTUI.i"
 	@echo "... src/GameTUI.s"
-	@echo "... src/NcursesMenu.o"
-	@echo "... src/NcursesMenu.i"
-	@echo "... src/NcursesMenu.s"
-	@echo "... src/NcursesTypingField.o"
-	@echo "... src/NcursesTypingField.i"
-	@echo "... src/NcursesTypingField.s"
-	@echo "... src/NcursesWindow.o"
-	@echo "... src/NcursesWindow.i"
-	@echo "... src/NcursesWindow.s"
+	@echo "... src/Menu.o"
+	@echo "... src/Menu.i"
+	@echo "... src/Menu.s"
+	@echo "... src/Field.o"
+	@echo "... src/Field.i"
+	@echo "... src/Field.s"
+	@echo "... src/Window.o"
+	@echo "... src/Window.i"
+	@echo "... src/Window.s"
 	@echo "... src/SavePicker.o"
 	@echo "... src/SavePicker.i"
 	@echo "... src/SavePicker.s"

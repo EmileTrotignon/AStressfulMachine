@@ -5,11 +5,11 @@
 #ifndef A_STRESSFUL_MACHINE_NCURSESMENU_H
 #define A_STRESSFUL_MACHINE_NCURSESMENU_H
 
-#include "NcursesWindow.h"
+#include "Window.h"
 
 namespace ncursespp
 {
-    class NcursesMenu : protected NcursesWindow
+    class Menu : protected Window
     {
     private:
         const vector<string> options;
@@ -17,9 +17,9 @@ namespace ncursespp
         int selected_item;
 
     public:
-        NcursesMenu(const vector<string> &options, int height, int width, int startx, int starty, bool boxing = false);
+        Menu(const vector<string> &options, int height, int width, int startx, int starty, bool boxing = false);
 
-        NcursesMenu(const vector<string> &options, NcursesWindow *master_win, const string &message);
+        Menu(const vector<string> &options, Window *master_win, const string &message);
 
         int select_item();
     };

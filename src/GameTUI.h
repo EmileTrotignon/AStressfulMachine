@@ -20,16 +20,16 @@ class GameTUI : public Game
 {
 private:
 
-    NcursesWindow *typing_win;
-    NcursesWindow *instruction_win;
-    NcursesWindow *vm_input_win;
-    NcursesWindow *vm_output_win;
-    NcursesWindow *vm_memory_win;
-    NcursesWindow *vm_program_win;
-    NcursesWindow *level_picking_win;
-    NcursesWindow *save_picking_win;
-    NcursesWindow *success_menu_win;
-    NcursesTypingField *typing_field;
+    Window *typing_win;
+    Window *instruction_win;
+    Window *vm_input_win;
+    Window *vm_output_win;
+    Window *vm_memory_win;
+    Window *vm_program_win;
+    Window *level_picking_win;
+    Window *save_picking_win;
+    Window *success_menu_win;
+    Field *typing_field;
     function<void(VirtualMachine *)> vm_callback;
     function<void(GameLevel *)> gl_callback;
 

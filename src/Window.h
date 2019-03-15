@@ -10,7 +10,7 @@
 
 namespace ncursespp
 {
-    class NcursesWindow
+    class Window
     {
 
     protected:
@@ -25,13 +25,13 @@ namespace ncursespp
     public:
 
 
-        NcursesWindow();
+        Window();
 
-        NcursesWindow(int height, int width, int starty, int startx, bool boxing = false);
+        Window(int height, int width, int starty, int startx, bool boxing = false);
 
-        explicit NcursesWindow(WINDOW *window);
+        explicit Window(WINDOW *window);
 
-        ~NcursesWindow();
+        ~Window();
 
         void mvprintw(int y, int x, const char *s, ...);
 
@@ -51,7 +51,7 @@ namespace ncursespp
 
         void sbox();
 
-        void refresh();
+        void refresh_();
 
         void move_cursor(int y, int x);
 

@@ -7,13 +7,13 @@
 
 #include <ncurses.h>
 
-#include "NcursesWindow.h"
-#include "NcursesMenu.h"
-#include "NcursesTypingField.h"
+#include "Window.h"
+#include "Menu.h"
+#include "Field.h"
 
 namespace ncursespp
 {
-    extern NcursesWindow *stdscr_;
+    extern Window *stdscr_;
 
     void initscr_();
 

@@ -22,9 +22,9 @@ target_link_libraries(a_stressful_machine_lib libstdc++fs.a)
 
 add_library(ncurses++
         src/ncurses++.cpp src/ncurses++.h
-        src/NcursesWindow.cpp src/NcursesWindow.h
-        src/NcursesMenu.cpp src/NcursesMenu.h
-        src/NcursesTypingField.cpp src/NcursesTypingField.h)
+        src/Window.cpp src/Window.h
+        src/Menu.cpp src/Menu.h
+        src/Field.cpp src/Field.h)
 
 target_link_libraries(ncurses++ ${CURSES_LIBRARIES})
 

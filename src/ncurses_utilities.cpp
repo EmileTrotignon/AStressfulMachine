@@ -4,7 +4,7 @@
 
 #include "ncurses_utilities.h"
 #include "GameLevel.h"
-#include "NcursesWindow.h"
+#include "Window.h"
 
 int menu(const vector<string> &options, WINDOW *win)
 {

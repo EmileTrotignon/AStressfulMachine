@@ -42,9 +42,9 @@ void GameTUI::pick_saves()
 
     if (save_picking_win == nullptr)
     {
-        save_picking_win = new NcursesWindow(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
+        save_picking_win = new Window(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
     }
-    NcursesMenu save_picking(possible_saves, save_picking_win, "Please pick a savefile :");
+    Menu save_picking(possible_saves, save_picking_win, "Please pick a savefile :");
 
     string selected_save = possible_saves[save_picking.select_item()];
     game_sequence = new GameSequence(selected_save, gamefiles_dir);
@@ -57,11 +57,11 @@ void GameTUI::pick_level()
 
     if (level_picking_win == nullptr)
     {
-        level_picking_win = new NcursesWindow(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
+        level_picking_win = new Window(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
     }
 
 
-    NcursesMenu level_picking(possible_levels, level_picking_win, "Please pick a level :");
+    Menu level_picking(possible_levels, level_picking_win, "Please pick a level :");
     game_sequence->select_level(possible_levels[level_picking.select_item()]);
 
     delete typing_win;
@@ -74,29 +74,29 @@ void GameTUI::pick_level()
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();
 
-    typing_win = new NcursesWindow(h / 2, w / 2, 0, w / 2, true);
-    typing_field = new NcursesTypingField(KEY_F(5), typing_win->get_height() - 4, typing_win->get_width() - 4,
+    typing_win = new Window(h / 2, w / 2, 0, w / 2, true);
+    typing_field = new Field(KEY_F(5), typing_win->get_height() - 4, typing_win->get_width() - 4,
                                           typing_win->get_starty() + 2, typing_win->get_startx() + 2);
-    instruction_win = new NcursesWindow(h / 2, w / 2, 0, 0, true);
+    instruction_win = new Window(h / 2, w / 2, 0, 0, true);
     fill_instructions();
 
-    vm_input_win = new NcursesWindow(h / 2, w / 4, h / 2, 0, true);
-    vm_output_win = new NcursesWindow(h / 2, w / 4, h / 2, w / 4, true);
+    vm_input_win = new Window(h / 2, w / 4, h / 2, 0, true);
+    vm_output_win = new Window(h / 2, w / 4, h / 2, w / 4, true);
 
-    vm_program_win = new NcursesWindow(h / 4, w / 2, h / 2, w / 2, true);
-    vm_memory_win = new NcursesWindow(h / 4, w / 2, h / 2 + h / 4, w / 2, true);
+    vm_program_win = new Window(h / 4, w / 2, h / 2, w / 2, true);
+    vm_memory_win = new Window(h / 4, w / 2, h / 2 + h / 4, w / 2, true);
 
 }
 
 void GameTUI::play_level()
 {
 
-    typing_win->refresh();
-    instruction_win->refresh();
-    vm_input_win->refresh();
-    vm_output_win->refresh();
-    vm_memory_win->refresh();
-    vm_program_win->refresh();
+    typing_win->refresh_();
+    instruction_win->refresh_();
+    vm_input_win->refresh_();
+    vm_output_win->refresh_();
+    vm_memory_win->refresh_();
+    vm_program_win->refresh_();
     typing_win->move_cursor(2, 2);
     handle_typing();
 }
@@ -118,7 +118,7 @@ void GameTUI::handle_typing()
         b = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(), vm_callback, gl_callback);
     } catch (const VirtualMachineException &e)
     {
-
+        b = false;
     }
     if (b)
     {
@@ -135,10 +135,10 @@ void GameTUI::handle_success()
 
     vector<string> options{"Retry this level", "Play another level", "Quit the game"};
 
-    if (success_menu_win != nullptr)
-        success_menu_win = new NcursesWindow(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
+    if (success_menu_win == nullptr)
+        success_menu_win = new Window(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
 
-    auto menu = new NcursesMenu(options, success_menu_win,
+    auto menu = new Menu(options, success_menu_win,
                                 "Congratulation, you have solved this level. What do you want to do now ?");
     switch (menu->select_item())
     {
@@ -149,6 +149,7 @@ void GameTUI::handle_success()
             break;
         case 1:
             pick_level();
+            play_level();
             break;
     }
 
@@ -169,9 +170,9 @@ void GameTUI::play()
     start_color();
     init_pair(1, COLOR_WHITE, COLOR_GREEN);
     curs_set(0);
-    NcursesWindow starting_screen(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
+    Window starting_screen(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
     starting_screen.printstr_in_middle("Welcome to A Stressful Machine. Press any key to start the game...");
-    starting_screen.refresh();
+    starting_screen.refresh_();
     starting_screen.getch_();
     pick_saves();
     pick_level();

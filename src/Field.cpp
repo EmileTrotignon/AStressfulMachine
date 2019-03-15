@@ -2,13 +2,13 @@
 // Created by emile on 15/03/19.
 //
 
-#include "NcursesTypingField.h"
+#include "Field.h"
 
 namespace ncursespp
 {
-    NcursesTypingField::NcursesTypingField(int validate_key_, int height_, int width_, int starty_, int startx_,
+    Field::Field(int validate_key_, int height_, int width_, int starty_, int startx_,
                                            bool boxing_) :
-            NcursesWindow(height_, width_, starty_, startx_, boxing_),
+            Window(height_, width_, starty_, startx_, boxing_),
             typing_cursor_x(0),
             typing_pos_y(0),
             validate_key(validate_key_)
@@ -19,10 +19,10 @@ namespace ncursespp
         typing_cursor_y = typed_text.begin();
     }
 
-    void NcursesTypingField::type()
+    void Field::type()
     {
         curs_set(1);
-        refresh();
+        refresh_();
         int ch;
         while ((ch = getch_()) != validate_key)
         {
@@ -104,15 +104,19 @@ namespace ncursespp
             }
             clear();
             mvprintstr(0, 0, string(typed_text), 0);
-            refresh();
+            refresh_();
             move_cursor((int) typing_pos_y, (int) typing_cursor_x);
         }
         curs_set(0);
-        refresh();
+        refresh_();
     }
 
-    string NcursesTypingField::get_typed_text()
+    string Field::get_typed_text()
     {
         return string(typed_text);
     }
+
+
 }
+
+
