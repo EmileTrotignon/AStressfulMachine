@@ -52,21 +52,21 @@ namespace ncursespp
                     }
                     break;
 
-                case KEY_BACKSPACE:
+                case KEY_BACKSPACE: // TODO: fix bug: when backspacing two lines that combined are too wide, breaks typing
                     if (typing_cursor_x != 0)
                     {
                         (*typing_cursor_y).erase(typing_cursor_x - 1, 1);
                         typing_cursor_x--;
                     } else if (typing_cursor_y != typed_text.begin() &&
-                               (*typing_cursor_y).size() + (*(--typing_cursor_y)).size() < get_width())
+                            ((*typing_cursor_y).size() + (*(--typing_cursor_y)).size()) < get_width() -1)
                     {
                         auto eraser = ++typing_cursor_y;
                         typing_cursor_y--;
                         typing_pos_y--;
                         string buff = (*eraser);
                         typed_text.erase(eraser);
+                        typing_cursor_x = (*typing_cursor_y).size();
                         (*typing_cursor_y) += buff;
-
                     }
                     break;
 
@@ -74,21 +74,48 @@ namespace ncursespp
                     if (typing_cursor_x != (*typing_cursor_y).size())
                     {
                         (*typing_cursor_y).erase(typing_cursor_x, 1);
-                    } // Todo : add an else if clause here for multiline support
+                    } /* else if (typing_cursor_y != typed_text.end() &&
+                            ((*typing_cursor_y).size() + (*(++typing_cursor_y)).size() < get_width() - 1))
+                    {
+                        auto eraser = --typing_cursor_y;
+                        typing_cursor_y++;
+                        typing_pos_y++;
+                        string buff = (*eraser);
+                        typed_text.erase(eraser);
+                        typing_cursor_x = (*typing_cursor_y).size();
+                        (*typing_cursor_y) += buff;
+                    } */
                     break;
 
                 case '\n':
                     if (typed_text.size() < get_height())
                     {
+                        string new_line = (*typing_cursor_y).substr(typing_cursor_x,(*typing_cursor_y).size());
+                        (*typing_cursor_y).erase(typing_cursor_x,(*typing_cursor_y).size());
                         typing_cursor_y++;
-                        typed_text.insert(typing_cursor_y, "");
+                        typed_text.insert(typing_cursor_y, new_line);
                         typing_cursor_y--;
                         typing_pos_y++;
                         typing_cursor_x = 0;
                     }
                     break;
 
+
+
                 default:
+                    if (isprint(ch))
+                    {
+                        if ((*typing_cursor_y).size() < get_width() -1)
+                        {
+                            (*typing_cursor_y).insert((*typing_cursor_y).begin() + typing_cursor_x, (char) ch);
+                            typing_cursor_x++;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    /*
                     if (isprint(ch) && typing_cursor_x < get_width())
                     {
                         //if (cursor_x - typed_text.begin() > 15) getch();
@@ -99,6 +126,7 @@ namespace ncursespp
                         //if (cursor_x - typed_text.begin() > 15) getch();
                         typing_cursor_x++;
                     }
+                     */
                     break;
 
             }
