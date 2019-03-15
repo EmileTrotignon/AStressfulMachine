@@ -28,6 +28,7 @@ private:
     NcursesWindow *vm_program_win;
     NcursesWindow *level_picking_win;
     NcursesWindow *save_picking_win;
+    NcursesWindow *success_menu_win;
     NcursesTypingField *typing_field;
     function<void(VirtualMachine *)> vm_callback;
     function<void(GameLevel *)> gl_callback;

@@ -18,7 +18,6 @@ namespace ncursespp
             boxing(boxing_)
     {
         window = newwin(height, width, starty, startx);
-        refresh();
     }
 
     NcursesWindow::NcursesWindow(WINDOW *window_) : window(window_)

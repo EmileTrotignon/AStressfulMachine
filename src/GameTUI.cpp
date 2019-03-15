@@ -19,7 +19,8 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            vm_program_win(nullptr),
                                                                            level_picking_win(nullptr),
                                                                            save_picking_win(nullptr),
-                                                                           typing_field(nullptr)
+                                                                           typing_field(nullptr),
+                                                                           success_menu_win(nullptr)
 {
 }
 
@@ -39,21 +40,13 @@ void GameTUI::pick_saves()
 {
     vector<string> possible_saves = save_picker->get_saves();
 
-    const int width = (int) size_of_longest_string(possible_saves) + 8;
-    const int height = (int) possible_saves.size() + 2;
-    const int starty = stdscr_->get_height() / 2 - height / 2;
-    const int startx = stdscr_->get_width() / 2 - width / 2;
-
     if (save_picking_win == nullptr)
     {
         save_picking_win = new NcursesWindow(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
-        save_picking_win->printstr_centered(starty / 2, "Please pick a savefile :");
     }
-    save_picking_win->refresh();
+    NcursesMenu save_picking(possible_saves, save_picking_win, "Please pick a savefile :");
 
-    NcursesMenu save_picking(possible_saves, height, width, starty, startx, true);
-
-    string selected_save = possible_saves[save_picking.get_selected_item()];
+    string selected_save = possible_saves[save_picking.select_item()];
     game_sequence = new GameSequence(selected_save, gamefiles_dir);
 
 }
@@ -62,32 +55,28 @@ void GameTUI::pick_level()
 {
     vector<string> possible_levels = game_sequence->get_available_levels();
 
-    const int width = (int) size_of_longest_string(possible_levels) + 8;
-    const int height = (int) possible_levels.size() + 2;
-    const int starty = stdscr_->get_height() / 2 - height / 2;
-    const int startx = stdscr_->get_width() / 2 - width / 2;
-
     if (level_picking_win == nullptr)
     {
         level_picking_win = new NcursesWindow(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
-        level_picking_win->printstr_centered(starty / 2, "Please pick a level :");
     }
-    level_picking_win->refresh();
 
 
-    NcursesMenu level_picking(possible_levels, height, width, starty, startx, true);
+    NcursesMenu level_picking(possible_levels, level_picking_win, "Please pick a level :");
+    game_sequence->select_level(possible_levels[level_picking.select_item()]);
 
-    game_sequence->select_level(possible_levels[level_picking.get_selected_item()]);
-}
+    delete typing_win;
+    delete typing_field;
+    delete instruction_win;
+    delete vm_input_win;
+    delete vm_output_win;
+    delete vm_memory_win;
 
-void GameTUI::play_level()
-{
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();
+
     typing_win = new NcursesWindow(h / 2, w / 2, 0, w / 2, true);
     typing_field = new NcursesTypingField(KEY_F(5), typing_win->get_height() - 4, typing_win->get_width() - 4,
                                           typing_win->get_starty() + 2, typing_win->get_startx() + 2);
-
     instruction_win = new NcursesWindow(h / 2, w / 2, 0, 0, true);
     fill_instructions();
 
@@ -96,6 +85,11 @@ void GameTUI::play_level()
 
     vm_program_win = new NcursesWindow(h / 4, w / 2, h / 2, w / 2, true);
     vm_memory_win = new NcursesWindow(h / 4, w / 2, h / 2 + h / 4, w / 2, true);
+
+}
+
+void GameTUI::play_level()
+{
 
     typing_win->refresh();
     instruction_win->refresh();
@@ -138,11 +132,15 @@ void GameTUI::handle_typing()
 
 void GameTUI::handle_success()
 {
+
     vector<string> options{"Retry this level", "Play another level", "Quit the game"};
-    int h = 25;
-    int w = (int) options.size();
-    auto menu = new NcursesMenu(options, h, w, COLS / 2 - h, LINES / 2 - w);
-    switch (menu->get_selected_item())
+
+    if (success_menu_win != nullptr)
+        success_menu_win = new NcursesWindow(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
+
+    auto menu = new NcursesMenu(options, success_menu_win,
+                                "Congratulation, you have solved this level. What do you want to do now ?");
+    switch (menu->select_item())
     {
         default:
             break;

@@ -13,7 +13,7 @@ namespace ncursespp
     class NcursesWindow
     {
 
-    private:
+    protected:
 
         int height;
         int width;

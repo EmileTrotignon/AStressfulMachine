@@ -19,7 +19,9 @@ namespace ncursespp
     public:
         NcursesMenu(const vector<string> &options, int height, int width, int startx, int starty, bool boxing = false);
 
-        int get_selected_item();
+        NcursesMenu(const vector<string> &options, NcursesWindow *master_win, const string &message);
+
+        int select_item();
     };
 }
 
