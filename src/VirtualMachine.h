@@ -156,7 +156,7 @@ public:
      * This execute the program until it halts.
      * @param func A function to be executed at each step of the loop. Basic use would be to slow down execution.
      */
-    void loop(function<void(VirtualMachine *)> looper = nullptr);
+    void loop(function<void(VirtualMachine *)> vm_callback = nullptr);
 
     /**
      * Getter for member program

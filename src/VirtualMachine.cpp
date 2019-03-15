@@ -352,13 +352,7 @@ void VirtualMachine::error_handler(const VirtualMachineException &error)
 void VirtualMachine::do_one_iteration(bool advance)
 {
     if (status != STATUS_RUNNING) return;
-    while (current_operator < program.end() && !is_operator(*current_operator)) current_operator++;
-    if (current_operator >= program.end())
-    {
-        if (verbose) message(MESSAGE_FINISHED);
-        status = STATUS_PAUSED;
-        return;
-    }
+
     //cout << program[current_operator] << endl;
     switch (*current_operator)
     {
@@ -444,7 +438,7 @@ void VirtualMachine::do_one_iteration(bool advance)
 
 }
 
-void VirtualMachine::loop(function<void(VirtualMachine *)> looper)
+void VirtualMachine::loop(function<void(VirtualMachine *)> vm_callback)
 {
     if (verbose)
     {
@@ -454,10 +448,23 @@ void VirtualMachine::loop(function<void(VirtualMachine *)> looper)
     status = STATUS_RUNNING;
     while (status == STATUS_RUNNING)
     {
-        if (looper != nullptr) looper(this);
+        while (current_operator < program.end() && !is_operator(*current_operator)) current_operator++;
+        if (current_operator == program.end())
+        {
+            status = STATUS_PAUSED;
+            if (verbose) message(MESSAGE_FINISHED);
+            return;
+        }
+        if (vm_callback != nullptr) vm_callback(this);
         try
         {
             do_one_iteration();
+            if (current_operator == program.end())
+            {
+                status = STATUS_PAUSED;
+                if (verbose) message(MESSAGE_FINISHED);
+                return;
+            }
         } catch (const VirtualMachineException &e)
         {
             error_handler(e);

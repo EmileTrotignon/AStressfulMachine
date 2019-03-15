@@ -22,6 +22,7 @@ namespace ncursespp
     void Field::type()
     {
         curs_set(1);
+        mvprintstr(0, 0, string(typed_text), 0);
         refresh_();
         int ch;
         while ((ch = getch_()) != validate_key)
