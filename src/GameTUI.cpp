@@ -108,7 +108,7 @@ void GameTUI::fill_instructions()
 
 void GameTUI::handle_typing()
 {
-
+    //getch();
     typing_field->type();
     bool b = false;
     try
@@ -186,11 +186,11 @@ void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
     gi->typing_field->attron_char(vm->get_current_operator() - vm->get_program().begin(), COLOR_PAIR(1));
     gi->typing_field->refresh_();
     gi->typing_win->refresh_();
-    //getch();
+    gi->typing_win->getch_();
 }
 
 void raw_gl_callback(GameLevel *gl, GameTUI *gi)
 {
     gi->vm_input_win->print_input_to_win(gl);
-    getch();
+    //gi->vm_input_win->getch_();
 }
