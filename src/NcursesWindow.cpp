@@ -69,10 +69,16 @@ namespace ncursespp
         while (!strs.eof())
         {
             getline(strs, buff);
-            for (int x_ = x; x_ - x < buff.size(); x_++)
+            for (int x_on_screen = x, x_in_str = 0; x_in_str < buff.size(); x_in_str++)
             {
-                if (x_ == (get_width() - border_size_x)) y++;
-                mvaddch_(y, x_, (chtype) buff[x_ - x]);
+
+                if (x_on_screen == (get_width() - border_size_x))
+                {
+                    x_on_screen = x;
+                    y++;
+                }
+                mvaddch_(y, x_on_screen, (chtype) buff[x_in_str]);
+                x_on_screen++;
             }
             buff = "";
             y++;

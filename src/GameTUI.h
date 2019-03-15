@@ -12,6 +12,7 @@
 
 #include "Game.h"
 #include "ncurses++.h"
+#include "String2D.h"
 
 using namespace ncursespp;
 
@@ -29,7 +30,10 @@ private:
     NcursesWindow *save_picking_win;
     function<void(VirtualMachine *)> vm_callback;
     function<void(GameLevel *)> gl_callback;
-    string typed_text;
+    String2D typed_text;
+    size_t typing_cursor_x;
+    String2D::iterator typing_cursor_y;
+    size_t typing_pos_y;
 
 
     void pick_saves();

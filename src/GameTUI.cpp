@@ -18,9 +18,14 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            vm_memory_win(nullptr),
                                                                            vm_program_win(nullptr),
                                                                            level_picking_win(nullptr),
-                                                                           save_picking_win(nullptr)
+                                                                           save_picking_win(nullptr),
+                                                                           typing_cursor_x(0),
+                                                                           typing_pos_y(0)
 {
-    typed_text = "";
+    typed_text = String2D();
+    typed_text.push_back("");
+    typing_cursor_y = typed_text.begin();
+
 }
 
 GameTUI::~GameTUI()
@@ -115,59 +120,89 @@ void GameTUI::handle_typing()
     /* char *(FIELD *field, int buffer_index); */
     curs_set(1);
     int ch;
-    unsigned long cursor = typed_text.size();
     while ((ch = typing_win->getch_()) != KEY_F(5))
     {
         switch (ch)
         {
             case KEY_RIGHT:
-                if (cursor < typed_text.size())
+                if (typing_cursor_x < (*typing_cursor_y).size())
                 {
-                    cursor++;
+                    typing_cursor_x++;
+                } else if (typing_cursor_y != --typed_text.end())
+                {
+                    typing_cursor_y++;
+                    typing_pos_y++;
+                    typing_cursor_x = 0;
                 }
                 break;
 
             case KEY_LEFT:
-                if (cursor > 0)
+                if (typing_cursor_x > 0)
                 {
-                    cursor--;
+                    typing_cursor_x--;
+                } else if (typing_cursor_y != typed_text.begin())
+                {
+                    typing_cursor_y--;
+                    typing_pos_y--;
+                    typing_cursor_x = (*typing_cursor_y).size();
                 }
                 break;
 
             case KEY_BACKSPACE:
-                if (cursor != 0)
+                if (typing_cursor_x != 0)
                 {
-                    typed_text.erase(cursor - 1, 1);
-                    cursor--;
+                    (*typing_cursor_y).erase(typing_cursor_x - 1, 1);
+                    typing_cursor_x--;
+                } else if (typing_cursor_y != typed_text.begin() &&
+                           (*typing_cursor_y).size() + (*(--typing_cursor_y)).size() < typing_win->get_width() - 4)
+                {
+                    auto eraser = ++typing_cursor_y;
+                    typing_cursor_y--;
+                    typing_pos_y--;
+                    string buff = (*eraser);
+                    typed_text.erase(eraser);
+                    (*typing_cursor_y) += buff;
+
                 }
                 break;
 
             case KEY_DC:
-                if (cursor != typed_text.size())
+                if (typing_cursor_x != (*typing_cursor_y).size())
                 {
-                    typed_text.erase(cursor, 1);
+                    (*typing_cursor_y).erase(typing_cursor_x, 1);
+                } // Todo : add an else if clause here for multiline support
+                break;
+
+            case '\n':
+                if (typed_text.size() < typing_win->get_height() - 4)
+                {
+                    typing_cursor_y++;
+                    typed_text.insert(typing_cursor_y, "");
+                    typing_cursor_y--;
+                    typing_pos_y++;
+                    typing_cursor_x = 0;
                 }
                 break;
 
-                    default:
-                if (isprint(ch))
+            default:
+                if (isprint(ch) && typing_cursor_x < typing_win->get_width() - 4)
                 {
-                    //if (cursor - typed_text.begin() > 15) getch();
+                    //if (cursor_x - typed_text.begin() > 15) getch();
 
-                    //if (cursor - typed_text.begin() >= typed_text.capacity()) typed_text.resize(typed_text.capacity() * 2);
-                    typed_text.insert(typed_text.begin() + cursor, (char) ch);
+                    //if (cursor_x - typed_text.begin() >= typed_text.capacity()) typed_text.resize(typed_text.capacity() * 2);
+                    (*typing_cursor_y).insert((*typing_cursor_y).begin() + typing_cursor_x, (char) ch);
 
-                    //if (cursor - typed_text.begin() > 15) getch();
-                    cursor++;
+                    //if (cursor_x - typed_text.begin() > 15) getch();
+                    typing_cursor_x++;
                 }
                 break;
 
         }
         typing_win->move_cursor(2, 2);
-        typing_win->clear_from_cursor_to_eol();
-        typing_win->mvprintstr(2, 2, typed_text);
+        typing_win->clear();
+        typing_win->mvprintstr(2, 2, string(typed_text), 1);
         typing_win->refresh();
-        typing_win->move_cursor(2, (int) (2 + (cursor)));
+        typing_win->move_cursor((int) (2 + typing_pos_y), (int) (2 + (typing_cursor_x)));
 
 
     }
@@ -177,7 +212,7 @@ void GameTUI::handle_typing()
     {
         vm_callback = bind2nd(function<void(VirtualMachine *, GameTUI *)>(raw_vm_callback), this);
         gl_callback = bind2nd(function<void(GameLevel *, GameTUI *)>(raw_gl_callback), this);
-        b = game_sequence->get_current_level()->attempt(typed_text, vm_callback, gl_callback);
+        b = game_sequence->get_current_level()->attempt(string(typed_text), vm_callback, gl_callback);
     } catch (const VirtualMachineException &e)
     {
 

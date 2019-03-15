@@ -37,6 +37,7 @@ target_link_libraries(interpreter libstdc++fs.a)
 add_executable(a_stressful_machine_tui
         src/a_stressful_machine_tui.cpp
         src/GameTUI.cpp src/GameTUI.h
+        src/String2D.cpp src/String2D.h
         )
 
 

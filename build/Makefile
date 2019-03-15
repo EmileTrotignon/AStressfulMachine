@@ -391,6 +391,33 @@ src/SavePicker.cpp.s:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/SavePicker.cpp.s
 .PHONY : src/SavePicker.cpp.s
 
+src/String2D.o: src/String2D.cpp.o
+
+.PHONY : src/String2D.o
+
+# target to build an object file
+src/String2D.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/String2D.cpp.o
+.PHONY : src/String2D.cpp.o
+
+src/String2D.i: src/String2D.cpp.i
+
+.PHONY : src/String2D.i
+
+# target to preprocess a source file
+src/String2D.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/String2D.cpp.i
+.PHONY : src/String2D.cpp.i
+
+src/String2D.s: src/String2D.cpp.s
+
+.PHONY : src/String2D.s
+
+# target to generate assembly for a file
+src/String2D.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/String2D.cpp.s
+.PHONY : src/String2D.cpp.s
+
 src/VirtualMachine.o: src/VirtualMachine.cpp.o
 
 .PHONY : src/VirtualMachine.o
@@ -686,6 +713,9 @@ help:
 	@echo "... src/SavePicker.o"
 	@echo "... src/SavePicker.i"
 	@echo "... src/SavePicker.s"
+	@echo "... src/String2D.o"
+	@echo "... src/String2D.i"
+	@echo "... src/String2D.s"
 	@echo "... src/VirtualMachine.o"
 	@echo "... src/VirtualMachine.i"
 	@echo "... src/VirtualMachine.s"
