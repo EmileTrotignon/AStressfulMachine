@@ -184,9 +184,9 @@ void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
 {
     gi->vm_memory_win->print_memory_to_win(vm);
     gi->typing_field->attron_char(vm->get_current_operator() - vm->get_program().begin(), COLOR_PAIR(1));
-    gi->typing_field->refresh_();
     gi->typing_win->refresh_();
-    gi->typing_win->getch_();
+    gi->typing_field->refresh_();
+    gi->vm_memory_win->getch_();
 }
 
 void raw_gl_callback(GameLevel *gl, GameTUI *gi)

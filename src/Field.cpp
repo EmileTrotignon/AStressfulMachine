@@ -155,12 +155,11 @@ namespace ncursespp
         {
             if (i + (*y).size() < ch_index)
             {
-                i += (*y).size();
+                i += (*y).size() + 1; // + 1 to account for the '\n'
                 y++;
                 y_pos++;
             } else
             {
-                move_cursor((int) y_pos, (int) (ch_index - i));
                 attron_(attr);
                 mvaddch_((int) y_pos, (int) (ch_index - i), (chtype) (*y)[ch_index - i]);
                 attroff_(attr);
