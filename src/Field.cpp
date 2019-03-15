@@ -116,6 +116,55 @@ namespace ncursespp
         return string(typed_text);
     }
 
+    void Field::attron_char(size_t ch_index, int attr)
+    {
+
+        mvprintstr(0, 0, string(typed_text), 0);
+        size_t i = 0;
+        auto y = typed_text.begin();
+        size_t y_pos = 0;
+        while (y != typed_text.end())
+        {
+            if (i + (*y).size() < ch_index)
+            {
+                i += (*y).size();
+                y++;
+                y_pos++;
+            } else
+            {
+                move_cursor((int) y_pos, (int) (ch_index - i));
+                attron_(attr);
+                mvaddch_((int) y_pos, (int) (ch_index - i), (chtype) (*y)[ch_index - i]);
+                attroff_(attr);
+                return;
+            }
+        }
+        throw invalid_argument("Index out of bounds");
+    }
+
+    void Field::attroff_char(size_t ch_index, int attr)
+    {
+        mvprintstr(0, 0, string(typed_text), 0);
+        size_t i = 0;
+        auto y = typed_text.begin();
+        size_t y_pos = 0;
+        while (y != typed_text.end())
+        {
+            if (i + (*y).size() < ch_index)
+            {
+                i += (*y).size();
+                y++;
+                y_pos++;
+            } else
+            {
+                move_cursor((int) y_pos, (int) (ch_index - i));
+                attroff_(attr);
+                mvaddch_((int) y_pos, (int) (ch_index - i), (chtype) (*y)[ch_index - i]);
+                return;
+            }
+        }
+        throw invalid_argument("Index out of bounds");
+    }
 
 }
 

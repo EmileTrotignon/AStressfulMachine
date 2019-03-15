@@ -175,6 +175,33 @@ a_stressful_machine_lib/fast:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/build
 .PHONY : a_stressful_machine_lib/fast
 
+src/Field.o: src/Field.cpp.o
+
+.PHONY : src/Field.o
+
+# target to build an object file
+src/Field.cpp.o:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.o
+.PHONY : src/Field.cpp.o
+
+src/Field.i: src/Field.cpp.i
+
+.PHONY : src/Field.i
+
+# target to preprocess a source file
+src/Field.cpp.i:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.i
+.PHONY : src/Field.cpp.i
+
+src/Field.s: src/Field.cpp.s
+
+.PHONY : src/Field.s
+
+# target to generate assembly for a file
+src/Field.cpp.s:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.s
+.PHONY : src/Field.cpp.s
+
 src/Game.o: src/Game.cpp.o
 
 .PHONY : src/Game.o
@@ -337,60 +364,6 @@ src/Menu.cpp.s:
 	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Menu.cpp.s
 .PHONY : src/Menu.cpp.s
 
-src/Field.o: src/Field.cpp.o
-
-.PHONY : src/Field.o
-
-# target to build an object file
-src/Field.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.o
-.PHONY : src/Field.cpp.o
-
-src/Field.i: src/Field.cpp.i
-
-.PHONY : src/Field.i
-
-# target to preprocess a source file
-src/Field.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.i
-.PHONY : src/Field.cpp.i
-
-src/Field.s: src/Field.cpp.s
-
-.PHONY : src/Field.s
-
-# target to generate assembly for a file
-src/Field.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.s
-.PHONY : src/Field.cpp.s
-
-src/Window.o: src/Window.cpp.o
-
-.PHONY : src/Window.o
-
-# target to build an object file
-src/Window.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.o
-.PHONY : src/Window.cpp.o
-
-src/Window.i: src/Window.cpp.i
-
-.PHONY : src/Window.i
-
-# target to preprocess a source file
-src/Window.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.i
-.PHONY : src/Window.cpp.i
-
-src/Window.s: src/Window.cpp.s
-
-.PHONY : src/Window.s
-
-# target to generate assembly for a file
-src/Window.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.s
-.PHONY : src/Window.cpp.s
-
 src/SavePicker.o: src/SavePicker.cpp.o
 
 .PHONY : src/SavePicker.o
@@ -534,6 +507,33 @@ src/VirtualMachineProcedure.cpp.s:
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.s
 	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.s
 .PHONY : src/VirtualMachineProcedure.cpp.s
+
+src/Window.o: src/Window.cpp.o
+
+.PHONY : src/Window.o
+
+# target to build an object file
+src/Window.cpp.o:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.o
+.PHONY : src/Window.cpp.o
+
+src/Window.i: src/Window.cpp.i
+
+.PHONY : src/Window.i
+
+# target to preprocess a source file
+src/Window.cpp.i:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.i
+.PHONY : src/Window.cpp.i
+
+src/Window.s: src/Window.cpp.s
+
+.PHONY : src/Window.s
+
+# target to generate assembly for a file
+src/Window.cpp.s:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.s
+.PHONY : src/Window.cpp.s
 
 src/a_stressful_machine_tui.o: src/a_stressful_machine_tui.cpp.o
 
@@ -716,6 +716,9 @@ help:
 	@echo "... unit_test"
 	@echo "... a_stressful_machine_lib"
 	@echo "... edit_cache"
+	@echo "... src/Field.o"
+	@echo "... src/Field.i"
+	@echo "... src/Field.s"
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
@@ -734,12 +737,6 @@ help:
 	@echo "... src/Menu.o"
 	@echo "... src/Menu.i"
 	@echo "... src/Menu.s"
-	@echo "... src/Field.o"
-	@echo "... src/Field.i"
-	@echo "... src/Field.s"
-	@echo "... src/Window.o"
-	@echo "... src/Window.i"
-	@echo "... src/Window.s"
 	@echo "... src/SavePicker.o"
 	@echo "... src/SavePicker.i"
 	@echo "... src/SavePicker.s"
@@ -755,6 +752,9 @@ help:
 	@echo "... src/VirtualMachineProcedure.o"
 	@echo "... src/VirtualMachineProcedure.i"
 	@echo "... src/VirtualMachineProcedure.s"
+	@echo "... src/Window.o"
+	@echo "... src/Window.i"
+	@echo "... src/Window.s"
 	@echo "... src/a_stressful_machine_tui.o"
 	@echo "... src/a_stressful_machine_tui.i"
 	@echo "... src/a_stressful_machine_tui.s"

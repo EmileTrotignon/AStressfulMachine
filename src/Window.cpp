@@ -208,7 +208,7 @@ namespace ncursespp
 
     void Window::print_input_to_win(GameLevel *gl)
     {
-        clear();
+        //clear();
         mvprintstr(2, 2, gl->get_input_as_string());
         refresh_();
     }

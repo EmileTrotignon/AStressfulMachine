@@ -7,6 +7,40 @@
 #include "VirtualMachine.h"
 #include "VirtualMachineProcedure.h"
 
+#define SYNTAX_PTR_INCR       '>'
+#define SYNTAX_PTR_DINCR      '<'
+#define SYNTAX_VAL_INCR       '+'
+#define SYNTAX_VAL_DINCR      '-'
+#define SYNTAX_VAL_OUT        '.'
+#define SYNTAX_CHAR_OUT       ':'
+#define SYNTAX_VAL_IN         ','
+#define SYNTAX_OPEN_GOTO      '['
+#define SYNTAX_CLOSE_GOTO     ']'
+#define SYNTAX_GOTO_MARKER    '|'
+#define SYNTAX_COND_GREATER   '>'
+#define SYNTAX_COND_LESSER    '<'
+#define SYNTAX_COND_EQUAL     '='
+#define SYNTAX_COND_DIFF      '/'
+#define SYNTAX_PTR_JUMP       '^'
+#define SYNTAX_PTR_RESET      '#'
+#define SYNTAX_VAL_RESET      '_'
+#define SYNTAX_DO_N_TIME      '*'
+#define SYNTAX_OPEN_PROC      '{'
+#define SYNTAX_CLOSE_PROC     '}'
+#define SYNTAX_TERMINATE_PROC '!'
+#define SYNTAX_FILE_MARKER    '~'
+
+bool is_operator(char ch)
+{
+    return (ch == SYNTAX_CHAR_OUT || ch == SYNTAX_CLOSE_GOTO || ch == SYNTAX_CLOSE_PROC || ch == SYNTAX_COND_DIFF ||
+            ch == SYNTAX_COND_EQUAL || ch == SYNTAX_COND_GREATER || ch == SYNTAX_COND_LESSER ||
+            ch == SYNTAX_DO_N_TIME ||
+            ch == SYNTAX_FILE_MARKER || ch == SYNTAX_GOTO_MARKER || ch == SYNTAX_OPEN_GOTO || ch == SYNTAX_OPEN_PROC ||
+            ch == SYNTAX_PTR_DINCR || ch == SYNTAX_PTR_INCR || ch == SYNTAX_PTR_JUMP || ch == SYNTAX_PTR_RESET ||
+            ch == SYNTAX_TERMINATE_PROC || ch == SYNTAX_VAL_DINCR || ch == SYNTAX_VAL_IN || ch == SYNTAX_VAL_INCR ||
+            ch == SYNTAX_VAL_OUT || ch == SYNTAX_VAL_RESET);
+}
+
 VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *out_) :
         program(program_), in(in_), out(out_)
 {
@@ -318,6 +352,7 @@ void VirtualMachine::error_handler(const VirtualMachineException &error)
 void VirtualMachine::do_one_iteration(bool advance)
 {
     if (status != STATUS_RUNNING) return;
+    while (current_operator < program.end() && !is_operator(*current_operator)) current_operator++;
     if (current_operator >= program.end())
     {
         if (verbose) message(MESSAGE_FINISHED);

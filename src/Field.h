@@ -26,7 +26,9 @@ namespace ncursespp
 
         string get_typed_text();
 
-        void color_char(size_t ch_index, int attr);
+        void attron_char(size_t ch_index, int attr);
+
+        void attroff_char(size_t ch_index, int attr);
     };
 }
 

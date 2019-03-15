@@ -183,12 +183,14 @@ void GameTUI::play()
 void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
 {
     gi->vm_memory_win->print_memory_to_win(vm);
-    gi->vm_program_win->print_program_to_win(vm);
-    getch();
+    gi->typing_field->attron_char(vm->get_current_operator() - vm->get_program().begin(), COLOR_PAIR(1));
+    gi->typing_field->refresh_();
+    gi->typing_win->refresh_();
+    //getch();
 }
 
 void raw_gl_callback(GameLevel *gl, GameTUI *gi)
 {
     gi->vm_input_win->print_input_to_win(gl);
-    //getch();
+    getch();
 }
