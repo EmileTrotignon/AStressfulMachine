@@ -19,18 +19,14 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            vm_program_win(nullptr),
                                                                            level_picking_win(nullptr),
                                                                            save_picking_win(nullptr),
-                                                                           typing_cursor_x(0),
-                                                                           typing_pos_y(0)
+                                                                           typing_field(nullptr)
 {
-    typed_text = String2D();
-    typed_text.push_back("");
-    typing_cursor_y = typed_text.begin();
-
 }
 
 GameTUI::~GameTUI()
 {
     delete typing_win;
+    delete typing_field;
     delete instruction_win;
     delete vm_input_win;
     delete vm_output_win;
@@ -89,7 +85,8 @@ void GameTUI::play_level()
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();
     typing_win = new NcursesWindow(h / 2, w / 2, 0, w / 2, true);
-    typing_win->keypad_on();
+    typing_field = new NcursesTypingField(KEY_F(5), typing_win->get_height() - 4, typing_win->get_width() - 4,
+                                          typing_win->get_starty() + 2, typing_win->get_startx() + 2);
 
     instruction_win = new NcursesWindow(h / 2, w / 2, 0, 0, true);
     fill_instructions();
@@ -117,102 +114,14 @@ void GameTUI::fill_instructions()
 
 void GameTUI::handle_typing()
 {
-    /* char *(FIELD *field, int buffer_index); */
-    curs_set(1);
-    int ch;
-    while ((ch = typing_win->getch_()) != KEY_F(5))
-    {
-        switch (ch)
-        {
-            case KEY_RIGHT:
-                if (typing_cursor_x < (*typing_cursor_y).size())
-                {
-                    typing_cursor_x++;
-                } else if (typing_cursor_y != --typed_text.end())
-                {
-                    typing_cursor_y++;
-                    typing_pos_y++;
-                    typing_cursor_x = 0;
-                }
-                break;
 
-            case KEY_LEFT:
-                if (typing_cursor_x > 0)
-                {
-                    typing_cursor_x--;
-                } else if (typing_cursor_y != typed_text.begin())
-                {
-                    typing_cursor_y--;
-                    typing_pos_y--;
-                    typing_cursor_x = (*typing_cursor_y).size();
-                }
-                break;
-
-            case KEY_BACKSPACE:
-                if (typing_cursor_x != 0)
-                {
-                    (*typing_cursor_y).erase(typing_cursor_x - 1, 1);
-                    typing_cursor_x--;
-                } else if (typing_cursor_y != typed_text.begin() &&
-                           (*typing_cursor_y).size() + (*(--typing_cursor_y)).size() < typing_win->get_width() - 4)
-                {
-                    auto eraser = ++typing_cursor_y;
-                    typing_cursor_y--;
-                    typing_pos_y--;
-                    string buff = (*eraser);
-                    typed_text.erase(eraser);
-                    (*typing_cursor_y) += buff;
-
-                }
-                break;
-
-            case KEY_DC:
-                if (typing_cursor_x != (*typing_cursor_y).size())
-                {
-                    (*typing_cursor_y).erase(typing_cursor_x, 1);
-                } // Todo : add an else if clause here for multiline support
-                break;
-
-            case '\n':
-                if (typed_text.size() < typing_win->get_height() - 4)
-                {
-                    typing_cursor_y++;
-                    typed_text.insert(typing_cursor_y, "");
-                    typing_cursor_y--;
-                    typing_pos_y++;
-                    typing_cursor_x = 0;
-                }
-                break;
-
-            default:
-                if (isprint(ch) && typing_cursor_x < typing_win->get_width() - 4)
-                {
-                    //if (cursor_x - typed_text.begin() > 15) getch();
-
-                    //if (cursor_x - typed_text.begin() >= typed_text.capacity()) typed_text.resize(typed_text.capacity() * 2);
-                    (*typing_cursor_y).insert((*typing_cursor_y).begin() + typing_cursor_x, (char) ch);
-
-                    //if (cursor_x - typed_text.begin() > 15) getch();
-                    typing_cursor_x++;
-                }
-                break;
-
-        }
-        typing_win->move_cursor(2, 2);
-        typing_win->clear();
-        typing_win->mvprintstr(2, 2, string(typed_text), 1);
-        typing_win->refresh();
-        typing_win->move_cursor((int) (2 + typing_pos_y), (int) (2 + (typing_cursor_x)));
-
-
-    }
-    curs_set(0);
+    typing_field->type();
     bool b = false;
     try
     {
         vm_callback = bind2nd(function<void(VirtualMachine *, GameTUI *)>(raw_vm_callback), this);
         gl_callback = bind2nd(function<void(GameLevel *, GameTUI *)>(raw_gl_callback), this);
-        b = game_sequence->get_current_level()->attempt(string(typed_text), vm_callback, gl_callback);
+        b = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(), vm_callback, gl_callback);
     } catch (const VirtualMachineException &e)
     {
 

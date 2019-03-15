@@ -27,7 +27,7 @@ namespace ncursespp
 
         NcursesWindow();
 
-        NcursesWindow(int height, int width, int startx, int starty, bool boxing = false);
+        NcursesWindow(int height, int width, int starty, int startx, bool boxing = false);
 
         explicit NcursesWindow(WINDOW *window);
 
@@ -61,9 +61,13 @@ namespace ncursespp
 
         void clear();
 
-        int get_width();
+        int get_width() const;
 
-        int get_height();
+        int get_height() const;
+
+        int get_starty() const;
+
+        int get_startx() const;
 
         void color_on(int color_id);
 

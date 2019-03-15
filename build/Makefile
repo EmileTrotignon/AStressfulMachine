@@ -337,6 +337,33 @@ src/NcursesMenu.cpp.s:
 	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesMenu.cpp.s
 .PHONY : src/NcursesMenu.cpp.s
 
+src/NcursesTypingField.o: src/NcursesTypingField.cpp.o
+
+.PHONY : src/NcursesTypingField.o
+
+# target to build an object file
+src/NcursesTypingField.cpp.o:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesTypingField.cpp.o
+.PHONY : src/NcursesTypingField.cpp.o
+
+src/NcursesTypingField.i: src/NcursesTypingField.cpp.i
+
+.PHONY : src/NcursesTypingField.i
+
+# target to preprocess a source file
+src/NcursesTypingField.cpp.i:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesTypingField.cpp.i
+.PHONY : src/NcursesTypingField.cpp.i
+
+src/NcursesTypingField.s: src/NcursesTypingField.cpp.s
+
+.PHONY : src/NcursesTypingField.s
+
+# target to generate assembly for a file
+src/NcursesTypingField.cpp.s:
+	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/NcursesTypingField.cpp.s
+.PHONY : src/NcursesTypingField.cpp.s
+
 src/NcursesWindow.o: src/NcursesWindow.cpp.o
 
 .PHONY : src/NcursesWindow.o
@@ -707,6 +734,9 @@ help:
 	@echo "... src/NcursesMenu.o"
 	@echo "... src/NcursesMenu.i"
 	@echo "... src/NcursesMenu.s"
+	@echo "... src/NcursesTypingField.o"
+	@echo "... src/NcursesTypingField.i"
+	@echo "... src/NcursesTypingField.s"
 	@echo "... src/NcursesWindow.o"
 	@echo "... src/NcursesWindow.i"
 	@echo "... src/NcursesWindow.s"

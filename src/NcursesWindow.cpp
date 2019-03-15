@@ -132,14 +132,24 @@ namespace ncursespp
 
     }
 
-    int NcursesWindow::get_height()
+    int NcursesWindow::get_height() const
     {
         return height;
     }
 
-    int NcursesWindow::get_width()
+    int NcursesWindow::get_width() const
     {
         return width;
+    }
+
+    int NcursesWindow::get_starty() const
+    {
+        return starty;
+    }
+
+    int NcursesWindow::get_startx() const
+    {
+        return startx;
     }
 
     void NcursesWindow::color_on(int color_id)

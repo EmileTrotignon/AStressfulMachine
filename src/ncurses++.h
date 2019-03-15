@@ -9,6 +9,7 @@
 
 #include "NcursesWindow.h"
 #include "NcursesMenu.h"
+#include "NcursesTypingField.h"
 
 namespace ncursespp
 {

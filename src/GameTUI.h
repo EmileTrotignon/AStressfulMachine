@@ -28,13 +28,9 @@ private:
     NcursesWindow *vm_program_win;
     NcursesWindow *level_picking_win;
     NcursesWindow *save_picking_win;
+    NcursesTypingField *typing_field;
     function<void(VirtualMachine *)> vm_callback;
     function<void(GameLevel *)> gl_callback;
-    String2D typed_text;
-    size_t typing_cursor_x;
-    String2D::iterator typing_cursor_y;
-    size_t typing_pos_y;
-
 
     void pick_saves();
 
