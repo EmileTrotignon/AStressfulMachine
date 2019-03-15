@@ -20,10 +20,12 @@ add_library(a_stressful_machine_lib
 
 target_link_libraries(a_stressful_machine_lib libstdc++fs.a)
 
-add_library(ncurses_wrapper
+add_library(ncurses++
+        src/ncurses++.cpp src/ncurses++.h
         src/NcursesWindow.cpp src/NcursesWindow.h
         src/NcursesMenu.cpp src/NcursesMenu.h)
-target_link_libraries(ncurses_wrapper ${CURSES_LIBRARIES})
+
+target_link_libraries(ncurses++ ${CURSES_LIBRARIES})
 
 add_executable(interpreter
         src/interpreter.cpp
@@ -35,17 +37,15 @@ target_link_libraries(interpreter libstdc++fs.a)
 add_executable(a_stressful_machine_tui
         src/a_stressful_machine_tui.cpp
         src/GameTUI.cpp src/GameTUI.h
-        src/ncurses_utilities.cpp src/ncurses_utilities.h
         )
 
 
 target_link_libraries(a_stressful_machine_tui a_stressful_machine_lib)
 target_link_libraries(a_stressful_machine_tui libstdc++fs.a)
 target_link_libraries(a_stressful_machine_tui ${CURSES_LIBRARIES})
-target_link_libraries(a_stressful_machine_tui ncurses_wrapper)
+target_link_libraries(a_stressful_machine_tui ncurses++)
 
 add_executable(unit_test
-
         src/ncurses_utilities.cpp src/ncurses_utilities.h
         src/test.cpp)
 

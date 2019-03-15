@@ -21,4 +21,6 @@ string file_to_string(const string &filename);
 
 vector<string> filesystem_ls(const string &dir);
 
+size_t size_of_longest_string(const vector<string> &vs);
+
 #endif //ASTRESSFULMACHINE_UTILITIES_H

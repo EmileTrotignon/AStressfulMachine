@@ -7,18 +7,20 @@
 
 #include "NcursesWindow.h"
 
-class NcursesMenu : private NcursesWindow
+namespace ncursespp
 {
-private:
-    const vector<string> options;
+    class NcursesMenu : protected NcursesWindow
+    {
+    private:
+        const vector<string> options;
 
-    int selected_item;
+        int selected_item;
 
-public:
-    NcursesMenu(const vector<string> &options, int height, int width, int startx, int starty, bool boxing = false);
+    public:
+        NcursesMenu(const vector<string> &options, int height, int width, int startx, int starty, bool boxing = false);
 
-    int get_selected_item();
-};
-
+        int get_selected_item();
+    };
+}
 
 #endif //A_STRESSFUL_MACHINE_NCURSESMENU_H

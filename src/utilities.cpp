@@ -7,6 +7,7 @@
 #include <filesystem>
 #include "utilities.h"
 #include <ncurses.h>
+#include <algorithm>
 
 
 using namespace std;
@@ -75,5 +76,14 @@ vector<string> filesystem_ls(const string &dir)
         saves.push_back(entry.path().filename());
 
     return saves;
+}
 
+bool comp_str(const string &s1, const string &s2)
+{
+    return s1.size() < s2.size();
+}
+
+size_t size_of_longest_string(const vector<string> &vs)
+{
+    return max_element(vs.begin(), vs.end(), comp_str)->size();
 }

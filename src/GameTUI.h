@@ -11,7 +11,9 @@
 #include <functional>
 
 #include "Game.h"
-#include "NcursesWindow.h"
+#include "ncurses++.h"
+
+using namespace ncursespp;
 
 class GameTUI : public Game
 {
@@ -23,6 +25,8 @@ private:
     NcursesWindow *vm_output_win;
     NcursesWindow *vm_memory_win;
     NcursesWindow *vm_program_win;
+    NcursesWindow *level_picking_win;
+    NcursesWindow *save_picking_win;
     function<void(VirtualMachine *)> vm_callback;
     function<void(GameLevel *)> gl_callback;
     string typed_text;

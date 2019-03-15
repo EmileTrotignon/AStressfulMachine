@@ -8,66 +8,77 @@
 #include <ncurses.h>
 #include "ncurses_utilities.h"
 
-class NcursesWindow
+namespace ncursespp
 {
+    class NcursesWindow
+    {
 
-private:
+    private:
 
-    int height;
-    int width;
-    int startx;
-    int starty;
-    bool boxing;
-    WINDOW *window;
+        int height;
+        int width;
+        int startx;
+        int starty;
+        bool boxing;
+        WINDOW *window;
 
-public:
+    public:
 
-    NcursesWindow(int height, int width, int startx, int starty, bool boxing = false);
 
-    ~NcursesWindow();
+        NcursesWindow();
 
-    void mvprintw(int y, int x, const char *s, ...);
+        NcursesWindow(int height, int width, int startx, int starty, bool boxing = false);
 
-    void printw(const char *s, ...);
+        explicit NcursesWindow(WINDOW *window);
 
-    void mvprintstr(int y, int x, string str);
+        ~NcursesWindow();
 
-    void printstr(const string &str);
+        void mvprintw(int y, int x, const char *s, ...);
 
-    void mvaddch_(int y, int x, chtype ch);
+        void printw(const char *s, ...);
 
-    int getch_();
+        void mvprintstr(int y, int x, string str, int border_size_x = 0);
 
-    void sbox();
+        void printstr(const string &str);
 
-    void refresh();
+        void printstr_centered(int y, const string &s);
 
-    void move_cursor(int y, int x);
+        void printstr_in_middle(const string &s);
 
-    void keypad_on();
+        void mvaddch_(int y, int x, chtype ch);
 
-    void clear_from_cursor_to_eol();
+        int getch_();
 
-    void clear();
+        void sbox();
 
-    int get_width();
+        void refresh();
 
-    int get_height();
+        void move_cursor(int y, int x);
 
-    void color_on(int color_id);
+        void keypad_on();
 
-    void color_off(int color_id);
+        void clear_from_cursor_to_eol();
 
-    void attron_(int attr);
+        void clear();
 
-    void attroff_(int attr);
+        int get_width();
 
-    void print_program_to_win(VirtualMachine *vm);
+        int get_height();
 
-    void print_memory_to_win(VirtualMachine *vm);
+        void color_on(int color_id);
 
-    void print_input_to_win(GameLevel *gl);
-};
+        void color_off(int color_id);
 
+        void attron_(int attr);
+
+        void attroff_(int attr);
+
+        void print_program_to_win(VirtualMachine *vm);
+
+        void print_memory_to_win(VirtualMachine *vm);
+
+        void print_input_to_win(GameLevel *gl);
+    };
+}
 
 #endif //A_STRESSFUL_MACHINE_NCURSESWINDOW_H
