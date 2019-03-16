@@ -20,16 +20,13 @@ class GameTUI : public Game
 {
 private:
 
-    Window *typing_win;
-    Window *instruction_win;
-    Window *vm_input_win;
-    Window *vm_output_win;
-    Window *vm_memory_win;
-    Window *vm_program_win;
-    Window *level_picking_win;
-    Window *save_picking_win;
-    Window *success_menu_win;
-    Field *typing_field;
+    Window typing_win;
+    Window instruction_win;
+    Window vm_input_win;
+    Window vm_output_win;
+    Window vm_memory_win;
+    Window vm_program_win;
+    Field typing_field;
     function<void(VirtualMachine *)> vm_callback;
     function<void(GameLevel *)> gl_callback;
 
@@ -49,7 +46,7 @@ public:
 
     GameTUI(const string &saves_dir, const string &gamefiles_dir);
 
-    ~GameTUI();
+    ~GameTUI() = default;
 
     void play() override;
 

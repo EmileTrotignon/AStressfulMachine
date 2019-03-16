@@ -12,6 +12,7 @@ namespace ncursespp
 {
     class Window
     {
+    private:
 
     protected:
 
@@ -26,6 +27,8 @@ namespace ncursespp
 
 
         Window();
+
+        Window(const Window &win) = delete;
 
         Window(int height, int width, int starty, int startx, bool boxing = false);
 
@@ -60,6 +63,8 @@ namespace ncursespp
         void clear_from_cursor_to_eol();
 
         void clear();
+
+        WINDOW *subwin(int height, int width, int starty, int startx);
 
         int get_width() const;
 

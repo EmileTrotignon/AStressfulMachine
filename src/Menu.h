@@ -19,7 +19,7 @@ namespace ncursespp
     public:
         Menu(const vector<string> &options, int height, int width, int startx, int starty, bool boxing = false);
 
-        Menu(const vector<string> &options, Window *master_win, const string &message);
+        Menu(const vector<string> &options, Window &master_win, const string &message);
 
         int select_item();
     };

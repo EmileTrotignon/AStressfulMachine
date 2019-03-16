@@ -6,6 +6,11 @@
 
 namespace ncursespp
 {
+
+    Field::Field() : Window(), typing_pos_y(0), typing_cursor_x(0)
+    {
+    }
+
     Field::Field(int validate_key_, int height_, int width_, int starty_, int startx_,
                                            bool boxing_) :
             Window(height_, width_, starty_, startx_, boxing_),
