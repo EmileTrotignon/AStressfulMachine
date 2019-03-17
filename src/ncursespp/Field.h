@@ -17,12 +17,12 @@ namespace ncursespp
         size_t typing_cursor_x;
         String2D::iterator typing_cursor_y;
         size_t typing_pos_y;
-        int validate_key;
+        const vector<int> validate_keys;
     public:
 
-        Field(int validate_key, int height, int width, int starty, int startx, bool boxing = false);
+        Field(const vector<int> &validate_keys, int height, int width, int starty, int startx, bool boxing = false);
 
-        void type();
+        int type();
 
         string get_typed_text();
 

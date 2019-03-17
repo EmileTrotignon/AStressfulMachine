@@ -29,8 +29,6 @@ private:
     Window *save_picking_win;
     Window *success_menu_win;
     Field *typing_field;
-    function<void(VirtualMachine *)> vm_callback;
-    function<void(GameLevel *)> gl_callback;
 
     void pick_saves();
 
@@ -52,14 +50,10 @@ public:
 
     void play() override;
 
-    friend void raw_vm_callback(VirtualMachine *vm, GameTUI *gi);
+    friend void raw_vm_callback(VirtualMachine *, GameTUI *, bool);
 
-    friend void raw_gl_callback(GameLevel *gl, GameTUI *gi);
+    friend void raw_gl_callback(GameLevel *, GameTUI *, bool);
 
 };
-
-void raw_vm_callback(VirtualMachine *vm, GameTUI *gi);
-
-void raw_gl_callback(GameLevel *gl, GameTUI *gi);
 
 #endif //A_STRESSFUL_MACHINE_GAMETUI_H

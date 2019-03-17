@@ -2,16 +2,18 @@
 // Created by emile on 15/03/19.
 //
 
+#include <vector>
+#include <algorithm>
 #include "Field.h"
 
 namespace ncursespp
 {
-    Field::Field(int validate_key_, int height_, int width_, int starty_, int startx_,
-                                           bool boxing_) :
+    Field::Field(const vector<int> &validate_keys_, int height_, int width_, int starty_, int startx_,
+                 bool boxing_) :
             Window(height_, width_, starty_, startx_, boxing_),
             typing_cursor_x(0),
             typing_pos_y(0),
-            validate_key(validate_key_)
+            validate_keys(validate_keys_)
     {
         keypad_on();
         typed_text = String2D();
@@ -19,13 +21,13 @@ namespace ncursespp
         typing_cursor_y = typed_text.begin();
     }
 
-    void Field::type()
+    int Field::type()
     {
         curs_set(1);
         mvprintstr(0, 0, string(typed_text), 0);
         refresh_();
         int ch;
-        while ((ch = getch_()) != validate_key)
+        while (find(validate_keys.begin(), validate_keys.end(), (ch = getch_())) == validate_keys.end())
         {
             switch (ch)
             {
@@ -177,6 +179,7 @@ namespace ncursespp
         }
         curs_set(0);
         refresh_();
+        return ch;
     }
 
     string Field::get_typed_text()
