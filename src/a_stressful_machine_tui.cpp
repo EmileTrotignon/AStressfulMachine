@@ -7,7 +7,7 @@
 int main()
 {
     GameTUI game("data/saves", "data/gamefiles");
-    cout << "## Running a_stressful_machine_tui: successfully created game" << endl;
+    cout << "coucou" << endl;
     game.play();
     return 0;
 }
