@@ -6,7 +6,6 @@
 
 int main()
 {
-    initscr_();
     GameTUI game("data/saves", "data/gamefiles");
     cout << "## Running a_stressful_machine_tui: successfully created game" << endl;
     game.play();

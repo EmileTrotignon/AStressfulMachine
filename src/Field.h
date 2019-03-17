@@ -18,10 +18,7 @@ namespace ncursespp
         String2D::iterator typing_cursor_y;
         size_t typing_pos_y;
         int validate_key;
-
     public:
-
-        Field();
 
         Field(int validate_key, int height, int width, int starty, int startx, bool boxing = false);
 

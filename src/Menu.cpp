@@ -13,16 +13,16 @@ namespace ncursespp
 
     }
 
-    Menu::Menu(const vector<string> &options_, Window &master_win, const string &message) :
+    Menu::Menu(const vector<string> &options_, Window *master_win, const string &message) :
             options(options_)
     {
         width = (int) size_of_longest_string(options) + 8;
         height = (int) options.size() + 2;
-        starty = master_win.get_height() / 2 - height / 2;
-        startx = master_win.get_width() / 2 - width / 2;
-        window = master_win.subwin(height, width, starty, startx);
-        master_win.printstr_centered(starty / 2, message);
-        master_win.refresh_();
+        starty = master_win->get_height() / 2 - height / 2;
+        startx = master_win->get_width() / 2 - width / 2;
+        window = newwin(height, width, starty, startx);
+        master_win->printstr_centered(starty / 2, message);
+        master_win->refresh_();
         boxing = true;
         keypad_on();
     }

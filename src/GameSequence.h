@@ -27,7 +27,6 @@ private:
     void load_from_save();
 
 public:
-
     GameSequence(const string &savename, const string &gamefiles_dir);
 
     void select_level(const string &level);
