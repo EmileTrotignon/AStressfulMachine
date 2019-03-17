@@ -126,9 +126,9 @@ namespace ncursespp
         wclrtoeol(window);
     }
 
-    void Window::clear()
+    void Window::erase()
     {
-        wclear(window);
+        werase(window);
     }
 
     int Window::get_height() const

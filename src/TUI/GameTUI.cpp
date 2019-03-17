@@ -90,7 +90,6 @@ void GameTUI::pick_level()
 
 void GameTUI::play_level()
 {
-
     typing_win->refresh_();
     instruction_win->refresh_();
     vm_input_win->refresh_();
@@ -109,13 +108,17 @@ void GameTUI::fill_instructions()
 void GameTUI::handle_typing()
 {
     //getch();
+    vm_callback = bind2nd(function<void(VirtualMachine *, GameTUI *)>(raw_vm_callback), this);
+    gl_callback = bind2nd(function<void(GameLevel *, GameTUI *)>(raw_gl_callback), this);
+    gl_callback(game_sequence->get_current_level());
     typing_field->type();
-    bool b = false;
+    bool b;
     try
     {
-        vm_callback = bind2nd(function<void(VirtualMachine *, GameTUI *)>(raw_vm_callback), this);
-        gl_callback = bind2nd(function<void(GameLevel *, GameTUI *)>(raw_gl_callback), this);
+
         b = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(), vm_callback, gl_callback);
+        vm_memory_win->erase();
+        vm_memory_win->refresh_();
     } catch (const VirtualMachineException &e)
     {
         b = false;
@@ -182,7 +185,7 @@ void GameTUI::play()
 
 void print_memory_to_win(Window &win, VirtualMachine *vm)
 {
-    win.clear();
+    win.erase();
     const vector<int> &memory = vm->get_memory();
     win.move_cursor(win.get_height() / 2, 2);
     for (auto i = memory.begin(); i < memory.end(); i++)
@@ -198,7 +201,7 @@ void print_memory_to_win(Window &win, VirtualMachine *vm)
 
 void print_input_to_win(Window &win, GameLevel *gl)
 {
-    clear();
+    win.erase();
     win.mvprintstr(2, 2, gl->get_input_as_string());
     win.refresh_();
 }

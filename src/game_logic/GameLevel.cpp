@@ -6,9 +6,9 @@
 
 using namespace std;
 
-GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, VirtualMachine *vm_attempt_)
-        : gamefiles_dir(gamefiles_dir_),
-          level_name(level_name_), vm_attempt(vm_attempt_)
+GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, VirtualMachine *vm_attempt_) :
+        gamefiles_dir(gamefiles_dir_),
+        level_name(level_name_), vm_attempt(vm_attempt_)
 {
     solution = file_to_string(gamefiles_dir + "/levels/" + level_name + "/solution");
     instructions = file_to_string(gamefiles_dir + "/levels/" + level_name + "/instructions");

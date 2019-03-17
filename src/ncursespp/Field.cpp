@@ -170,7 +170,7 @@ namespace ncursespp
                     break;
 
             }
-            clear();
+            erase();
             mvprintstr(0, 0, string(typed_text), 0);
             refresh_();
             move_cursor((int) typing_pos_y, (int) typing_cursor_x);

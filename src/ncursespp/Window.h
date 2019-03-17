@@ -61,7 +61,7 @@ namespace ncursespp
 
         void clear_from_cursor_to_eol();
 
-        void clear();
+        void erase();
 
         int get_width() const;
 
