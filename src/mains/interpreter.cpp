@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "VirtualMachine.h"
+#include "../virtual_machine/VirtualMachine.h"
 
 using namespace std;
 

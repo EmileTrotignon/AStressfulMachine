@@ -111,30 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ncurses++
+# Target rules for targets named unit_test
 
 # Build rule for target.
-ncurses++: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ncurses++
-.PHONY : ncurses++
+unit_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 unit_test
+.PHONY : unit_test
 
 # fast build rule for target.
-ncurses++/fast:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/build
-.PHONY : ncurses++/fast
-
-#=============================================================================
-# Target rules for targets named interpreter
-
-# Build rule for target.
-interpreter: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 interpreter
-.PHONY : interpreter
-
-# fast build rule for target.
-interpreter/fast:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/build
-.PHONY : interpreter/fast
+unit_test/fast:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/build
+.PHONY : unit_test/fast
 
 #=============================================================================
 # Target rules for targets named a_stressful_machine_tui
@@ -150,558 +137,501 @@ a_stressful_machine_tui/fast:
 .PHONY : a_stressful_machine_tui/fast
 
 #=============================================================================
-# Target rules for targets named unit_test
+# Target rules for targets named ncursespp
 
 # Build rule for target.
-unit_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 unit_test
-.PHONY : unit_test
+ncursespp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ncursespp
+.PHONY : ncursespp
 
 # fast build rule for target.
-unit_test/fast:
-	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/build
-.PHONY : unit_test/fast
+ncursespp/fast:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/build
+.PHONY : ncursespp/fast
 
 #=============================================================================
-# Target rules for targets named a_stressful_machine_lib
+# Target rules for targets named interpreter
 
 # Build rule for target.
-a_stressful_machine_lib: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 a_stressful_machine_lib
-.PHONY : a_stressful_machine_lib
+interpreter: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 interpreter
+.PHONY : interpreter
 
 # fast build rule for target.
-a_stressful_machine_lib/fast:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/build
-.PHONY : a_stressful_machine_lib/fast
+interpreter/fast:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/build
+.PHONY : interpreter/fast
 
-src/Field.o: src/Field.cpp.o
+src/TUI/GameTUI.o: src/TUI/GameTUI.cpp.o
 
-.PHONY : src/Field.o
-
-# target to build an object file
-src/Field.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.o
-.PHONY : src/Field.cpp.o
-
-src/Field.i: src/Field.cpp.i
-
-.PHONY : src/Field.i
-
-# target to preprocess a source file
-src/Field.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.i
-.PHONY : src/Field.cpp.i
-
-src/Field.s: src/Field.cpp.s
-
-.PHONY : src/Field.s
-
-# target to generate assembly for a file
-src/Field.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Field.cpp.s
-.PHONY : src/Field.cpp.s
-
-src/Game.o: src/Game.cpp.o
-
-.PHONY : src/Game.o
+.PHONY : src/TUI/GameTUI.o
 
 # target to build an object file
-src/Game.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/Game.cpp.o
-.PHONY : src/Game.cpp.o
+src/TUI/GameTUI.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/TUI/GameTUI.cpp.o
+.PHONY : src/TUI/GameTUI.cpp.o
 
-src/Game.i: src/Game.cpp.i
+src/TUI/GameTUI.i: src/TUI/GameTUI.cpp.i
 
-.PHONY : src/Game.i
+.PHONY : src/TUI/GameTUI.i
 
 # target to preprocess a source file
-src/Game.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/Game.cpp.i
-.PHONY : src/Game.cpp.i
+src/TUI/GameTUI.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/TUI/GameTUI.cpp.i
+.PHONY : src/TUI/GameTUI.cpp.i
 
-src/Game.s: src/Game.cpp.s
+src/TUI/GameTUI.s: src/TUI/GameTUI.cpp.s
 
-.PHONY : src/Game.s
+.PHONY : src/TUI/GameTUI.s
 
 # target to generate assembly for a file
-src/Game.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/Game.cpp.s
-.PHONY : src/Game.cpp.s
+src/TUI/GameTUI.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/TUI/GameTUI.cpp.s
+.PHONY : src/TUI/GameTUI.cpp.s
 
-src/GameGUI.o: src/GameGUI.cpp.o
+src/file_utilities.o: src/file_utilities.cpp.o
 
-.PHONY : src/GameGUI.o
+.PHONY : src/file_utilities.o
 
 # target to build an object file
-src/GameGUI.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameGUI.cpp.o
-.PHONY : src/GameGUI.cpp.o
+src/file_utilities.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities.cpp.o
+.PHONY : src/file_utilities.cpp.o
 
-src/GameGUI.i: src/GameGUI.cpp.i
+src/file_utilities.i: src/file_utilities.cpp.i
 
-.PHONY : src/GameGUI.i
+.PHONY : src/file_utilities.i
 
 # target to preprocess a source file
-src/GameGUI.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameGUI.cpp.i
-.PHONY : src/GameGUI.cpp.i
+src/file_utilities.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities.cpp.i
+.PHONY : src/file_utilities.cpp.i
 
-src/GameGUI.s: src/GameGUI.cpp.s
+src/file_utilities.s: src/file_utilities.cpp.s
 
-.PHONY : src/GameGUI.s
+.PHONY : src/file_utilities.s
 
 # target to generate assembly for a file
-src/GameGUI.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameGUI.cpp.s
-.PHONY : src/GameGUI.cpp.s
+src/file_utilities.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities.cpp.s
+.PHONY : src/file_utilities.cpp.s
 
-src/GameLevel.o: src/GameLevel.cpp.o
+src/game_logic/Game.o: src/game_logic/Game.cpp.o
 
-.PHONY : src/GameLevel.o
+.PHONY : src/game_logic/Game.o
 
 # target to build an object file
-src/GameLevel.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameLevel.cpp.o
-.PHONY : src/GameLevel.cpp.o
+src/game_logic/Game.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/Game.cpp.o
+.PHONY : src/game_logic/Game.cpp.o
 
-src/GameLevel.i: src/GameLevel.cpp.i
+src/game_logic/Game.i: src/game_logic/Game.cpp.i
 
-.PHONY : src/GameLevel.i
+.PHONY : src/game_logic/Game.i
 
 # target to preprocess a source file
-src/GameLevel.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameLevel.cpp.i
-.PHONY : src/GameLevel.cpp.i
+src/game_logic/Game.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/Game.cpp.i
+.PHONY : src/game_logic/Game.cpp.i
 
-src/GameLevel.s: src/GameLevel.cpp.s
+src/game_logic/Game.s: src/game_logic/Game.cpp.s
 
-.PHONY : src/GameLevel.s
+.PHONY : src/game_logic/Game.s
 
 # target to generate assembly for a file
-src/GameLevel.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameLevel.cpp.s
-.PHONY : src/GameLevel.cpp.s
+src/game_logic/Game.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/Game.cpp.s
+.PHONY : src/game_logic/Game.cpp.s
 
-src/GameSequence.o: src/GameSequence.cpp.o
+src/game_logic/GameLevel.o: src/game_logic/GameLevel.cpp.o
 
-.PHONY : src/GameSequence.o
+.PHONY : src/game_logic/GameLevel.o
 
 # target to build an object file
-src/GameSequence.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameSequence.cpp.o
-.PHONY : src/GameSequence.cpp.o
+src/game_logic/GameLevel.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/GameLevel.cpp.o
+.PHONY : src/game_logic/GameLevel.cpp.o
 
-src/GameSequence.i: src/GameSequence.cpp.i
+src/game_logic/GameLevel.i: src/game_logic/GameLevel.cpp.i
 
-.PHONY : src/GameSequence.i
+.PHONY : src/game_logic/GameLevel.i
 
 # target to preprocess a source file
-src/GameSequence.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameSequence.cpp.i
-.PHONY : src/GameSequence.cpp.i
+src/game_logic/GameLevel.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/GameLevel.cpp.i
+.PHONY : src/game_logic/GameLevel.cpp.i
 
-src/GameSequence.s: src/GameSequence.cpp.s
+src/game_logic/GameLevel.s: src/game_logic/GameLevel.cpp.s
 
-.PHONY : src/GameSequence.s
+.PHONY : src/game_logic/GameLevel.s
 
 # target to generate assembly for a file
-src/GameSequence.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/GameSequence.cpp.s
-.PHONY : src/GameSequence.cpp.s
+src/game_logic/GameLevel.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/GameLevel.cpp.s
+.PHONY : src/game_logic/GameLevel.cpp.s
 
-src/GameTUI.o: src/GameTUI.cpp.o
+src/game_logic/GameSequence.o: src/game_logic/GameSequence.cpp.o
 
-.PHONY : src/GameTUI.o
+.PHONY : src/game_logic/GameSequence.o
 
 # target to build an object file
-src/GameTUI.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/GameTUI.cpp.o
-.PHONY : src/GameTUI.cpp.o
+src/game_logic/GameSequence.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/GameSequence.cpp.o
+.PHONY : src/game_logic/GameSequence.cpp.o
 
-src/GameTUI.i: src/GameTUI.cpp.i
+src/game_logic/GameSequence.i: src/game_logic/GameSequence.cpp.i
 
-.PHONY : src/GameTUI.i
+.PHONY : src/game_logic/GameSequence.i
 
 # target to preprocess a source file
-src/GameTUI.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/GameTUI.cpp.i
-.PHONY : src/GameTUI.cpp.i
+src/game_logic/GameSequence.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/GameSequence.cpp.i
+.PHONY : src/game_logic/GameSequence.cpp.i
 
-src/GameTUI.s: src/GameTUI.cpp.s
+src/game_logic/GameSequence.s: src/game_logic/GameSequence.cpp.s
 
-.PHONY : src/GameTUI.s
+.PHONY : src/game_logic/GameSequence.s
 
 # target to generate assembly for a file
-src/GameTUI.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/GameTUI.cpp.s
-.PHONY : src/GameTUI.cpp.s
+src/game_logic/GameSequence.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/GameSequence.cpp.s
+.PHONY : src/game_logic/GameSequence.cpp.s
 
-src/Menu.o: src/Menu.cpp.o
+src/game_logic/SavePicker.o: src/game_logic/SavePicker.cpp.o
 
-.PHONY : src/Menu.o
+.PHONY : src/game_logic/SavePicker.o
 
 # target to build an object file
-src/Menu.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Menu.cpp.o
-.PHONY : src/Menu.cpp.o
+src/game_logic/SavePicker.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/SavePicker.cpp.o
+.PHONY : src/game_logic/SavePicker.cpp.o
 
-src/Menu.i: src/Menu.cpp.i
+src/game_logic/SavePicker.i: src/game_logic/SavePicker.cpp.i
 
-.PHONY : src/Menu.i
+.PHONY : src/game_logic/SavePicker.i
 
 # target to preprocess a source file
-src/Menu.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Menu.cpp.i
-.PHONY : src/Menu.cpp.i
+src/game_logic/SavePicker.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/SavePicker.cpp.i
+.PHONY : src/game_logic/SavePicker.cpp.i
 
-src/Menu.s: src/Menu.cpp.s
+src/game_logic/SavePicker.s: src/game_logic/SavePicker.cpp.s
 
-.PHONY : src/Menu.s
+.PHONY : src/game_logic/SavePicker.s
 
 # target to generate assembly for a file
-src/Menu.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Menu.cpp.s
-.PHONY : src/Menu.cpp.s
+src/game_logic/SavePicker.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/game_logic/SavePicker.cpp.s
+.PHONY : src/game_logic/SavePicker.cpp.s
 
-src/SavePicker.o: src/SavePicker.cpp.o
+src/mains/a_stressful_machine_tui.o: src/mains/a_stressful_machine_tui.cpp.o
 
-.PHONY : src/SavePicker.o
+.PHONY : src/mains/a_stressful_machine_tui.o
 
 # target to build an object file
-src/SavePicker.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/SavePicker.cpp.o
-.PHONY : src/SavePicker.cpp.o
+src/mains/a_stressful_machine_tui.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/mains/a_stressful_machine_tui.cpp.o
+.PHONY : src/mains/a_stressful_machine_tui.cpp.o
 
-src/SavePicker.i: src/SavePicker.cpp.i
+src/mains/a_stressful_machine_tui.i: src/mains/a_stressful_machine_tui.cpp.i
 
-.PHONY : src/SavePicker.i
+.PHONY : src/mains/a_stressful_machine_tui.i
 
 # target to preprocess a source file
-src/SavePicker.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/SavePicker.cpp.i
-.PHONY : src/SavePicker.cpp.i
+src/mains/a_stressful_machine_tui.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/mains/a_stressful_machine_tui.cpp.i
+.PHONY : src/mains/a_stressful_machine_tui.cpp.i
 
-src/SavePicker.s: src/SavePicker.cpp.s
+src/mains/a_stressful_machine_tui.s: src/mains/a_stressful_machine_tui.cpp.s
 
-.PHONY : src/SavePicker.s
+.PHONY : src/mains/a_stressful_machine_tui.s
 
 # target to generate assembly for a file
-src/SavePicker.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/SavePicker.cpp.s
-.PHONY : src/SavePicker.cpp.s
+src/mains/a_stressful_machine_tui.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/mains/a_stressful_machine_tui.cpp.s
+.PHONY : src/mains/a_stressful_machine_tui.cpp.s
 
-src/String2D.o: src/String2D.cpp.o
+src/mains/interpreter.o: src/mains/interpreter.cpp.o
 
-.PHONY : src/String2D.o
+.PHONY : src/mains/interpreter.o
 
 # target to build an object file
-src/String2D.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/String2D.cpp.o
-.PHONY : src/String2D.cpp.o
+src/mains/interpreter.cpp.o:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/mains/interpreter.cpp.o
+.PHONY : src/mains/interpreter.cpp.o
 
-src/String2D.i: src/String2D.cpp.i
+src/mains/interpreter.i: src/mains/interpreter.cpp.i
 
-.PHONY : src/String2D.i
+.PHONY : src/mains/interpreter.i
 
 # target to preprocess a source file
-src/String2D.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/String2D.cpp.i
-.PHONY : src/String2D.cpp.i
+src/mains/interpreter.cpp.i:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/mains/interpreter.cpp.i
+.PHONY : src/mains/interpreter.cpp.i
 
-src/String2D.s: src/String2D.cpp.s
+src/mains/interpreter.s: src/mains/interpreter.cpp.s
 
-.PHONY : src/String2D.s
+.PHONY : src/mains/interpreter.s
 
 # target to generate assembly for a file
-src/String2D.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/String2D.cpp.s
-.PHONY : src/String2D.cpp.s
+src/mains/interpreter.cpp.s:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/mains/interpreter.cpp.s
+.PHONY : src/mains/interpreter.cpp.s
 
-src/VirtualMachine.o: src/VirtualMachine.cpp.o
+src/mains/unit_test.o: src/mains/unit_test.cpp.o
 
-.PHONY : src/VirtualMachine.o
+.PHONY : src/mains/unit_test.o
 
 # target to build an object file
-src/VirtualMachine.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.o
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.o
-.PHONY : src/VirtualMachine.cpp.o
+src/mains/unit_test.cpp.o:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/mains/unit_test.cpp.o
+.PHONY : src/mains/unit_test.cpp.o
 
-src/VirtualMachine.i: src/VirtualMachine.cpp.i
+src/mains/unit_test.i: src/mains/unit_test.cpp.i
 
-.PHONY : src/VirtualMachine.i
+.PHONY : src/mains/unit_test.i
 
 # target to preprocess a source file
-src/VirtualMachine.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.i
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.i
-.PHONY : src/VirtualMachine.cpp.i
+src/mains/unit_test.cpp.i:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/mains/unit_test.cpp.i
+.PHONY : src/mains/unit_test.cpp.i
 
-src/VirtualMachine.s: src/VirtualMachine.cpp.s
+src/mains/unit_test.s: src/mains/unit_test.cpp.s
 
-.PHONY : src/VirtualMachine.s
+.PHONY : src/mains/unit_test.s
 
 # target to generate assembly for a file
-src/VirtualMachine.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachine.cpp.s
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachine.cpp.s
-.PHONY : src/VirtualMachine.cpp.s
+src/mains/unit_test.cpp.s:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/mains/unit_test.cpp.s
+.PHONY : src/mains/unit_test.cpp.s
 
-src/VirtualMachineException.o: src/VirtualMachineException.cpp.o
+src/ncursespp/Field.o: src/ncursespp/Field.cpp.o
 
-.PHONY : src/VirtualMachineException.o
+.PHONY : src/ncursespp/Field.o
 
 # target to build an object file
-src/VirtualMachineException.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.o
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.o
-.PHONY : src/VirtualMachineException.cpp.o
+src/ncursespp/Field.cpp.o:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Field.cpp.o
+.PHONY : src/ncursespp/Field.cpp.o
 
-src/VirtualMachineException.i: src/VirtualMachineException.cpp.i
+src/ncursespp/Field.i: src/ncursespp/Field.cpp.i
 
-.PHONY : src/VirtualMachineException.i
+.PHONY : src/ncursespp/Field.i
 
 # target to preprocess a source file
-src/VirtualMachineException.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.i
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.i
-.PHONY : src/VirtualMachineException.cpp.i
+src/ncursespp/Field.cpp.i:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Field.cpp.i
+.PHONY : src/ncursespp/Field.cpp.i
 
-src/VirtualMachineException.s: src/VirtualMachineException.cpp.s
+src/ncursespp/Field.s: src/ncursespp/Field.cpp.s
 
-.PHONY : src/VirtualMachineException.s
+.PHONY : src/ncursespp/Field.s
 
 # target to generate assembly for a file
-src/VirtualMachineException.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineException.cpp.s
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineException.cpp.s
-.PHONY : src/VirtualMachineException.cpp.s
+src/ncursespp/Field.cpp.s:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Field.cpp.s
+.PHONY : src/ncursespp/Field.cpp.s
 
-src/VirtualMachineProcedure.o: src/VirtualMachineProcedure.cpp.o
+src/ncursespp/Menu.o: src/ncursespp/Menu.cpp.o
 
-.PHONY : src/VirtualMachineProcedure.o
+.PHONY : src/ncursespp/Menu.o
 
 # target to build an object file
-src/VirtualMachineProcedure.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.o
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.o
-.PHONY : src/VirtualMachineProcedure.cpp.o
+src/ncursespp/Menu.cpp.o:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Menu.cpp.o
+.PHONY : src/ncursespp/Menu.cpp.o
 
-src/VirtualMachineProcedure.i: src/VirtualMachineProcedure.cpp.i
+src/ncursespp/Menu.i: src/ncursespp/Menu.cpp.i
 
-.PHONY : src/VirtualMachineProcedure.i
+.PHONY : src/ncursespp/Menu.i
 
 # target to preprocess a source file
-src/VirtualMachineProcedure.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.i
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.i
-.PHONY : src/VirtualMachineProcedure.cpp.i
+src/ncursespp/Menu.cpp.i:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Menu.cpp.i
+.PHONY : src/ncursespp/Menu.cpp.i
 
-src/VirtualMachineProcedure.s: src/VirtualMachineProcedure.cpp.s
+src/ncursespp/Menu.s: src/ncursespp/Menu.cpp.s
 
-.PHONY : src/VirtualMachineProcedure.s
+.PHONY : src/ncursespp/Menu.s
 
 # target to generate assembly for a file
-src/VirtualMachineProcedure.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/VirtualMachineProcedure.cpp.s
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/VirtualMachineProcedure.cpp.s
-.PHONY : src/VirtualMachineProcedure.cpp.s
+src/ncursespp/Menu.cpp.s:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Menu.cpp.s
+.PHONY : src/ncursespp/Menu.cpp.s
 
-src/Window.o: src/Window.cpp.o
+src/ncursespp/String2D.o: src/ncursespp/String2D.cpp.o
 
-.PHONY : src/Window.o
+.PHONY : src/ncursespp/String2D.o
 
 # target to build an object file
-src/Window.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.o
-.PHONY : src/Window.cpp.o
+src/ncursespp/String2D.cpp.o:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/String2D.cpp.o
+.PHONY : src/ncursespp/String2D.cpp.o
 
-src/Window.i: src/Window.cpp.i
+src/ncursespp/String2D.i: src/ncursespp/String2D.cpp.i
 
-.PHONY : src/Window.i
+.PHONY : src/ncursespp/String2D.i
 
 # target to preprocess a source file
-src/Window.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.i
-.PHONY : src/Window.cpp.i
+src/ncursespp/String2D.cpp.i:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/String2D.cpp.i
+.PHONY : src/ncursespp/String2D.cpp.i
 
-src/Window.s: src/Window.cpp.s
+src/ncursespp/String2D.s: src/ncursespp/String2D.cpp.s
 
-.PHONY : src/Window.s
+.PHONY : src/ncursespp/String2D.s
 
 # target to generate assembly for a file
-src/Window.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/Window.cpp.s
-.PHONY : src/Window.cpp.s
+src/ncursespp/String2D.cpp.s:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/String2D.cpp.s
+.PHONY : src/ncursespp/String2D.cpp.s
 
-src/a_stressful_machine_tui.o: src/a_stressful_machine_tui.cpp.o
+src/ncursespp/Window.o: src/ncursespp/Window.cpp.o
 
-.PHONY : src/a_stressful_machine_tui.o
+.PHONY : src/ncursespp/Window.o
 
 # target to build an object file
-src/a_stressful_machine_tui.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.o
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/a_stressful_machine_tui.cpp.o
-.PHONY : src/a_stressful_machine_tui.cpp.o
+src/ncursespp/Window.cpp.o:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Window.cpp.o
+.PHONY : src/ncursespp/Window.cpp.o
 
-src/a_stressful_machine_tui.i: src/a_stressful_machine_tui.cpp.i
+src/ncursespp/Window.i: src/ncursespp/Window.cpp.i
 
-.PHONY : src/a_stressful_machine_tui.i
+.PHONY : src/ncursespp/Window.i
 
 # target to preprocess a source file
-src/a_stressful_machine_tui.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.i
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/a_stressful_machine_tui.cpp.i
-.PHONY : src/a_stressful_machine_tui.cpp.i
+src/ncursespp/Window.cpp.i:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Window.cpp.i
+.PHONY : src/ncursespp/Window.cpp.i
 
-src/a_stressful_machine_tui.s: src/a_stressful_machine_tui.cpp.s
+src/ncursespp/Window.s: src/ncursespp/Window.cpp.s
 
-.PHONY : src/a_stressful_machine_tui.s
+.PHONY : src/ncursespp/Window.s
 
 # target to generate assembly for a file
-src/a_stressful_machine_tui.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/a_stressful_machine_tui.cpp.s
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/a_stressful_machine_tui.cpp.s
-.PHONY : src/a_stressful_machine_tui.cpp.s
+src/ncursespp/Window.cpp.s:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Window.cpp.s
+.PHONY : src/ncursespp/Window.cpp.s
 
-src/interpreter.o: src/interpreter.cpp.o
+src/ncursespp/ncurses++.o: src/ncursespp/ncurses++.cpp.o
 
-.PHONY : src/interpreter.o
+.PHONY : src/ncursespp/ncurses++.o
 
 # target to build an object file
-src/interpreter.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/interpreter.cpp.o
-.PHONY : src/interpreter.cpp.o
+src/ncursespp/ncurses++.cpp.o:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/ncurses++.cpp.o
+.PHONY : src/ncursespp/ncurses++.cpp.o
 
-src/interpreter.i: src/interpreter.cpp.i
+src/ncursespp/ncurses++.i: src/ncursespp/ncurses++.cpp.i
 
-.PHONY : src/interpreter.i
+.PHONY : src/ncursespp/ncurses++.i
 
 # target to preprocess a source file
-src/interpreter.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/interpreter.cpp.i
-.PHONY : src/interpreter.cpp.i
+src/ncursespp/ncurses++.cpp.i:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/ncurses++.cpp.i
+.PHONY : src/ncursespp/ncurses++.cpp.i
 
-src/interpreter.s: src/interpreter.cpp.s
+src/ncursespp/ncurses++.s: src/ncursespp/ncurses++.cpp.s
 
-.PHONY : src/interpreter.s
+.PHONY : src/ncursespp/ncurses++.s
 
 # target to generate assembly for a file
-src/interpreter.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/interpreter.cpp.s
-.PHONY : src/interpreter.cpp.s
+src/ncursespp/ncurses++.cpp.s:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/ncurses++.cpp.s
+.PHONY : src/ncursespp/ncurses++.cpp.s
 
-src/ncurses++.o: src/ncurses++.cpp.o
+src/virtual_machine/VirtualMachine.o: src/virtual_machine/VirtualMachine.cpp.o
 
-.PHONY : src/ncurses++.o
+.PHONY : src/virtual_machine/VirtualMachine.o
 
 # target to build an object file
-src/ncurses++.cpp.o:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/ncurses++.cpp.o
-.PHONY : src/ncurses++.cpp.o
+src/virtual_machine/VirtualMachine.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachine.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachine.cpp.o
+.PHONY : src/virtual_machine/VirtualMachine.cpp.o
 
-src/ncurses++.i: src/ncurses++.cpp.i
+src/virtual_machine/VirtualMachine.i: src/virtual_machine/VirtualMachine.cpp.i
 
-.PHONY : src/ncurses++.i
+.PHONY : src/virtual_machine/VirtualMachine.i
 
 # target to preprocess a source file
-src/ncurses++.cpp.i:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/ncurses++.cpp.i
-.PHONY : src/ncurses++.cpp.i
+src/virtual_machine/VirtualMachine.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachine.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachine.cpp.i
+.PHONY : src/virtual_machine/VirtualMachine.cpp.i
 
-src/ncurses++.s: src/ncurses++.cpp.s
+src/virtual_machine/VirtualMachine.s: src/virtual_machine/VirtualMachine.cpp.s
 
-.PHONY : src/ncurses++.s
+.PHONY : src/virtual_machine/VirtualMachine.s
 
 # target to generate assembly for a file
-src/ncurses++.cpp.s:
-	$(MAKE) -f CMakeFiles/ncurses++.dir/build.make CMakeFiles/ncurses++.dir/src/ncurses++.cpp.s
-.PHONY : src/ncurses++.cpp.s
+src/virtual_machine/VirtualMachine.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachine.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachine.cpp.s
+.PHONY : src/virtual_machine/VirtualMachine.cpp.s
 
-src/ncurses_utilities.o: src/ncurses_utilities.cpp.o
+src/virtual_machine/VirtualMachineException.o: src/virtual_machine/VirtualMachineException.cpp.o
 
-.PHONY : src/ncurses_utilities.o
+.PHONY : src/virtual_machine/VirtualMachineException.o
 
 # target to build an object file
-src/ncurses_utilities.cpp.o:
-	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/ncurses_utilities.cpp.o
-.PHONY : src/ncurses_utilities.cpp.o
+src/virtual_machine/VirtualMachineException.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineException.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineException.cpp.o
+.PHONY : src/virtual_machine/VirtualMachineException.cpp.o
 
-src/ncurses_utilities.i: src/ncurses_utilities.cpp.i
+src/virtual_machine/VirtualMachineException.i: src/virtual_machine/VirtualMachineException.cpp.i
 
-.PHONY : src/ncurses_utilities.i
+.PHONY : src/virtual_machine/VirtualMachineException.i
 
 # target to preprocess a source file
-src/ncurses_utilities.cpp.i:
-	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/ncurses_utilities.cpp.i
-.PHONY : src/ncurses_utilities.cpp.i
+src/virtual_machine/VirtualMachineException.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineException.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineException.cpp.i
+.PHONY : src/virtual_machine/VirtualMachineException.cpp.i
 
-src/ncurses_utilities.s: src/ncurses_utilities.cpp.s
+src/virtual_machine/VirtualMachineException.s: src/virtual_machine/VirtualMachineException.cpp.s
 
-.PHONY : src/ncurses_utilities.s
+.PHONY : src/virtual_machine/VirtualMachineException.s
 
 # target to generate assembly for a file
-src/ncurses_utilities.cpp.s:
-	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/ncurses_utilities.cpp.s
-.PHONY : src/ncurses_utilities.cpp.s
+src/virtual_machine/VirtualMachineException.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineException.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineException.cpp.s
+.PHONY : src/virtual_machine/VirtualMachineException.cpp.s
 
-src/test.o: src/test.cpp.o
+src/virtual_machine/VirtualMachineProcedure.o: src/virtual_machine/VirtualMachineProcedure.cpp.o
 
-.PHONY : src/test.o
+.PHONY : src/virtual_machine/VirtualMachineProcedure.o
 
 # target to build an object file
-src/test.cpp.o:
-	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/test.cpp.o
-.PHONY : src/test.cpp.o
+src/virtual_machine/VirtualMachineProcedure.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineProcedure.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineProcedure.cpp.o
+.PHONY : src/virtual_machine/VirtualMachineProcedure.cpp.o
 
-src/test.i: src/test.cpp.i
+src/virtual_machine/VirtualMachineProcedure.i: src/virtual_machine/VirtualMachineProcedure.cpp.i
 
-.PHONY : src/test.i
-
-# target to preprocess a source file
-src/test.cpp.i:
-	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/test.cpp.i
-.PHONY : src/test.cpp.i
-
-src/test.s: src/test.cpp.s
-
-.PHONY : src/test.s
-
-# target to generate assembly for a file
-src/test.cpp.s:
-	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/test.cpp.s
-.PHONY : src/test.cpp.s
-
-src/utilities.o: src/utilities.cpp.o
-
-.PHONY : src/utilities.o
-
-# target to build an object file
-src/utilities.cpp.o:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.o
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.o
-.PHONY : src/utilities.cpp.o
-
-src/utilities.i: src/utilities.cpp.i
-
-.PHONY : src/utilities.i
+.PHONY : src/virtual_machine/VirtualMachineProcedure.i
 
 # target to preprocess a source file
-src/utilities.cpp.i:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.i
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.i
-.PHONY : src/utilities.cpp.i
+src/virtual_machine/VirtualMachineProcedure.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineProcedure.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineProcedure.cpp.i
+.PHONY : src/virtual_machine/VirtualMachineProcedure.cpp.i
 
-src/utilities.s: src/utilities.cpp.s
+src/virtual_machine/VirtualMachineProcedure.s: src/virtual_machine/VirtualMachineProcedure.cpp.s
 
-.PHONY : src/utilities.s
+.PHONY : src/virtual_machine/VirtualMachineProcedure.s
 
 # target to generate assembly for a file
-src/utilities.cpp.s:
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/utilities.cpp.s
-	$(MAKE) -f CMakeFiles/a_stressful_machine_lib.dir/build.make CMakeFiles/a_stressful_machine_lib.dir/src/utilities.cpp.s
-.PHONY : src/utilities.cpp.s
+src/virtual_machine/VirtualMachineProcedure.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineProcedure.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineProcedure.cpp.s
+.PHONY : src/virtual_machine/VirtualMachineProcedure.cpp.s
 
 # Help Target
 help:
@@ -710,69 +640,62 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... ncurses++"
-	@echo "... interpreter"
-	@echo "... a_stressful_machine_tui"
 	@echo "... unit_test"
-	@echo "... a_stressful_machine_lib"
+	@echo "... a_stressful_machine_tui"
 	@echo "... edit_cache"
-	@echo "... src/Field.o"
-	@echo "... src/Field.i"
-	@echo "... src/Field.s"
-	@echo "... src/Game.o"
-	@echo "... src/Game.i"
-	@echo "... src/Game.s"
-	@echo "... src/GameGUI.o"
-	@echo "... src/GameGUI.i"
-	@echo "... src/GameGUI.s"
-	@echo "... src/GameLevel.o"
-	@echo "... src/GameLevel.i"
-	@echo "... src/GameLevel.s"
-	@echo "... src/GameSequence.o"
-	@echo "... src/GameSequence.i"
-	@echo "... src/GameSequence.s"
-	@echo "... src/GameTUI.o"
-	@echo "... src/GameTUI.i"
-	@echo "... src/GameTUI.s"
-	@echo "... src/Menu.o"
-	@echo "... src/Menu.i"
-	@echo "... src/Menu.s"
-	@echo "... src/SavePicker.o"
-	@echo "... src/SavePicker.i"
-	@echo "... src/SavePicker.s"
-	@echo "... src/String2D.o"
-	@echo "... src/String2D.i"
-	@echo "... src/String2D.s"
-	@echo "... src/VirtualMachine.o"
-	@echo "... src/VirtualMachine.i"
-	@echo "... src/VirtualMachine.s"
-	@echo "... src/VirtualMachineException.o"
-	@echo "... src/VirtualMachineException.i"
-	@echo "... src/VirtualMachineException.s"
-	@echo "... src/VirtualMachineProcedure.o"
-	@echo "... src/VirtualMachineProcedure.i"
-	@echo "... src/VirtualMachineProcedure.s"
-	@echo "... src/Window.o"
-	@echo "... src/Window.i"
-	@echo "... src/Window.s"
-	@echo "... src/a_stressful_machine_tui.o"
-	@echo "... src/a_stressful_machine_tui.i"
-	@echo "... src/a_stressful_machine_tui.s"
-	@echo "... src/interpreter.o"
-	@echo "... src/interpreter.i"
-	@echo "... src/interpreter.s"
-	@echo "... src/ncurses++.o"
-	@echo "... src/ncurses++.i"
-	@echo "... src/ncurses++.s"
-	@echo "... src/ncurses_utilities.o"
-	@echo "... src/ncurses_utilities.i"
-	@echo "... src/ncurses_utilities.s"
-	@echo "... src/test.o"
-	@echo "... src/test.i"
-	@echo "... src/test.s"
-	@echo "... src/utilities.o"
-	@echo "... src/utilities.i"
-	@echo "... src/utilities.s"
+	@echo "... ncursespp"
+	@echo "... interpreter"
+	@echo "... src/TUI/GameTUI.o"
+	@echo "... src/TUI/GameTUI.i"
+	@echo "... src/TUI/GameTUI.s"
+	@echo "... src/file_utilities.o"
+	@echo "... src/file_utilities.i"
+	@echo "... src/file_utilities.s"
+	@echo "... src/game_logic/Game.o"
+	@echo "... src/game_logic/Game.i"
+	@echo "... src/game_logic/Game.s"
+	@echo "... src/game_logic/GameLevel.o"
+	@echo "... src/game_logic/GameLevel.i"
+	@echo "... src/game_logic/GameLevel.s"
+	@echo "... src/game_logic/GameSequence.o"
+	@echo "... src/game_logic/GameSequence.i"
+	@echo "... src/game_logic/GameSequence.s"
+	@echo "... src/game_logic/SavePicker.o"
+	@echo "... src/game_logic/SavePicker.i"
+	@echo "... src/game_logic/SavePicker.s"
+	@echo "... src/mains/a_stressful_machine_tui.o"
+	@echo "... src/mains/a_stressful_machine_tui.i"
+	@echo "... src/mains/a_stressful_machine_tui.s"
+	@echo "... src/mains/interpreter.o"
+	@echo "... src/mains/interpreter.i"
+	@echo "... src/mains/interpreter.s"
+	@echo "... src/mains/unit_test.o"
+	@echo "... src/mains/unit_test.i"
+	@echo "... src/mains/unit_test.s"
+	@echo "... src/ncursespp/Field.o"
+	@echo "... src/ncursespp/Field.i"
+	@echo "... src/ncursespp/Field.s"
+	@echo "... src/ncursespp/Menu.o"
+	@echo "... src/ncursespp/Menu.i"
+	@echo "... src/ncursespp/Menu.s"
+	@echo "... src/ncursespp/String2D.o"
+	@echo "... src/ncursespp/String2D.i"
+	@echo "... src/ncursespp/String2D.s"
+	@echo "... src/ncursespp/Window.o"
+	@echo "... src/ncursespp/Window.i"
+	@echo "... src/ncursespp/Window.s"
+	@echo "... src/ncursespp/ncurses++.o"
+	@echo "... src/ncursespp/ncurses++.i"
+	@echo "... src/ncursespp/ncurses++.s"
+	@echo "... src/virtual_machine/VirtualMachine.o"
+	@echo "... src/virtual_machine/VirtualMachine.i"
+	@echo "... src/virtual_machine/VirtualMachine.s"
+	@echo "... src/virtual_machine/VirtualMachineException.o"
+	@echo "... src/virtual_machine/VirtualMachineException.i"
+	@echo "... src/virtual_machine/VirtualMachineException.s"
+	@echo "... src/virtual_machine/VirtualMachineProcedure.o"
+	@echo "... src/virtual_machine/VirtualMachineProcedure.i"
+	@echo "... src/virtual_machine/VirtualMachineProcedure.s"
 .PHONY : help
 
 

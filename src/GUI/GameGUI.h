@@ -5,7 +5,7 @@
 #ifndef A_STRESSFUL_MACHINE_GAMEGUI_H
 #define A_STRESSFUL_MACHINE_GAMEGUI_H
 
-#include "Game.h"
+#include "../game_logic/Game.h"
 
 class GameGUI
 {

@@ -180,9 +180,32 @@ void GameTUI::play()
     endwin_();
 }
 
+void print_memory_to_win(Window &win, VirtualMachine *vm)
+{
+    win.clear();
+    const vector<int> &memory = vm->get_memory();
+    win.move_cursor(win.get_height() / 2, 2);
+    for (auto i = memory.begin(); i < memory.end(); i++)
+    {
+        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) win.color_on(1);
+        win.printstr(to_string(*i));
+        if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) win.color_off(1);
+        printw(" ");
+    }
+    win.refresh_();
+}
+
+
+void print_input_to_win(Window &win, GameLevel *gl)
+{
+    clear();
+    win.mvprintstr(2, 2, gl->get_input_as_string());
+    win.refresh_();
+}
+
 void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
 {
-    gi->vm_memory_win->print_memory_to_win(vm);
+    print_memory_to_win(*(gi->vm_memory_win), vm);
     gi->typing_field->attron_char(vm->get_current_operator() - vm->get_program().begin(), COLOR_PAIR(1));
     gi->typing_win->refresh_();
     gi->typing_field->refresh_();
@@ -191,6 +214,7 @@ void raw_vm_callback(VirtualMachine *vm, GameTUI *gi)
 
 void raw_gl_callback(GameLevel *gl, GameTUI *gi)
 {
-    gi->vm_input_win->print_input_to_win(gl);
+    print_input_to_win(*(gi->vm_input_win), gl);
     //gi->vm_input_win->getch_();
 }
+

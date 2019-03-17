@@ -2,6 +2,7 @@
 // Created by emile on 14/03/19.
 //
 
+#include <sstream>
 #include "Window.h"
 
 namespace ncursespp
@@ -170,47 +171,5 @@ namespace ncursespp
     void Window::attroff_(int attr)
     {
         wattroff(window, attr);
-    }
-
-    void Window::print_program_to_win(VirtualMachine *vm)
-    {
-        const string &program = vm->get_program();
-
-        for (auto i = program.begin(); i < program.end(); i++)
-        {
-            if (i == vm->get_current_operator())
-            {
-                color_on(1);
-            }
-            mvaddch_(height / 2, (int) (2 + i - program.begin()), (const chtype) *i);
-            if (i == vm->get_current_operator())
-            {
-                color_off(1);
-            }
-        }
-        refresh_();
-    }
-
-    void Window::print_memory_to_win(VirtualMachine *vm)
-    {
-        clear();
-        const vector<int> &memory = vm->get_memory();
-        move_cursor(get_height() / 2, 2);
-        for (auto i = memory.begin(); i < memory.end(); i++)
-        {
-            if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) color_on(1);
-            printstr(to_string(*i));
-            if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) color_off(1);
-            printw(" ");
-        }
-        refresh_();
-    }
-
-
-    void Window::print_input_to_win(GameLevel *gl)
-    {
-        clear();
-        mvprintstr(2, 2, gl->get_input_as_string());
-        refresh_();
     }
 }

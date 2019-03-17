@@ -41,6 +41,21 @@ bool is_operator(char ch)
             ch == SYNTAX_VAL_OUT || ch == SYNTAX_VAL_RESET);
 }
 
+string::iterator corresponding_par(const string &s, char open, char close, string::iterator par_address)
+{
+    int depth = 1;
+    int j = 0;
+    while (depth != 0 && par_address + j < s.end())
+    {
+        j++;
+        if (*(par_address + j) == open) depth++;
+        if (*(par_address + j) == close) depth--;
+    }
+    if (depth == 0) return par_address + j;
+    else throw invalid_argument("unmatched parenthesis");
+}
+
+
 VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *out_) :
         program(program_), in(in_), out(out_)
 {

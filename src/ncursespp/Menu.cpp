@@ -2,7 +2,18 @@
 // Created by emile on 14/03/19.
 //
 
+#include <algorithm>
 #include "Menu.h"
+
+bool comp_str(const string &s1, const string &s2)
+{
+    return s1.size() < s2.size();
+}
+
+size_t size_of_longest_string(const vector<string> &vs)
+{
+    return max_element(vs.begin(), vs.end(), comp_str)->size();
+}
 
 namespace ncursespp
 {

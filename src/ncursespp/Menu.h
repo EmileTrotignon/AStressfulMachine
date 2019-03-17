@@ -5,6 +5,8 @@
 #ifndef A_STRESSFUL_MACHINE_NCURSESMENU_H
 #define A_STRESSFUL_MACHINE_NCURSESMENU_H
 
+#include <vector>
+
 #include "Window.h"
 
 namespace ncursespp

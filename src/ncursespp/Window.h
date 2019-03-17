@@ -5,8 +5,10 @@
 #ifndef A_STRESSFUL_MACHINE_NCURSESWINDOW_H
 #define A_STRESSFUL_MACHINE_NCURSESWINDOW_H
 
+#include <iostream>
 #include <ncurses.h>
-#include "ncurses_utilities.h"
+
+using namespace std;
 
 namespace ncursespp
 {
@@ -77,11 +79,6 @@ namespace ncursespp
 
         void attroff_(int attr);
 
-        void print_program_to_win(VirtualMachine *vm);
-
-        void print_memory_to_win(VirtualMachine *vm);
-
-        void print_input_to_win(GameLevel *gl);
     };
 }
 

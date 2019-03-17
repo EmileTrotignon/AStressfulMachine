@@ -10,7 +10,7 @@
 #include <map>
 #include <functional>
 
-#include "utilities.h"
+#include "../file_utilities.h"
 #include "VirtualMachineException.h"
 
 #define MAX_SIZE_MEMORY_PRINT 10

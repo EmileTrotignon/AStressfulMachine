@@ -7,7 +7,7 @@
 #include <ncurses.h>
 #include <assert.h>
 
-#include "ncurses_utilities.h"
+#include "../ncurses_utilities.h"
 
 bool test_ncurses_utilities()
 {

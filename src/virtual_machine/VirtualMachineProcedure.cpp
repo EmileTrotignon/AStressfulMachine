@@ -4,6 +4,19 @@
 
 #include "VirtualMachineProcedure.h"
 
+string add_message_before_each_line(string s, string message)
+{
+    istringstream stream(s);
+    string r;
+    string line;
+    while (getline(stream, line))
+    {
+        r += message + line + "\n";
+        line = "";
+    }
+    return r;
+}
+
 VirtualMachineProcedure::VirtualMachineProcedure(VirtualMachine *master_vm_, const string &program_, int depth_) :
         VirtualMachine(program_, nullptr, nullptr), master_vm(master_vm_), depth(depth_)
 {

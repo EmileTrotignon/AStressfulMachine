@@ -12,7 +12,6 @@
 
 #include "Game.h"
 #include "ncurses++.h"
-#include "String2D.h"
 
 using namespace ncursespp;
 

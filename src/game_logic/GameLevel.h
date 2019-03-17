@@ -8,8 +8,8 @@
 #include <iostream>
 #include <fstream>
 #include <functional>
-#include "VirtualMachine.h"
-#include "utilities.h"
+#include "../virtual_machine/VirtualMachine.h"
+#include "../file_utilities.h"
 
 /*#define LEVELFILES_FOLDER "data/gamefiles/levels"*/
 
