@@ -147,10 +147,6 @@ namespace ncursespp
                         else if (typed_text.size() < get_height())
                         {
                             typing_cursor_y++;
-                            typing_cursor_y++;
-                            typing_cursor_y++;
-                            typing_cursor_y++;
-                            typing_cursor_y++;
                             string new_line;
                             new_line.push_back((char) ch);
                             typed_text.insert(typing_cursor_y, new_line);
