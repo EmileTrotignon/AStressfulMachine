@@ -105,7 +105,7 @@ preinstall/fast:
 	$(MAKE) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall/fast
 
-# erase depends
+# clear depends
 depend:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
@@ -462,6 +462,33 @@ src/ncursespp/Menu.cpp.s:
 	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Menu.cpp.s
 .PHONY : src/ncursespp/Menu.cpp.s
 
+src/ncursespp/OCursedStream.o: src/ncursespp/OCursedStream.cpp.o
+
+.PHONY : src/ncursespp/OCursedStream.o
+
+# target to build an object file
+src/ncursespp/OCursedStream.cpp.o:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/OCursedStream.cpp.o
+.PHONY : src/ncursespp/OCursedStream.cpp.o
+
+src/ncursespp/OCursedStream.i: src/ncursespp/OCursedStream.cpp.i
+
+.PHONY : src/ncursespp/OCursedStream.i
+
+# target to preprocess a source file
+src/ncursespp/OCursedStream.cpp.i:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/OCursedStream.cpp.i
+.PHONY : src/ncursespp/OCursedStream.cpp.i
+
+src/ncursespp/OCursedStream.s: src/ncursespp/OCursedStream.cpp.s
+
+.PHONY : src/ncursespp/OCursedStream.s
+
+# target to generate assembly for a file
+src/ncursespp/OCursedStream.cpp.s:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/OCursedStream.cpp.s
+.PHONY : src/ncursespp/OCursedStream.cpp.s
+
 src/ncursespp/String2D.o: src/ncursespp/String2D.cpp.o
 
 .PHONY : src/ncursespp/String2D.o
@@ -678,6 +705,9 @@ help:
 	@echo "... src/ncursespp/Menu.o"
 	@echo "... src/ncursespp/Menu.i"
 	@echo "... src/ncursespp/Menu.s"
+	@echo "... src/ncursespp/OCursedStream.o"
+	@echo "... src/ncursespp/OCursedStream.i"
+	@echo "... src/ncursespp/OCursedStream.s"
 	@echo "... src/ncursespp/String2D.o"
 	@echo "... src/ncursespp/String2D.i"
 	@echo "... src/ncursespp/String2D.s"

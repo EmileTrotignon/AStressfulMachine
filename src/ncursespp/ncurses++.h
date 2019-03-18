@@ -10,6 +10,7 @@
 #include "Window.h"
 #include "Menu.h"
 #include "Field.h"
+#include "OCursedStream.h"
 
 namespace ncursespp
 {

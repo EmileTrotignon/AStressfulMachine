@@ -46,6 +46,8 @@ void raw_gl_callback(GameLevel *gl, GameTUI *gi, bool pause_at_each_it)
 {
 
     print_input_to_win(*(gi->vm_input_win), gl);
+    *(gi->solution_ostream) << endl;
+    *(gi->attempt_ostream) << endl;
     if (pause_at_each_it) gi->vm_input_win->getch_();
 }
 
@@ -61,7 +63,9 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            level_picking_win(nullptr),
                                                                            save_picking_win(nullptr),
                                                                            typing_field(nullptr),
-                                                                           success_menu_win(nullptr)
+                                                                           success_menu_win(nullptr),
+                                                                           attempt_ostream(nullptr),
+                                                                           solution_ostream(nullptr)
 {
 }
 
@@ -112,6 +116,7 @@ void GameTUI::pick_level()
     delete vm_output_win;
     delete vm_memory_win;
 
+
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();
 
@@ -132,6 +137,13 @@ void GameTUI::pick_level()
 
 void GameTUI::play_level()
 {
+    delete attempt_ostream;
+    delete solution_ostream;
+    vm_output_win->erase();
+
+    attempt_ostream = new OCursedStream(vm_output_win, 2, 2, vm_output_win->get_width() / 2 + 1);
+    solution_ostream = new OCursedStream(vm_output_win, 2, vm_output_win->get_width() / 2 + 1, 2);
+
     typing_win->refresh_();
     instruction_win->refresh_();
     vm_input_win->refresh_();
@@ -179,7 +191,8 @@ void GameTUI::handle_typing()
                 gl_callback = nullptr;
 
         }
-        b = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(), vm_callback, gl_callback);
+        b = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(), vm_callback, gl_callback,
+                                                        attempt_ostream, solution_ostream);
         vm_memory_win->erase();
         vm_memory_win->refresh_();
     } catch (const VirtualMachineException &e)
@@ -234,7 +247,7 @@ void GameTUI::play()
         exit(1);
     }
     start_color();
-    init_pair(1, COLOR_WHITE, COLOR_GREEN);
+    init_pair(1, COLOR_BLACK, COLOR_GREEN);
     curs_set(0);
     Window starting_screen(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
     starting_screen.printstr_in_middle("Welcome to A Stressful Machine. Press any key to start the game...");

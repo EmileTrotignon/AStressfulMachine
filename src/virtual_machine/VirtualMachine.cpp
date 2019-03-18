@@ -156,6 +156,7 @@ void VirtualMachine::val_out()
     if (procedure_call == nullptr)
     {
         *out << *memory_ptr;
+        out->flush();
     } else
     {
         if (procedure_call->status == STATUS_PROC_INPUTTING)

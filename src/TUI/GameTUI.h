@@ -29,6 +29,8 @@ private:
     Window *save_picking_win;
     Window *success_menu_win;
     Field *typing_field;
+    OCursedStream *attempt_ostream;
+    OCursedStream *solution_ostream;
 
     void pick_saves();
 
