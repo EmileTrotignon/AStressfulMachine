@@ -39,7 +39,6 @@ public:
      * @param level_name The name of the level (it is the directory, you cannot put anything here)
      */
     GameLevel(const string &gamefiles_dir, const string &level_name,
-              ostringstream *solution_output_stream = nullptr, ostringstream *attempt_output_stream = nullptr,
               VirtualMachine *vm_attempt = nullptr);
 
     ~GameLevel();
@@ -54,12 +53,12 @@ public:
      * @param verbose_level
      * @return
      */
-    bool attempt_one_input(const function<void(VirtualMachine *)> &vm_looper, ostringstream *attempt_ostream,
-                           ostringstream *solution_ostream);
+    bool attempt_one_input(const function<void(VirtualMachine *)> &vm_looper, iostream *attempt_ostream,
+                           iostream *solution_ostream);
 
     bool attempt(const string &program, const function<void(VirtualMachine *)> &vm_callback = nullptr,
-                 const function<void(GameLevel *)> &gm_callback = nullptr, ostringstream *attempt_ostream = nullptr,
-                 ostringstream *solution_ostream = nullptr);
+                 const function<void(GameLevel *)> &gm_callback = nullptr, iostream *attempt_ostream = nullptr,
+                 iostream *solution_ostream = nullptr);
 
     string get_instructions();
 

@@ -47,7 +47,8 @@ target_link_libraries(a_stressful_machine_tui ncursespp)
 add_executable(unit_test
         src/mains/unit_test.cpp)
 
-target_link_libraries(unit_test ${CURSES_LIBRARIES})
+target_link_libraries(unit_test ncursespp)
+
 
 #add_executable(scratch
 #        src/ncurses_scratch.cpp)

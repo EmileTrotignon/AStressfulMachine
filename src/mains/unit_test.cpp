@@ -7,28 +7,26 @@
 #include <ncurses.h>
 #include <assert.h>
 
-#include "../ncurses_utilities.h"
+#include "ncurses++.h"
 
-bool test_ncurses_utilities()
+bool test_OCursedStream()
 {
-    initscr();
+    using namespace ncursespp;
+    initscr_();
     noecho();
-    cbreak();
-    keypad(stdscr, TRUE);
-    vector<string> options = {"option1", "option2", "option3"};
-    int c = menu(options, stdscr);
-    endwin();
-    cout << "The option you chose was : Option" << c + 1 << " ? [Y/n]" << endl;
-    char b;
-    cin >> b;
-    return (b == 'y' || b == 'Y');
-
+    Window lol = Window(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
+    OCursedStream lols = OCursedStream(&lol, 3, 3);
+    lols << "qwertyuiop";
+    lols << 'a';
+    lols.flush();
+    lol.getch_();
+    endwin_();
+    return true;
 }
 
 int main()
 {
-    assert(test_ncurses_utilities());
-
+    assert(test_OCursedStream());
     cout << "tests passed" << endl;
     return 0;
 }

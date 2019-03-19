@@ -71,6 +71,10 @@ namespace ncursespp
 
         int get_startx() const;
 
+        int get_x() const;
+
+        int get_y() const;
+
         void color_on(int color_id);
 
         void color_off(int color_id);

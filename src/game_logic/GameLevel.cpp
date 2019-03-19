@@ -6,8 +6,7 @@
 
 using namespace std;
 
-GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, ostringstream *solution_output_stream_,
-                     ostringstream *attempt_output_stream_, VirtualMachine *vm_attempt_) :
+GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, VirtualMachine *vm_attempt_) :
         gamefiles_dir(gamefiles_dir_),
         level_name(level_name_),
         vm_attempt(vm_attempt_)
@@ -32,8 +31,8 @@ void GameLevel::reset_input(streamoff pos)
     input.seekg(pos);
 }
 
-bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_callback, ostringstream *attempt_ostream,
-                                  ostringstream *solution_ostream)
+bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_callback, iostream *attempt_ostream,
+                                  iostream *solution_ostream)
 {
 
     string input_line_str;
@@ -41,13 +40,13 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
     bool allocated_aos = false;
     if (solution_ostream == nullptr)
     {
-        solution_ostream = new ostringstream;
+        solution_ostream = new stringstream;
         allocated_sos = true;
     }
 
     if (attempt_ostream == nullptr)
     {
-        attempt_ostream = new ostringstream;
+        attempt_ostream = new stringstream;
         allocated_aos = true;
     }
 
@@ -63,16 +62,18 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
     input_line.seekg(0);
 
     vm_attempt->loop(vm_callback);
+    string attempt((istreambuf_iterator<char>(*attempt_ostream)), istreambuf_iterator<char>());
+    string sol((istreambuf_iterator<char>(*attempt_ostream)), istreambuf_iterator<char>());
 
-    bool r = (attempt_ostream->str() == solution_ostream->str());
+    bool r = (sol == attempt);
     if (allocated_aos) delete attempt_ostream;
     if (allocated_sos) delete solution_ostream;
     return r;
 }
 
 bool GameLevel::attempt(const string &program_, const function<void(VirtualMachine *)> &vm_callback,
-                        const function<void(GameLevel *)> &gl_callback, ostringstream *attempt_ostream,
-                        ostringstream *solution_ostream)
+                        const function<void(GameLevel *)> &gl_callback, iostream *attempt_ostream,
+                        iostream *solution_ostream)
 {
 
     bool allocated_sos = false;
@@ -80,13 +81,13 @@ bool GameLevel::attempt(const string &program_, const function<void(VirtualMachi
     program_attempt = program_;
     if (solution_ostream == nullptr)
     {
-        solution_ostream = new ostringstream;
+        solution_ostream = new stringstream;
         allocated_sos = true;
     }
 
     if (attempt_ostream == nullptr)
     {
-        attempt_ostream = new ostringstream;
+        attempt_ostream = new stringstream;
         allocated_aos = true;
     }
     while (!input.eof())

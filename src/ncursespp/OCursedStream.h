@@ -29,15 +29,19 @@ namespace ncursespp
         int current_y;
         int current_x;
 
+        void print_to_win();
+
     public:
         CursedBuffer(Window *window_, int starty_, int startx_, int x_buffer_);
 
-        int overflow(int ch) override;
+        int_type overflow(int_type c);
+
+        streamsize xsputn(const char_type *s, streamsize count) override;
 
         int sync() override;
     };
 
-    class OCursedStream : public ostringstream
+    class OCursedStream : public basic_iostream<char>
     {
     private:
         CursedBuffer buf;

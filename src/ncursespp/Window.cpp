@@ -151,6 +151,22 @@ namespace ncursespp
         return startx;
     }
 
+    int Window::get_x() const
+    {
+        int y;
+        int x;
+        getyx(window, y, x);
+        return x;
+    }
+
+    int Window::get_y() const
+    {
+        int y;
+        int x;
+        getyx(window, y, x);
+        return y;
+    }
+
     void Window::color_on(int color_id)
     {
         wattron(window, COLOR_PAIR(color_id));

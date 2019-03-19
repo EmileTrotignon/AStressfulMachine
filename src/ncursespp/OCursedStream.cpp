@@ -19,7 +19,17 @@ namespace ncursespp
 
     }
 
-    int CursedBuffer::overflow(int ch)
+    void CursedBuffer::print_to_win()
+    {
+        string s;
+        char *e = pptr();
+        for (char *p = pbase(); p < e; p++)
+        {
+            s.push_back(*p);
+        }
+    }
+
+    CursedBuffer::int_type CursedBuffer::overflow(CursedBuffer::int_type ch)
     {
         if (current_x >= window->get_width() - x_buffer)
         {
@@ -31,6 +41,15 @@ namespace ncursespp
         return streambuf::overflow(ch);
     }
 
+    streamsize CursedBuffer::xsputn(const char *s, streamsize count)
+    {
+        /*
+        window->mvprintstr(current_y, current_x, string(s), x_buffer);
+        current_x = window->get_x();
+        current_y = window->get_y();*/
+        return streambuf::xsputn(s, count);
+    }
+
     int CursedBuffer::sync()
     {
         window->refresh_();
@@ -38,7 +57,9 @@ namespace ncursespp
     }
 
 
-    OCursedStream::OCursedStream(ncursespp::Window *win, int starty, int startx, int x_buffer) : ostringstream(),
+    OCursedStream::OCursedStream(ncursespp::Window *win, int starty, int startx, int x_buffer) :
+            basic_iostream<char>(
+                    &buf),
                                                                                                  buf(win, starty,
                                                                                                      startx, x_buffer)
     {
