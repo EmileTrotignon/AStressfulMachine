@@ -408,6 +408,33 @@ src/mains/unit_test.cpp.s:
 	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/mains/unit_test.cpp.s
 .PHONY : src/mains/unit_test.cpp.s
 
+src/ncursespp/CursedStringStream.o: src/ncursespp/CursedStringStream.cpp.o
+
+.PHONY : src/ncursespp/CursedStringStream.o
+
+# target to build an object file
+src/ncursespp/CursedStringStream.cpp.o:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/CursedStringStream.cpp.o
+.PHONY : src/ncursespp/CursedStringStream.cpp.o
+
+src/ncursespp/CursedStringStream.i: src/ncursespp/CursedStringStream.cpp.i
+
+.PHONY : src/ncursespp/CursedStringStream.i
+
+# target to preprocess a source file
+src/ncursespp/CursedStringStream.cpp.i:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/CursedStringStream.cpp.i
+.PHONY : src/ncursespp/CursedStringStream.cpp.i
+
+src/ncursespp/CursedStringStream.s: src/ncursespp/CursedStringStream.cpp.s
+
+.PHONY : src/ncursespp/CursedStringStream.s
+
+# target to generate assembly for a file
+src/ncursespp/CursedStringStream.cpp.s:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/CursedStringStream.cpp.s
+.PHONY : src/ncursespp/CursedStringStream.cpp.s
+
 src/ncursespp/Field.o: src/ncursespp/Field.cpp.o
 
 .PHONY : src/ncursespp/Field.o
@@ -699,6 +726,9 @@ help:
 	@echo "... src/mains/unit_test.o"
 	@echo "... src/mains/unit_test.i"
 	@echo "... src/mains/unit_test.s"
+	@echo "... src/ncursespp/CursedStringStream.o"
+	@echo "... src/ncursespp/CursedStringStream.i"
+	@echo "... src/ncursespp/CursedStringStream.s"
 	@echo "... src/ncursespp/Field.o"
 	@echo "... src/ncursespp/Field.i"
 	@echo "... src/ncursespp/Field.s"

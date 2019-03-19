@@ -45,7 +45,7 @@ namespace ncursespp
         int sync() override;
     };
 
-    class OCursedStream : public basic_iostream<char>
+    class OCursedStream : public basic_ostream<char>
     {
     private:
         CursedBuffer buf;

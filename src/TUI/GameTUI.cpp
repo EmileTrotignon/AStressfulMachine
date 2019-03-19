@@ -48,6 +48,7 @@ void raw_gl_callback(GameLevel *gl, GameTUI *gi, bool pause_at_each_it)
     print_input_to_win(*(gi->vm_input_win), gl);
     *(gi->solution_ostream) << endl;
     *(gi->attempt_ostream) << endl;
+    gi->vm_input_win->refresh_();
     if (pause_at_each_it) gi->vm_input_win->getch_();
 }
 
@@ -141,8 +142,8 @@ void GameTUI::play_level()
     delete solution_ostream;
     vm_output_win->erase();
 
-    attempt_ostream = new OCursedStream(vm_output_win, 2, 2, vm_output_win->get_width() / 2 + 1);
-    solution_ostream = new OCursedStream(vm_output_win, 2, vm_output_win->get_width() / 2 + 1, 2);
+    attempt_ostream = new CursedStringStream(vm_output_win, 2, 2, vm_output_win->get_width() / 2 + 1);
+    solution_ostream = new CursedStringStream(vm_output_win, 2, vm_output_win->get_width() / 2 + 1, 2);
 
     typing_win->refresh_();
     instruction_win->refresh_();

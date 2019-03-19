@@ -10,7 +10,6 @@ namespace ncursespp
 {
     ofstream log("log");
 
-
     CursedBuffer::CursedBuffer(ostream &sink, size_t buffsize, Window *window_, int starty_, int startx_, int x_buffer_)
             :
             streambuf(),
@@ -38,9 +37,7 @@ namespace ncursespp
         }
 
         log << s + " " << current_y << " " << current_x << " " << x_buffer << endl;
-        window->mvprintstr(starty, startx, s, x_buffer);
-        current_x = window->get_x();
-        current_y = window->get_y();
+        window->mvprintstr(current_y, current_x, s, x_buffer);
 
         ptrdiff_t n = pptr() - pbase();
         pbump((int) -n);
@@ -56,8 +53,10 @@ namespace ncursespp
             assert(less_equal<>()(pptr(), epptr()));
             *pptr() = (char) ch;
             pbump(1);
-            if (print_to_win())
-                return ch;
+            print_to_win();
+            current_x = window->get_x();
+            current_y = window->get_y();
+            return ch;
         }
 
         return traits_type::eof();
@@ -83,7 +82,7 @@ namespace ncursespp
 
 
     OCursedStream::OCursedStream(ncursespp::Window *win, int starty, int startx, int x_buffer) :
-            basic_iostream<char>(&buf),
+            basic_ostream<char>(&buf),
             buf(*this, 255, win, starty, startx, x_buffer)
     {
 
