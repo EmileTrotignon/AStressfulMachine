@@ -155,6 +155,7 @@ void VirtualMachine::val_out()
 {
     if (procedure_call == nullptr)
     {
+        if (output_callback != nullptr) output_callback(*memory_ptr);
         *out << *memory_ptr;
         out->flush();
     } else
@@ -565,6 +566,11 @@ void VirtualMachine::stop_printing_errors()
 bool VirtualMachine::is_printing_errors() const
 {
     return print_errors;
+}
+
+void VirtualMachine::set_output_callback(const function<void(int)> &output_callback_)
+{
+    output_callback = output_callback_;
 }
 
 int VirtualMachine::extract_number_from_program(size_t *t)

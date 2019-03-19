@@ -3,10 +3,8 @@
 //
 
 #include <form.h>
-#include <assert.h>
 
 #include "GameTUI.h"
-#include "ncurses++.h"
 
 using namespace ncursespp;
 
@@ -33,6 +31,20 @@ void print_input_to_win(Window &win, GameLevel *gl)
     win.refresh_();
 }
 
+void raw_vm_solution_out_callback(int output, GameTUI *gi)
+{
+    gi->vm_output_win->mvprintstr(gi->n_lines_attempt_output + 2, gi->vm_output_win->get_width() / 2 + 1,
+                                  to_string(output));
+    gi->vm_output_win->refresh_();
+    gi->n_lines_attempt_output++;
+}
+
+void raw_vm_attempt_out_callback(int output, GameTUI *gi)
+{
+    gi->vm_output_win->mvprintstr(gi->n_lines_attempt_output + 2, 2, to_string(output));
+    gi->vm_output_win->refresh_();
+}
+
 void raw_vm_callback(VirtualMachine *vm, GameTUI *gi, bool pause_at_each_it)
 {
     print_memory_to_win(*(gi->vm_memory_win), vm);
@@ -46,12 +58,11 @@ void raw_gl_callback(GameLevel *gl, GameTUI *gi, bool pause_at_each_it)
 {
 
     print_input_to_win(*(gi->vm_input_win), gl);
-    *(gi->solution_ostream) << endl;
-    *(gi->attempt_ostream) << endl;
+
     gi->vm_input_win->refresh_();
+
     if (pause_at_each_it) gi->vm_input_win->getch_();
 }
-
 
 
 GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(saves_dir_, gamefiles_dir_),
@@ -64,9 +75,7 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            level_picking_win(nullptr),
                                                                            save_picking_win(nullptr),
                                                                            typing_field(nullptr),
-                                                                           success_menu_win(nullptr),
-                                                                           attempt_ostream(nullptr),
-                                                                           solution_ostream(nullptr)
+                                                                           success_menu_win(nullptr)
 {
 }
 
@@ -106,7 +115,6 @@ void GameTUI::pick_level()
         level_picking_win = new Window(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
     }
 
-
     Menu level_picking(possible_levels, level_picking_win, "Please pick a level :");
     game_sequence->select_level(possible_levels[level_picking.select_item()]);
 
@@ -117,14 +125,13 @@ void GameTUI::pick_level()
     delete vm_output_win;
     delete vm_memory_win;
 
-
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();
 
     typing_win = new Window(h / 2, w / 2, 0, w / 2, true);
     typing_field = new Field(vector<int>({KEY_F(5), KEY_F(6), KEY_F(7)}), typing_win->get_height() - 4,
                              typing_win->get_width() - 4,
-                                          typing_win->get_starty() + 2, typing_win->get_startx() + 2);
+                             typing_win->get_starty() + 2, typing_win->get_startx() + 2);
     instruction_win = new Window(h / 2, w / 2, 0, 0, true);
     fill_instructions();
 
@@ -138,12 +145,8 @@ void GameTUI::pick_level()
 
 void GameTUI::play_level()
 {
-    delete attempt_ostream;
-    delete solution_ostream;
-    vm_output_win->erase();
 
-    attempt_ostream = new CursedStringStream(vm_output_win, 2, 2, vm_output_win->get_width() / 2 + 1);
-    solution_ostream = new CursedStringStream(vm_output_win, 2, vm_output_win->get_width() / 2 + 1, 2);
+    vm_output_win->erase();
 
     typing_win->refresh_();
     instruction_win->refresh_();
@@ -162,14 +165,19 @@ void GameTUI::fill_instructions()
 
 void GameTUI::handle_typing()
 {
+    using namespace placeholders;
+
     function<void(VirtualMachine *)> vm_callback;
     function<void(GameLevel *)> gl_callback;
+    function<void(int)> vm_output_attempt_callback = bind(function<void(int, GameTUI *)>(raw_vm_attempt_out_callback),
+                                                          _1, this);
+    function<void(int)> vm_output_solution_callback = bind(function<void(int, GameTUI *)>(raw_vm_solution_out_callback),
+                                                           _1, this);
 
     print_input_to_win(*(vm_input_win), game_sequence->get_current_level());
 
     int exit_key = typing_field->type();
     bool b;
-    using namespace placeholders;
     try
     {
         switch (exit_key)
@@ -192,8 +200,11 @@ void GameTUI::handle_typing()
                 gl_callback = nullptr;
 
         }
-        b = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(), vm_callback, gl_callback,
-                                                        attempt_ostream, solution_ostream);
+        b = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(),
+                                                        vm_callback,
+                                                        gl_callback,
+                                                        vm_output_attempt_callback,
+                                                        vm_output_solution_callback);
         vm_memory_win->erase();
         vm_memory_win->refresh_();
     } catch (const VirtualMachineException &e)
@@ -219,7 +230,7 @@ void GameTUI::handle_success()
         success_menu_win = new Window(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
 
     auto menu = new Menu(options, success_menu_win,
-                                "Congratulation, you have solved this level. What do you want to do now ?");
+                         "Congratulation, you have solved this level. What do you want to do now ?");
     switch (menu->select_item())
     {
         default:

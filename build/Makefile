@@ -408,33 +408,6 @@ src/mains/unit_test.cpp.s:
 	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/mains/unit_test.cpp.s
 .PHONY : src/mains/unit_test.cpp.s
 
-src/ncursespp/CursedStringStream.o: src/ncursespp/CursedStringStream.cpp.o
-
-.PHONY : src/ncursespp/CursedStringStream.o
-
-# target to build an object file
-src/ncursespp/CursedStringStream.cpp.o:
-	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/CursedStringStream.cpp.o
-.PHONY : src/ncursespp/CursedStringStream.cpp.o
-
-src/ncursespp/CursedStringStream.i: src/ncursespp/CursedStringStream.cpp.i
-
-.PHONY : src/ncursespp/CursedStringStream.i
-
-# target to preprocess a source file
-src/ncursespp/CursedStringStream.cpp.i:
-	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/CursedStringStream.cpp.i
-.PHONY : src/ncursespp/CursedStringStream.cpp.i
-
-src/ncursespp/CursedStringStream.s: src/ncursespp/CursedStringStream.cpp.s
-
-.PHONY : src/ncursespp/CursedStringStream.s
-
-# target to generate assembly for a file
-src/ncursespp/CursedStringStream.cpp.s:
-	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/CursedStringStream.cpp.s
-.PHONY : src/ncursespp/CursedStringStream.cpp.s
-
 src/ncursespp/Field.o: src/ncursespp/Field.cpp.o
 
 .PHONY : src/ncursespp/Field.o
@@ -603,6 +576,7 @@ src/virtual_machine/VirtualMachine.o: src/virtual_machine/VirtualMachine.cpp.o
 
 # target to build an object file
 src/virtual_machine/VirtualMachine.cpp.o:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachine.cpp.o
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachine.cpp.o
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachine.cpp.o
 .PHONY : src/virtual_machine/VirtualMachine.cpp.o
@@ -613,6 +587,7 @@ src/virtual_machine/VirtualMachine.i: src/virtual_machine/VirtualMachine.cpp.i
 
 # target to preprocess a source file
 src/virtual_machine/VirtualMachine.cpp.i:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachine.cpp.i
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachine.cpp.i
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachine.cpp.i
 .PHONY : src/virtual_machine/VirtualMachine.cpp.i
@@ -623,6 +598,7 @@ src/virtual_machine/VirtualMachine.s: src/virtual_machine/VirtualMachine.cpp.s
 
 # target to generate assembly for a file
 src/virtual_machine/VirtualMachine.cpp.s:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachine.cpp.s
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachine.cpp.s
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachine.cpp.s
 .PHONY : src/virtual_machine/VirtualMachine.cpp.s
@@ -633,6 +609,7 @@ src/virtual_machine/VirtualMachineException.o: src/virtual_machine/VirtualMachin
 
 # target to build an object file
 src/virtual_machine/VirtualMachineException.cpp.o:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachineException.cpp.o
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineException.cpp.o
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineException.cpp.o
 .PHONY : src/virtual_machine/VirtualMachineException.cpp.o
@@ -643,6 +620,7 @@ src/virtual_machine/VirtualMachineException.i: src/virtual_machine/VirtualMachin
 
 # target to preprocess a source file
 src/virtual_machine/VirtualMachineException.cpp.i:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachineException.cpp.i
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineException.cpp.i
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineException.cpp.i
 .PHONY : src/virtual_machine/VirtualMachineException.cpp.i
@@ -653,6 +631,7 @@ src/virtual_machine/VirtualMachineException.s: src/virtual_machine/VirtualMachin
 
 # target to generate assembly for a file
 src/virtual_machine/VirtualMachineException.cpp.s:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachineException.cpp.s
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineException.cpp.s
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineException.cpp.s
 .PHONY : src/virtual_machine/VirtualMachineException.cpp.s
@@ -663,6 +642,7 @@ src/virtual_machine/VirtualMachineProcedure.o: src/virtual_machine/VirtualMachin
 
 # target to build an object file
 src/virtual_machine/VirtualMachineProcedure.cpp.o:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachineProcedure.cpp.o
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineProcedure.cpp.o
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineProcedure.cpp.o
 .PHONY : src/virtual_machine/VirtualMachineProcedure.cpp.o
@@ -673,6 +653,7 @@ src/virtual_machine/VirtualMachineProcedure.i: src/virtual_machine/VirtualMachin
 
 # target to preprocess a source file
 src/virtual_machine/VirtualMachineProcedure.cpp.i:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachineProcedure.cpp.i
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineProcedure.cpp.i
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineProcedure.cpp.i
 .PHONY : src/virtual_machine/VirtualMachineProcedure.cpp.i
@@ -683,6 +664,7 @@ src/virtual_machine/VirtualMachineProcedure.s: src/virtual_machine/VirtualMachin
 
 # target to generate assembly for a file
 src/virtual_machine/VirtualMachineProcedure.cpp.s:
+	$(MAKE) -f CMakeFiles/unit_test.dir/build.make CMakeFiles/unit_test.dir/src/virtual_machine/VirtualMachineProcedure.cpp.s
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/virtual_machine/VirtualMachineProcedure.cpp.s
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/virtual_machine/VirtualMachineProcedure.cpp.s
 .PHONY : src/virtual_machine/VirtualMachineProcedure.cpp.s
@@ -726,9 +708,6 @@ help:
 	@echo "... src/mains/unit_test.o"
 	@echo "... src/mains/unit_test.i"
 	@echo "... src/mains/unit_test.s"
-	@echo "... src/ncursespp/CursedStringStream.o"
-	@echo "... src/ncursespp/CursedStringStream.i"
-	@echo "... src/ncursespp/CursedStringStream.s"
 	@echo "... src/ncursespp/Field.o"
 	@echo "... src/ncursespp/Field.i"
 	@echo "... src/ncursespp/Field.s"

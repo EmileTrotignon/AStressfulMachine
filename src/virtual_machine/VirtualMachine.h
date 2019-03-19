@@ -104,6 +104,7 @@ protected:
 
     istream *in;
     ostream *out;
+    function<void(int)> output_callback;
     string program;
     vector<int> memory;
     vector<int>::iterator memory_ptr;
@@ -268,6 +269,7 @@ public:
 
     bool is_printing_errors() const;
 
+    void set_output_callback(const function<void(int)> &ouput_callback);
 
     virtual string memory_to_string() const;
 

@@ -29,8 +29,10 @@ private:
     Window *save_picking_win;
     Window *success_menu_win;
     Field *typing_field;
-    CursedStringStream *attempt_ostream;
-    CursedStringStream *solution_ostream;
+
+    int n_lines_sol_output;
+    int n_lines_attempt_output;
+
 
     void pick_saves();
 
@@ -55,6 +57,12 @@ public:
     friend void raw_vm_callback(VirtualMachine *, GameTUI *, bool);
 
     friend void raw_gl_callback(GameLevel *, GameTUI *, bool);
+
+    friend void raw_vm_solution_out_callback(int output, GameTUI *gi);
+
+    friend void raw_vm_attempt_out_callback(int output, GameTUI *gi);
+
+
 
 };
 

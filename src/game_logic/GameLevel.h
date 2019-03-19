@@ -53,12 +53,15 @@ public:
      * @param verbose_level
      * @return
      */
-    bool attempt_one_input(const function<void(VirtualMachine *)> &vm_looper, stringstream *attempt_ostream,
-                           stringstream *solution_ostream);
+    bool attempt_one_input(const function<void(VirtualMachine *)> &vm_callback,
+                           const function<void(int)> &vm_output_attempt_callback,
+                           const function<void(int)> &vm_output_solution_callback);
 
-    bool attempt(const string &program, const function<void(VirtualMachine *)> &vm_callback = nullptr,
-                 const function<void(GameLevel *)> &gm_callback = nullptr, stringstream *attempt_ostream = nullptr,
-                 stringstream *solution_ostream = nullptr);
+    bool attempt(const string &program_,
+                 const function<void(VirtualMachine *)> &vm_callback = nullptr,
+                 const function<void(GameLevel *)> &gl_callback = nullptr,
+                 const function<void(int)> &vm_output_attempt_callback = nullptr,
+                 const function<void(int)> &vm_output_solution_callback = nullptr);
 
     string get_instructions();
 

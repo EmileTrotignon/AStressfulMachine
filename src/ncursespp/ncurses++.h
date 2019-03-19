@@ -11,7 +11,6 @@
 #include "Menu.h"
 #include "Field.h"
 #include "OCursedStream.h"
-#include "CursedStringStream.h"
 
 namespace ncursespp
 {

@@ -22,7 +22,7 @@ namespace ncursespp
     class CursedBuffer : public streambuf
     {
 
-    private:
+    protected:
 
         vector<char> buffer_;
         ostream &sink_;
@@ -33,7 +33,7 @@ namespace ncursespp
         int current_y;
         int current_x;
 
-        bool print_to_win();
+        virtual bool print_to_win();
 
     public:
         CursedBuffer(ostream &sink, size_t buffsize, Window *window_, int starty_, int startx_, int x_buffer_);

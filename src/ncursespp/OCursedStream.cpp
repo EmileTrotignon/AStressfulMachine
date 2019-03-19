@@ -8,7 +8,7 @@
 
 namespace ncursespp
 {
-    ofstream log("log");
+    //ofstream log("log");
 
     CursedBuffer::CursedBuffer(ostream &sink, size_t buffsize, Window *window_, int starty_, int startx_, int x_buffer_)
             :
@@ -36,7 +36,7 @@ namespace ncursespp
             s.push_back(*p);
         }
 
-        log << s + " " << current_y << " " << current_x << " " << x_buffer << endl;
+        //log << s + " " << current_y << " " << current_x << " " << x_buffer << endl;
         window->mvprintstr(current_y, current_x, s, x_buffer);
 
         ptrdiff_t n = pptr() - pbase();
