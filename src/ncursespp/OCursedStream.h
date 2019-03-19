@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 #include "Window.h"
 
@@ -22,6 +23,9 @@ namespace ncursespp
     {
 
     private:
+
+        vector<char> buffer_;
+        ostream &sink_;
         Window *window;
         int starty;
         int startx;
@@ -29,14 +33,14 @@ namespace ncursespp
         int current_y;
         int current_x;
 
-        void print_to_win();
+        bool print_to_win();
 
     public:
-        CursedBuffer(Window *window_, int starty_, int startx_, int x_buffer_);
+        CursedBuffer(ostream &sink, size_t buffsize, Window *window_, int starty_, int startx_, int x_buffer_);
 
-        int_type overflow(int_type c);
+        int_type overflow(int_type c) override;
 
-        streamsize xsputn(const char_type *s, streamsize count) override;
+        /*streamsize xsputn(const char_type *s, streamsize count) override;*/
 
         int sync() override;
     };

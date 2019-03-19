@@ -27,7 +27,7 @@ string file_to_string(const string &filename)
 vector<string> filesystem_ls(const string &dir)
 {
 
-    if (!fs::exists(dir)) throw runtime_error("dossier inexistant");
+    if (!fs::exists(dir)) throw runtime_error("The directory " + dir + " does not exists.");
 
 
     vector<string> saves;

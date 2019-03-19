@@ -20,6 +20,8 @@ bool test_OCursedStream()
     lols << 'a';
     lols.flush();
     lol.getch_();
+    while (true) lol.getch_();
+
     endwin_();
     return true;
 }
