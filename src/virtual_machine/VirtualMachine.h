@@ -12,49 +12,87 @@
 
 #include "../file_utilities.h"
 #include "VirtualMachineException.h"
-
-#define MAX_SIZE_MEMORY_PRINT 10
-#define PRINTING_POINTER "^\n"
-#define DEFAULT_MEMORY_SIZE 30000
+/*
+const char* PRINTING_POINTER = "^\n";
 
 // Status macros
-#define STATUS_ERROR  -1
-#define STATUS_RUNNING 1
-#define STATUS_PAUSED  0
+const int STATUS_ERROR = -1;
+const int STATUS_RUNNING = 1;
+const int STATUS_PAUSED = 0;
 
 // Message macros
-#define MESSAGE_LAUNCHING          "[ UNPAUSING VM ]"
-#define MESSAGE_FINISHED           "The execution is finished"
-#define MESSAGE_STARTING_PROCEDURE "[ START PROCEDURE ]"
-#define MESSAGE_DEPTH              "[ DEPTH " + to_string(depth) + " ]"
+const char* MESSAGE_LAUNCHING = "[ UNPAUSING VM ]";
+const char* MESSAGE_FINISHED = "The execution is finished";
+const char* MESSAGE_STARTING_PROCEDURE = "[ START PROCEDURE ]";
+#define MESSAGE_DEPTH "[ DEPTH " + to_string(depth) + " ]"
 
 // Syntax macros
-#define SYNTAX_PTR_INCR       '>'
-#define SYNTAX_PTR_DINCR      '<'
-#define SYNTAX_VAL_INCR       '+'
-#define SYNTAX_VAL_DINCR      '-'
-#define SYNTAX_VAL_OUT        '.'
-#define SYNTAX_CHAR_OUT       ':'
-#define SYNTAX_VAL_IN         ','
-#define SYNTAX_OPEN_GOTO      '['
-#define SYNTAX_CLOSE_GOTO     ']'
-#define SYNTAX_GOTO_MARKER    '|'
-#define SYNTAX_COND_GREATER   '>'
-#define SYNTAX_COND_LESSER    '<'
-#define SYNTAX_COND_EQUAL     '='
-#define SYNTAX_COND_DIFF      '/'
-#define SYNTAX_PTR_JUMP       '^'
-#define SYNTAX_PTR_RESET      '#'
-#define SYNTAX_VAL_RESET      '_'
-#define SYNTAX_DO_N_TIME      '*'
-#define SYNTAX_OPEN_PROC      '{'
-#define SYNTAX_CLOSE_PROC     '}'
-#define SYNTAX_TERMINATE_PROC '!'
-#define SYNTAX_FILE_MARKER    '~'
+const char SYNTAX_PTR_INCR =       '>';
+const char SYNTAX_PTR_DINCR =      '<';
+const char SYNTAX_VAL_INCR =       '+';
+const char SYNTAX_VAL_DINCR =      '-';
+const char SYNTAX_VAL_OUT =        '.';
+const char SYNTAX_CHAR_OUT =       ':';
+const char SYNTAX_VAL_IN =         ',';
+const char SYNTAX_OPEN_GOTO =      '[';
+const char SYNTAX_CLOSE_GOTO =     ']';
+const char SYNTAX_GOTO_MARKER =    '|';
+const char SYNTAX_COND_GREATER =   '>';
+const char SYNTAX_COND_LESSER =    '<';
+const char SYNTAX_COND_EQUAL =     '=';
+const char SYNTAX_COND_DIFF =      '/';
+const char SYNTAX_PTR_JUMP =       '^';
+const char SYNTAX_PTR_RESET =      '#';
+const char SYNTAX_VAL_RESET =      '_';
+const char SYNTAX_DO_N_TIME =      '*';
+const char SYNTAX_OPEN_PROC =      '{';
+const char SYNTAX_CLOSE_PROC =     '}';
+const char SYNTAX_TERMINATE_PROC=  '!';
+const char SYNTAX_FILE_MARKER =    '~';
+*/
+
+#define PRINTING_POINTER "^\n"
+
+// Status macros
+#define STATUS_ERROR -1
+#define STATUS_RUNNING 1
+#define STATUS_PAUSED 0
+
+// Message macros
+#define MESSAGE_LAUNCHING "[ UNPAUSING VM ]"
+#define MESSAGE_FINISHED "The execution is finished"
+#define MESSAGE_STARTING_PROCEDURE "[ START PROCEDURE ]"
+#define MESSAGE_DEPTH "[ DEPTH " + to_string(depth) + " ]"
+
+// Syntax macros
+#define SYNTAX_PTR_INCR        '>'
+#define SYNTAX_PTR_DINCR       '<'
+#define SYNTAX_VAL_INCR        '+'
+#define SYNTAX_VAL_DINCR       '-'
+#define SYNTAX_VAL_OUT         '.'
+#define SYNTAX_CHAR_OUT        ':'
+#define SYNTAX_VAL_IN          ','
+#define SYNTAX_OPEN_GOTO       '['
+#define SYNTAX_CLOSE_GOTO      ']'
+#define SYNTAX_GOTO_MARKER     '|'
+#define SYNTAX_COND_GREATER    '>'
+#define SYNTAX_COND_LESSER     '<'
+#define SYNTAX_COND_EQUAL      '='
+#define SYNTAX_COND_DIFF       '/'
+#define SYNTAX_PTR_JUMP        '^'
+#define SYNTAX_PTR_RESET       '#'
+#define SYNTAX_VAL_RESET       '_'
+#define SYNTAX_DO_N_TIME       '*'
+#define SYNTAX_OPEN_PROC       '{'
+#define SYNTAX_CLOSE_PROC      '}'
+#define SYNTAX_TERMINATE_PROC  '!'
+#define SYNTAX_FILE_MARKER     '~'
 
 using namespace std;
 
 class VirtualMachineProcedure;
+
+class UnitTest;
 
 
 /**
@@ -131,88 +169,94 @@ public:
 
 
     /**
-     * Constructor that initializes all the fields
+     * @brief Constructor that initializes all the fields
      * @param program_ The code to be executed
      * @param in The input stream
      * @param out The output stream
-     * @param size The size of the memory. If the program starts with a number, this will be ignored
-     * @param memory The memory to be used by the machine. Allocated automatically if not specified.
      */
+     /*
+      * @param size The size of the memory. If the program starts with a number, this will be ignored
+      * @param memory The memory to be used by the machine. Allocated automatically if not specified.
+      */
     VirtualMachine(const string &program, istream *in, ostream *out);
 
     VirtualMachine(const VirtualMachine &vm);
 
     ~VirtualMachine();
 
+    /**
+     * @brief This resets the class to its state after construction
+     * @param in
+     */
     void reset(istream *in);
 
     /**
-     * This do one iteration of the execution
+     * @brief This does one iteration of the execution
      * @param advance This bool is here to tell the VM if it should advance in the program or redo the same operator next time.
      */
     void do_one_iteration(bool advance = true);
 
     /**
-     * This execute the program until it halts.
+     * @brief This execute the program until it halts.
      * @param func A function to be executed at each step of the loop. Basic use would be to slow down execution.
      */
     void loop(function<void(VirtualMachine *)> vm_callback = nullptr);
 
     /**
-     * Getter for member program
+     * @brief Getter for member program
      * @return the program
      */
     const string &get_program() const;
 
     /**
-     * Setter for the program
+     * @brief Setter for the program
      * @param program The new value
      */
     void set_program(const string &program);
 
 
     /**
-     * Getter for member current_operator
+     * @brief Getter for member current_operator
      * @return current_operator
      */
     string::iterator get_current_operator() const;
 
     /**
-     * Getter for member status
+     * @brief Getter for member status
      * @return status
      */
     int get_status() const;
 
     /**
-     * Getter for member memory
+     * @brief Getter for member memory
      * @return memory
      */
     const vector<int> &get_memory() const;
 
     /**
-     * Getter for member memory_ptr
+     * @brief Getter for member memory_ptr
      * @return memory_ptr
      */
     vector<int>::iterator get_memory_ptr() const;
 
     /**
-     * Makes the VM verbose.
+     * @brief Makes the VM verbose.
      */
     void be_verbose();
 
     /**
-     * Makes the VM silent.
+     * @brief Makes the VM silent.
      */
     void stop_verbose();
 
     bool is_verbose() const;
     /**
-     * Make the VM and its procedures verbose.
+     * @brief Make the VM and its procedures verbose.
      */
     void be_verbose_procedure();
 
     /**
-     * Make the VM's procedures silent.
+     * @brief Make the VM's procedures silent.
      */
     void stop_verbose_procedure();
 
@@ -230,12 +274,14 @@ public:
     virtual string program_to_string() const;
 
     /**
-     * Convert the VM's current state into a string.
+     * @brief Convert the VM's current state into a string.
      * @return The VM's string representation
      */
     virtual explicit operator string() const;
 
     ostream &operator<<(ostream &o) const;
+
+    friend UnitTest;
 };
 
 
