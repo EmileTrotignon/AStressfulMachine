@@ -46,6 +46,8 @@ private:
 
     void handle_success();
 
+    void handle_failure();
+
 public:
 
     GameTUI(const string &saves_dir, const string &gamefiles_dir);

@@ -145,9 +145,6 @@ void GameTUI::pick_level()
 
 void GameTUI::play_level()
 {
-
-    vm_output_win->erase();
-
     typing_win->refresh_();
     instruction_win->refresh_();
     vm_input_win->refresh_();
@@ -177,7 +174,8 @@ void GameTUI::handle_typing()
     print_input_to_win(*(vm_input_win), game_sequence->get_current_level());
 
     int exit_key = typing_field->type();
-    bool b;
+    vm_output_win->erase();
+    bool success;
     try
     {
         switch (exit_key)
@@ -200,23 +198,24 @@ void GameTUI::handle_typing()
                 gl_callback = nullptr;
 
         }
-        b = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(),
-                                                        vm_callback,
-                                                        gl_callback,
-                                                        vm_output_attempt_callback,
-                                                        vm_output_solution_callback);
+        success = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(),
+                                                              vm_callback,
+                                                              gl_callback,
+                                                              vm_output_attempt_callback,
+                                                              vm_output_solution_callback);
         vm_memory_win->erase();
         vm_memory_win->refresh_();
     } catch (const VirtualMachineException &e)
     {
-        b = false;
+        success = false;
     }
-    if (b)
+    n_lines_attempt_output = 0;
+    if (success)
     {
         handle_success();
     } else
     {
-        handle_typing();
+        handle_failure();
     }
 
 }
@@ -244,6 +243,11 @@ void GameTUI::handle_success()
             break;
     }
 
+}
+
+void GameTUI::handle_failure()
+{
+    handle_typing();
 }
 
 void GameTUI::play()

@@ -77,6 +77,7 @@ bool GameLevel::attempt(const string &program_,
         if (gl_callback != nullptr) gl_callback(this);
         if (!attempt_one_input(vm_callback, vm_output_attempt_callback, vm_output_solution_callback))
         {
+            reset_input();
             return false;
         }
     }
