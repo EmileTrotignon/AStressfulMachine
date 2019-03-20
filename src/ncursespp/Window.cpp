@@ -27,6 +27,17 @@ namespace ncursespp
         boxing = false;
     }
 
+    Window::Window(ncursespp::Window *masterwin, int height_, int width_, int starty_, int startx_, bool boxing_) :
+            height(height_),
+            width(width_),
+            starty(starty_),
+            startx(startx_),
+            boxing(boxing_)
+    {
+        window = subwin(masterwin->window, height, width, starty + masterwin->get_starty(),
+                        startx + masterwin->get_startx());
+    }
+
     Window::~Window()
     {
         werase(window);

@@ -33,16 +33,15 @@ void print_input_to_win(Window &win, GameLevel *gl)
 
 void raw_vm_solution_out_callback(int output, GameTUI *gi)
 {
-    gi->vm_output_win->mvprintstr(gi->n_lines_attempt_output + 2, gi->vm_output_win->get_width() / 2 + 1,
-                                  to_string(output));
-    gi->vm_output_win->refresh_();
+    gi->vm_output_solution_win->mvprintstr(gi->n_lines_attempt_output, 0, to_string(output));
+    gi->vm_output_solution_win->refresh_();
     gi->n_lines_attempt_output++;
 }
 
 void raw_vm_attempt_out_callback(int output, GameTUI *gi)
 {
-    gi->vm_output_win->mvprintstr(gi->n_lines_attempt_output + 2, 2, to_string(output));
-    gi->vm_output_win->refresh_();
+    gi->vm_output_attempt_win->mvprintstr(gi->n_lines_attempt_output, 0, to_string(output));
+    gi->vm_output_attempt_win->refresh_();
 }
 
 void raw_vm_callback(VirtualMachine *vm, GameTUI *gi, bool pause_at_each_it)
@@ -70,8 +69,10 @@ GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(
                                                                            instruction_win(nullptr),
                                                                            vm_input_win(nullptr),
                                                                            vm_output_win(nullptr),
+                                                                           vm_output_attempt_win(nullptr),
+                                                                           vm_output_solution_win(nullptr),
                                                                            vm_memory_win(nullptr),
-                                                                           vm_program_win(nullptr),
+                                                                           vm_message_win(nullptr),
                                                                            level_picking_win(nullptr),
                                                                            save_picking_win(nullptr),
                                                                            typing_field(nullptr),
@@ -86,8 +87,10 @@ GameTUI::~GameTUI()
     delete instruction_win;
     delete vm_input_win;
     delete vm_output_win;
+    delete vm_output_attempt_win;
+    delete vm_output_solution_win;
     delete vm_memory_win;
-    delete vm_program_win;
+    delete vm_message_win;
     delete game_sequence;
 }
 
@@ -123,6 +126,8 @@ void GameTUI::pick_level()
     delete instruction_win;
     delete vm_input_win;
     delete vm_output_win;
+    delete vm_output_attempt_win;
+    delete vm_output_solution_win;
     delete vm_memory_win;
 
     const int h = stdscr_->get_height();
@@ -137,8 +142,21 @@ void GameTUI::pick_level()
 
     vm_input_win = new Window(h / 2, w / 4, h / 2, 0, true);
     vm_output_win = new Window(h / 2, w / 4, h / 2, w / 4, true);
+    vm_output_attempt_win = new Window(vm_output_win,
+                                       vm_output_win->get_height() - 3,
+                                       vm_output_win->get_width() / 2 - 2,
+                                       2,
+                                       2);
 
-    vm_program_win = new Window(h / 4, w / 2, h / 2, w / 2, true);
+    vm_output_solution_win = new Window(vm_output_win,
+                                        vm_output_win->get_height() - 3,
+                                        vm_output_win->get_width() / 2 - 2,
+                                        2,
+                                        vm_output_win->get_width() / 2 + 1);
+    vm_output_win->mvprintstr(1, 2, "Your output :");
+    vm_output_win->mvprintstr(1, vm_output_win->get_width() / 2 + 1, "Expected output :");
+
+    vm_message_win = new Window(h / 4, w / 2, h / 2, w / 2, true);
     vm_memory_win = new Window(h / 4, w / 2, h / 2 + h / 4, w / 2, true);
 
 }
@@ -148,9 +166,12 @@ void GameTUI::play_level()
     typing_win->refresh_();
     instruction_win->refresh_();
     vm_input_win->refresh_();
+
+
     vm_output_win->refresh_();
+
     vm_memory_win->refresh_();
-    vm_program_win->refresh_();
+    vm_message_win->refresh_();
     typing_win->move_cursor(2, 2);
     handle_typing();
 }

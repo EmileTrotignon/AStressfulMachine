@@ -18,23 +18,23 @@ size_t size_of_longest_string(const vector<string> &vs)
 namespace ncursespp
 {
     Menu::Menu(const vector<string> &options_, int height_, int width_, int startx_, int starty_,
-                             bool boxing_) : Window(height_, width_, startx_, starty_, boxing_),
-                                             options(options_)
+               bool boxing_) : Window(height_, width_, startx_, starty_, boxing_),
+                               options(options_)
     {
 
     }
 
     Menu::Menu(const vector<string> &options_, Window *master_win, const string &message) :
-            options(options_)
+            options(options_),
+            Window(master_win,
+                   (int) options_.size() + 2,
+                   (int) size_of_longest_string(options_) + 8,
+                   master_win->get_height() / 2 - ((int) options_.size() + 2) / 2,
+                   master_win->get_width() / 2 - ((int) size_of_longest_string(options_) + 8) / 2,
+                   true)
     {
-        width = (int) size_of_longest_string(options) + 8;
-        height = (int) options.size() + 2;
-        starty = master_win->get_height() / 2 - height / 2;
-        startx = master_win->get_width() / 2 - width / 2;
-        window = newwin(height, width, starty, startx);
         master_win->printstr_centered(starty / 2, message);
         master_win->refresh_();
-        boxing = true;
         keypad_on();
     }
 

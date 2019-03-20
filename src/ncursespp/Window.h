@@ -31,6 +31,8 @@ namespace ncursespp
 
         Window(int height, int width, int starty, int startx, bool boxing = false);
 
+        Window(Window *masterwin, int height, int width, int starty, int startx, bool boxing = false);
+
         explicit Window(WINDOW *window);
 
         ~Window();
