@@ -3,7 +3,6 @@
 //
 
 #include <fstream>
-#include <assert.h>
 #include "VirtualMachine.h"
 #include "VirtualMachineProcedure.h"
 
@@ -56,8 +55,13 @@ string::iterator corresponding_par(const string &s, char open, char close, strin
 }
 
 
-VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *out_) :
-        program(program_), in(in_), out(out_)
+VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *out_) : program(program_), in(in_),
+                                                                                      out(out_),
+                                                                                      output_callback(nullptr),
+                                                                                      procedure_call(nullptr),
+                                                                                      verbose(false),
+                                                                                      verbose_procedure(false),
+                                                                                      depth(0)
 {
     status = STATUS_PAUSED;
 
@@ -66,8 +70,8 @@ VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *ou
 
     // If the program begins
 
-    current_operator = program.begin();
     memory = vector<int>{0};
+    current_operator = program.begin();// is duplicated for a reason
     if (isdigit(program[0]))
     {
         size_t t;
@@ -76,11 +80,8 @@ VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *ou
         memory.resize(size, 0);
         program = program.substr(t);
     }
+    current_operator = program.begin(); // is duplicated for a reason
     memory_ptr = memory.begin();
-    procedure_call = nullptr;
-    verbose = false;
-    verbose_procedure = false;
-    depth = 0;
 
     // Anchor map is used for the gotoes
     initialize_anchor_map();

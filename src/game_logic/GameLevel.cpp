@@ -6,7 +6,7 @@
 
 using namespace std;
 
-//ofstream log("log");
+ofstream log("log");
 
 GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, VirtualMachine *vm_attempt_) :
         gamefiles_dir(gamefiles_dir_),
@@ -44,12 +44,19 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
     ostringstream attempt_ostream;
 
     getline(input, input_line_str);
+    //  replace(input_line_str.begin(), input_line_str.end(), ' ', '\n');
     istringstream input_line(input_line_str);
 
     vm_attempt = new VirtualMachine(program_attempt, &input_line, &attempt_ostream);
     vm_attempt->set_output_callback(vm_output_attempt_callback);
 
-    vm_sol = new VirtualMachine(solution, &input_line, &solution_ostream);
+    try
+    {
+        vm_sol = new VirtualMachine(solution, &input_line, &solution_ostream);
+    } catch (const VirtualMachineException &e)
+    {
+        throw runtime_error(string("Solution initialisation throw exception : ") + string(e.what()));
+    }
     vm_sol->set_output_callback(vm_output_solution_callback);
     vm_attempt->loop(vm_callback);
 
@@ -68,9 +75,6 @@ bool GameLevel::attempt(const string &program_,
                         const function<void(int)> &vm_output_attempt_callback,
                         const function<void(int)> &vm_output_solution_callback)
 {
-
-    bool allocated_sos = false;
-    bool allocated_aos = false;
     program_attempt = program_;
     while (!input.eof())
     {

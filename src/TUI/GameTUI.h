@@ -35,14 +35,15 @@ private:
     int n_lines_sol_output;
     int n_lines_attempt_output;
 
+    void fill_instructions();
+
+    void draw_title();
 
     void pick_saves();
 
     void pick_level();
 
     void play_level();
-
-    void fill_instructions();
 
     void handle_typing();
 

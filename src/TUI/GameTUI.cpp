@@ -153,11 +153,11 @@ void GameTUI::pick_level()
                                         vm_output_win->get_width() / 2 - 2,
                                         2,
                                         vm_output_win->get_width() / 2 + 1);
-    vm_output_win->mvprintstr(1, 2, "Your output :");
-    vm_output_win->mvprintstr(1, vm_output_win->get_width() / 2 + 1, "Expected output :");
 
     vm_message_win = new Window(h / 4, w / 2, h / 2, w / 2, true);
     vm_memory_win = new Window(h / 4, w / 2, h / 2 + h / 4, w / 2, true);
+    draw_title();
+
 
 }
 
@@ -168,7 +168,10 @@ void GameTUI::play_level()
     vm_input_win->refresh_();
 
 
+
     vm_output_win->refresh_();
+    vm_output_solution_win->refresh_();
+    vm_output_attempt_win->refresh_();
 
     vm_memory_win->refresh_();
     vm_message_win->refresh_();
@@ -179,6 +182,17 @@ void GameTUI::play_level()
 void GameTUI::fill_instructions()
 {
     instruction_win->mvprintstr(1, 2, game_sequence->get_current_level()->get_instructions());
+}
+
+void GameTUI::draw_title()
+{
+    instruction_win->mvprintstr(1, 2, "Instructions :");
+
+    typing_win->mvprintstr(1, 2, "[F5] step by step    [F6] input block by input block    "
+                                 "[F7] all at once");
+
+    vm_output_win->mvprintstr(1, 2, "Your output :");
+    vm_output_win->mvprintstr(1, vm_output_win->get_width() / 2 + 1, "Expected output :");
 }
 
 void GameTUI::handle_typing()
@@ -195,7 +209,11 @@ void GameTUI::handle_typing()
     print_input_to_win(*(vm_input_win), game_sequence->get_current_level());
 
     int exit_key = typing_field->type();
-    vm_output_win->erase();
+    vm_output_attempt_win->erase();
+    vm_output_solution_win->erase();
+    vm_output_solution_win->refresh_();
+    vm_output_attempt_win->refresh_();
+
     bool success;
     try
     {

@@ -3,7 +3,6 @@
 //
 #include <iostream>
 #include <vector>
-#include <string>
 #include <ncurses.h>
 #include <cassert>
 #include "VirtualMachine.h"
@@ -71,7 +70,6 @@ public:
 
 int main()
 {
-
     cout << "Would you like to test OCursedStream class? (y/n) This will open a ncurses window" << endl;
     char answer;
     cin >> answer;
