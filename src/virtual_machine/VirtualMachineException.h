@@ -30,16 +30,14 @@ class VirtualMachineException : public runtime_error
 {
 protected:
 
-    const VirtualMachine *vm;
-
-    string vm_state() const;
+    string vm_state(const VirtualMachine *vm) const;
 
 public:
-    explicit VirtualMachineException(const VirtualMachine *vm, const char *msg = "Virtual Machine error");
+    explicit VirtualMachineException(const VirtualMachine *vm, const string &msg = "Virtual Machine error");
 
     VirtualMachineException(const VirtualMachineException &e) noexcept = default;
 
-    const char *what() const noexcept override;
+    //const char *what() const noexcept override;
 };
 
 class VM_MemoryError : public VirtualMachineException

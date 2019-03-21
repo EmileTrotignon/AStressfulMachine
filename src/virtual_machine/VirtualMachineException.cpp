@@ -8,24 +8,17 @@
 
 ofstream log("log");
 
-VirtualMachineException::VirtualMachineException(const VirtualMachine *vm_, const char *msg) :
-        runtime_error(msg), vm(vm_)
+VirtualMachineException::VirtualMachineException(const VirtualMachine *vm, const string &msg) :
+        runtime_error((msg + vm_state(vm)).c_str())
 {
 }
 
-string VirtualMachineException::vm_state() const
+string VirtualMachineException::vm_state(const VirtualMachine *vm) const
 {
     string r;
     if (vm->is_verbose()) r += "\n" + string((*vm));
     else r += " This Happened at char #" + to_string(vm->get_current_operator() - vm->get_program().begin());
     return r;
-}
-
-const char *VirtualMachineException::what() const noexcept
-{
-    string r = string(runtime_error::what()) + vm_state();
-    log << r << endl;
-    return r.c_str();
 }
 
 VM_MemoryError::VM_MemoryError(const VirtualMachine *vm_, const char *msg) : VirtualMachineException(vm_, msg)

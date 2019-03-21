@@ -61,7 +61,8 @@ VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *ou
                                                                                       procedure_call(nullptr),
                                                                                       verbose(false),
                                                                                       verbose_procedure(false),
-                                                                                      depth(0)
+                                                                                      depth(0),
+                                                                                      print_errors(false)
 {
     status = STATUS_PAUSED;
 

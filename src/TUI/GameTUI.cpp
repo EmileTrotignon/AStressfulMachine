@@ -249,8 +249,9 @@ void GameTUI::handle_typing()
         vm_memory_win->refresh_();
     } catch (const VirtualMachineException &e)
     {
-        log2 << e.what() << endl;
-        vm_message_win->push_message(string("Error :") + string(e.what()));
+        //log2 << e.what() << endl;
+        string msg(e.what());
+        vm_message_win->push_message(msg);
         vm_message_win->refresh_();
         success = false;
     }

@@ -58,7 +58,16 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
         throw runtime_error(string("Solution initialisation throw exception : ") + string(e.what()));
     }
     vm_sol->set_output_callback(vm_output_solution_callback);
-    vm_attempt->loop(vm_callback);
+    try
+    {
+        vm_attempt->loop(vm_callback);
+
+    } catch (const VirtualMachineException &e)
+    {
+        input_line.clear();
+        input_line.seekg(0);
+        throw e;
+    }
 
     input_line.clear();
     input_line.seekg(0);
