@@ -8,8 +8,6 @@
 
 using namespace ncursespp;
 
-ofstream log2("log2");
-
 void print_memory_to_win(Window &win, VirtualMachine *vm)
 {
     win.erase();
@@ -251,8 +249,9 @@ void GameTUI::handle_typing()
     {
         //log2 << e.what() << endl;
         string msg(e.what());
-        vm_message_win->push_message(msg);
+        vm_message_win->push_message("Error : " + msg);
         vm_message_win->refresh_();
+        vm_message_win->getch_();
         success = false;
     }
     n_lines_attempt_output = 0;
@@ -293,7 +292,7 @@ void GameTUI::handle_success()
 
 void GameTUI::handle_failure()
 {
-    handle_typing();
+    play_level();
 }
 
 void GameTUI::play()

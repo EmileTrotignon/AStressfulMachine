@@ -6,8 +6,6 @@
 
 using namespace std;
 
-//ofstream log("log");
-
 GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, VirtualMachine *vm_attempt_) :
         gamefiles_dir(gamefiles_dir_),
         level_name(level_name_),
@@ -64,8 +62,7 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
 
     } catch (const VirtualMachineException &e)
     {
-        input_line.clear();
-        input_line.seekg(0);
+        reset_input();
         throw e;
     }
 
