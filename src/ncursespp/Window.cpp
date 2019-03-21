@@ -116,6 +116,11 @@ namespace ncursespp
         return wgetch(window);
     }
 
+    void Window::get_specific_ch(int c)
+    {
+        while (getch_() != c);
+    }
+
     void Window::refresh_()
     {
         if (boxing) sbox();

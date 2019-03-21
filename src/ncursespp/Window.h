@@ -53,6 +53,8 @@ namespace ncursespp
 
         int getch_();
 
+        void get_specific_ch(int c);
+
         void sbox();
 
         virtual void refresh_();

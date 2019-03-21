@@ -20,5 +20,7 @@ namespace ncursespp
     void initscr_();
 
     void endwin_();
+
+    void get_specific_ch(int c);
 }
 #endif //A_STRESSFUL_MACHINE_NCURSES_H

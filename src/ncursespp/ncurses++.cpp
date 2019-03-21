@@ -19,4 +19,9 @@ namespace ncursespp
         delete stdscr_;
         endwin();
     }
+
+    void get_specific_ch(int c)
+    {
+        while (getch() != c);
+    }
 }
