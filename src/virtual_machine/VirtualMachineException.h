@@ -26,16 +26,18 @@ using namespace std;
 
 class VirtualMachine;
 
-class VirtualMachineException : public exception
+class VirtualMachineException : public runtime_error
 {
 protected:
-    string message;
+
     const VirtualMachine *vm;
 
     string vm_state() const;
 
 public:
-    explicit VirtualMachineException(const VirtualMachine *vm);
+    explicit VirtualMachineException(const VirtualMachine *vm, const char *msg = "Virtual Machine error");
+
+    VirtualMachineException(const VirtualMachineException &e) noexcept = default;
 
     const char *what() const noexcept override;
 };
@@ -44,7 +46,7 @@ class VM_MemoryError : public VirtualMachineException
 {
 
 public:
-    explicit VM_MemoryError(const VirtualMachine *vm);
+    explicit VM_MemoryError(const VirtualMachine *vm, const char *msg);
 };
 
 class VM_OutOfMemory : public VM_MemoryError
@@ -65,7 +67,7 @@ class VM_SyntaxError : public VirtualMachineException
 {
 
 public:
-    explicit VM_SyntaxError(const VirtualMachine *vm);
+    explicit VM_SyntaxError(const VirtualMachine *vm, const char *msg = "Syntax Error.");
 
 };
 
@@ -73,7 +75,7 @@ class VM_UnmatchedPar : public VM_SyntaxError
 {
 
 public:
-    explicit VM_UnmatchedPar(const VirtualMachine *vm);
+    explicit VM_UnmatchedPar(const VirtualMachine *vm, const char *msg = "Unmatched parenthesis char type");
 
 };
 
@@ -103,7 +105,7 @@ class VM_ProcError : public VirtualMachineException
 {
 
 public:
-    explicit VM_ProcError(const VirtualMachine *vm);
+    explicit VM_ProcError(const VirtualMachine *vm, const char *msg = "Procedure related error_handler");
 
 };
 

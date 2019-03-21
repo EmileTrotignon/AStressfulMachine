@@ -28,7 +28,7 @@ target_link_libraries(ncursespp ${CURSES_LIBRARIES})
 add_executable(interpreter
         src/mains/interpreter.cpp
         ${VIRTUAL_MACHINE}
-        src/file_utilities.cpp src/file_utilities.h)
+        src/file_utilities/file_utilities.cpp src/file_utilities/file_utilities.h)
 
 target_link_libraries(interpreter libstdc++fs.a)
 
@@ -37,7 +37,7 @@ add_executable(a_stressful_machine_tui
         ${VIRTUAL_MACHINE}
         ${TUI}
         ${GAME_LOGIC}
-        src/file_utilities.cpp src/file_utilities.h
+        src/file_utilities/file_utilities.cpp src/file_utilities/file_utilities.h
         )
 
 target_link_libraries(a_stressful_machine_tui libstdc++fs.a)

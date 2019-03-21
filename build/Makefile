@@ -189,35 +189,35 @@ src/TUI/GameTUI.cpp.s:
 	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/TUI/GameTUI.cpp.s
 .PHONY : src/TUI/GameTUI.cpp.s
 
-src/file_utilities.o: src/file_utilities.cpp.o
+src/file_utilities/file_utilities.o: src/file_utilities/file_utilities.cpp.o
 
-.PHONY : src/file_utilities.o
+.PHONY : src/file_utilities/file_utilities.o
 
 # target to build an object file
-src/file_utilities.cpp.o:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities.cpp.o
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities.cpp.o
-.PHONY : src/file_utilities.cpp.o
+src/file_utilities/file_utilities.cpp.o:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities/file_utilities.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities/file_utilities.cpp.o
+.PHONY : src/file_utilities/file_utilities.cpp.o
 
-src/file_utilities.i: src/file_utilities.cpp.i
+src/file_utilities/file_utilities.i: src/file_utilities/file_utilities.cpp.i
 
-.PHONY : src/file_utilities.i
+.PHONY : src/file_utilities/file_utilities.i
 
 # target to preprocess a source file
-src/file_utilities.cpp.i:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities.cpp.i
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities.cpp.i
-.PHONY : src/file_utilities.cpp.i
+src/file_utilities/file_utilities.cpp.i:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities/file_utilities.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities/file_utilities.cpp.i
+.PHONY : src/file_utilities/file_utilities.cpp.i
 
-src/file_utilities.s: src/file_utilities.cpp.s
+src/file_utilities/file_utilities.s: src/file_utilities/file_utilities.cpp.s
 
-.PHONY : src/file_utilities.s
+.PHONY : src/file_utilities/file_utilities.s
 
 # target to generate assembly for a file
-src/file_utilities.cpp.s:
-	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities.cpp.s
-	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities.cpp.s
-.PHONY : src/file_utilities.cpp.s
+src/file_utilities/file_utilities.cpp.s:
+	$(MAKE) -f CMakeFiles/a_stressful_machine_tui.dir/build.make CMakeFiles/a_stressful_machine_tui.dir/src/file_utilities/file_utilities.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/file_utilities/file_utilities.cpp.s
+.PHONY : src/file_utilities/file_utilities.cpp.s
 
 src/game_logic/Game.o: src/game_logic/Game.cpp.o
 
@@ -462,6 +462,33 @@ src/ncursespp/Menu.cpp.s:
 	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/Menu.cpp.s
 .PHONY : src/ncursespp/Menu.cpp.s
 
+src/ncursespp/MessageStack.o: src/ncursespp/MessageStack.cpp.o
+
+.PHONY : src/ncursespp/MessageStack.o
+
+# target to build an object file
+src/ncursespp/MessageStack.cpp.o:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/MessageStack.cpp.o
+.PHONY : src/ncursespp/MessageStack.cpp.o
+
+src/ncursespp/MessageStack.i: src/ncursespp/MessageStack.cpp.i
+
+.PHONY : src/ncursespp/MessageStack.i
+
+# target to preprocess a source file
+src/ncursespp/MessageStack.cpp.i:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/MessageStack.cpp.i
+.PHONY : src/ncursespp/MessageStack.cpp.i
+
+src/ncursespp/MessageStack.s: src/ncursespp/MessageStack.cpp.s
+
+.PHONY : src/ncursespp/MessageStack.s
+
+# target to generate assembly for a file
+src/ncursespp/MessageStack.cpp.s:
+	$(MAKE) -f CMakeFiles/ncursespp.dir/build.make CMakeFiles/ncursespp.dir/src/ncursespp/MessageStack.cpp.s
+.PHONY : src/ncursespp/MessageStack.cpp.s
+
 src/ncursespp/OCursedStream.o: src/ncursespp/OCursedStream.cpp.o
 
 .PHONY : src/ncursespp/OCursedStream.o
@@ -684,9 +711,9 @@ help:
 	@echo "... src/TUI/GameTUI.o"
 	@echo "... src/TUI/GameTUI.i"
 	@echo "... src/TUI/GameTUI.s"
-	@echo "... src/file_utilities.o"
-	@echo "... src/file_utilities.i"
-	@echo "... src/file_utilities.s"
+	@echo "... src/file_utilities/file_utilities.o"
+	@echo "... src/file_utilities/file_utilities.i"
+	@echo "... src/file_utilities/file_utilities.s"
 	@echo "... src/game_logic/Game.o"
 	@echo "... src/game_logic/Game.i"
 	@echo "... src/game_logic/Game.s"
@@ -714,6 +741,9 @@ help:
 	@echo "... src/ncursespp/Menu.o"
 	@echo "... src/ncursespp/Menu.i"
 	@echo "... src/ncursespp/Menu.s"
+	@echo "... src/ncursespp/MessageStack.o"
+	@echo "... src/ncursespp/MessageStack.i"
+	@echo "... src/ncursespp/MessageStack.s"
 	@echo "... src/ncursespp/OCursedStream.o"
 	@echo "... src/ncursespp/OCursedStream.i"
 	@echo "... src/ncursespp/OCursedStream.s"

@@ -2,11 +2,9 @@
 // Created by emile on 25/02/19.
 //
 
-#include <stdio.h>
 #include <fstream>
 #include <filesystem>
 #include "file_utilities.h"
-#include <ncurses.h>
 #include <algorithm>
 
 

@@ -55,7 +55,7 @@ namespace ncursespp
 
         void sbox();
 
-        void refresh_();
+        virtual void refresh_();
 
         void move_cursor(int y, int x);
 

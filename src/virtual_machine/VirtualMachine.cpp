@@ -363,8 +363,9 @@ void VirtualMachine::terminate_procedure()
 
 void VirtualMachine::error_handler(const VirtualMachineException &error)
 {
-    cout << error.what();
+    if (print_errors) cout << error.what();
     status = STATUS_ERROR;
+    throw error;
 }
 
 void VirtualMachine::do_one_iteration(bool advance)

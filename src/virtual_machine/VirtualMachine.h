@@ -10,7 +10,7 @@
 #include <map>
 #include <functional>
 
-#include "../file_utilities.h"
+#include "../file_utilities/file_utilities.h"
 #include "VirtualMachineException.h"
 /*
 const char* PRINTING_POINTER = "^\n";

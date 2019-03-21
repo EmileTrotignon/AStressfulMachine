@@ -6,7 +6,7 @@
 
 using namespace std;
 
-ofstream log("log");
+//ofstream log("log");
 
 GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, VirtualMachine *vm_attempt_) :
         gamefiles_dir(gamefiles_dir_),

@@ -8,6 +8,8 @@
 
 using namespace ncursespp;
 
+ofstream log2("log2");
+
 void print_memory_to_win(Window &win, VirtualMachine *vm)
 {
     win.erase();
@@ -18,7 +20,7 @@ void print_memory_to_win(Window &win, VirtualMachine *vm)
         if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) win.color_on(1);
         win.printstr(to_string(*i));
         if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) win.color_off(1);
-        printw(" ");
+        printw("  ");
     }
     win.refresh_();
 }
@@ -129,6 +131,7 @@ void GameTUI::pick_level()
     delete vm_output_attempt_win;
     delete vm_output_solution_win;
     delete vm_memory_win;
+    delete vm_message_win;
 
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();
@@ -154,7 +157,7 @@ void GameTUI::pick_level()
                                         2,
                                         vm_output_win->get_width() / 2 + 1);
 
-    vm_message_win = new Window(h / 4, w / 2, h / 2, w / 2, true);
+    vm_message_win = new MessageStack(h / 4, w / 2, h / 2, w / 2, true);
     vm_memory_win = new Window(h / 4, w / 2, h / 2 + h / 4, w / 2, true);
     draw_title();
 
@@ -246,6 +249,9 @@ void GameTUI::handle_typing()
         vm_memory_win->refresh_();
     } catch (const VirtualMachineException &e)
     {
+        log2 << e.what() << endl;
+        vm_message_win->push_message(string("Error :") + string(e.what()));
+        vm_message_win->refresh_();
         success = false;
     }
     n_lines_attempt_output = 0;
@@ -292,25 +298,32 @@ void GameTUI::handle_failure()
 void GameTUI::play()
 {
     initscr_();
-    cbreak();
-    noecho();
-    stdscr_->keypad_on();
-    if (has_colors() == FALSE)
+    try
     {
-        endwin();
-        cout << "Your terminal does not support color" << endl;
-        exit(1);
+        cbreak();
+        noecho();
+        stdscr_->keypad_on();
+        if (has_colors() == FALSE)
+        {
+            endwin();
+            cout << "Your terminal does not support color" << endl;
+            exit(1);
+        }
+        start_color();
+        init_pair(1, COLOR_BLACK, COLOR_GREEN);
+        curs_set(0);
+        Window starting_screen(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
+        starting_screen.printstr_in_middle("Welcome to A Stressful Machine. Press any key to start the game...");
+        starting_screen.refresh_();
+        starting_screen.getch_();
+        pick_saves();
+        pick_level();
+        play_level();
+    } catch (...)
+    {
+        endwin_();
+        rethrow_exception(current_exception());
     }
-    start_color();
-    init_pair(1, COLOR_BLACK, COLOR_GREEN);
-    curs_set(0);
-    Window starting_screen(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
-    starting_screen.printstr_in_middle("Welcome to A Stressful Machine. Press any key to start the game...");
-    starting_screen.refresh_();
-    starting_screen.getch_();
-    pick_saves();
-    pick_level();
-    play_level();
     endwin_();
 }
 

@@ -26,7 +26,7 @@ private:
     Window *vm_memory_win;
     Window *vm_output_solution_win;
     Window *vm_output_attempt_win;
-    Window *vm_message_win;
+    MessageStack *vm_message_win;
     Window *level_picking_win;
     Window *save_picking_win;
     Window *success_menu_win;

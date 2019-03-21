@@ -9,7 +9,7 @@
 #include <fstream>
 #include <functional>
 #include "../virtual_machine/VirtualMachine.h"
-#include "../file_utilities.h"
+#include "../file_utilities/file_utilities.h"
 
 /*#define LEVELFILES_FOLDER "data/gamefiles/levels"*/
 

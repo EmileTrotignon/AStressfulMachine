@@ -2,88 +2,84 @@
 // Created by emile on 07/03/19.
 //
 
+#include <fstream>
 #include "VirtualMachineException.h"
 #include "VirtualMachine.h"
 
+ofstream log("log");
 
-VirtualMachineException::VirtualMachineException(const VirtualMachine *vm_) :
-        exception(), vm(vm_)
+VirtualMachineException::VirtualMachineException(const VirtualMachine *vm_, const char *msg) :
+        runtime_error(msg), vm(vm_)
 {
-    message = "Virtual Machine error_handler";
 }
 
 string VirtualMachineException::vm_state() const
 {
     string r;
     if (vm->is_verbose()) r += "\n" + string((*vm));
-    else r += " This Happened at char #" + to_string(*(vm->get_current_operator())) + "\n";
+    else r += " This Happened at char #" + to_string(vm->get_current_operator() - vm->get_program().begin());
     return r;
 }
 
 const char *VirtualMachineException::what() const noexcept
 {
-    return (message + vm_state()).c_str();
+    string r = string(runtime_error::what()) + vm_state();
+    log << r << endl;
+    return r.c_str();
 }
 
-VM_MemoryError::VM_MemoryError(const VirtualMachine *vm_) : VirtualMachineException(vm_)
+VM_MemoryError::VM_MemoryError(const VirtualMachine *vm_, const char *msg) : VirtualMachineException(vm_, msg)
 {
-    message = "Memory error_handler.";
 }
 
-VM_OutOfMemory::VM_OutOfMemory(const VirtualMachine *vm_) : VM_MemoryError(vm_)
+VM_OutOfMemory::VM_OutOfMemory(const VirtualMachine *vm_) : VM_MemoryError(vm_, "VM out of memory.")
 {
-    message = "VM out of memory.";
 }
 
-VM_NegativeMemoryAccess::VM_NegativeMemoryAccess(const VirtualMachine *vm_) : VM_MemoryError(vm_)
+VM_NegativeMemoryAccess::VM_NegativeMemoryAccess(const VirtualMachine *vm_) : VM_MemoryError(vm_,
+                                                                                             "Negative memory access.")
 {
-    message = "Negative memory access.";
 }
 
-VM_SyntaxError::VM_SyntaxError(const VirtualMachine *vm_) : VirtualMachineException(vm_)
+VM_SyntaxError::VM_SyntaxError(const VirtualMachine *vm_, const char *msg) : VirtualMachineException(vm_, msg)
 {
-    message = "Syntax Error.";
 }
 
-VM_UnmatchedPar::VM_UnmatchedPar(const VirtualMachine *vm_) : VM_SyntaxError(vm_)
+VM_UnmatchedPar::VM_UnmatchedPar(const VirtualMachine *vm_, const char *msg) : VM_SyntaxError(vm_, msg)
 {
-    message = "Unmatched parenthesis typed char";
 }
 
-VM_UnmatchedBrackets::VM_UnmatchedBrackets(const VirtualMachine *vm_) : VM_UnmatchedPar(vm_)
+VM_UnmatchedBrackets::VM_UnmatchedBrackets(const VirtualMachine *vm_) : VM_UnmatchedPar(vm_, "Unmatched brackets.")
 {
-    message = "Unmatched brackets.";
 }
 
-VM_UnmatchedCurlyBrackets::VM_UnmatchedCurlyBrackets(const VirtualMachine *vm_) : VM_UnmatchedPar(vm_)
+VM_UnmatchedCurlyBrackets::VM_UnmatchedCurlyBrackets(const VirtualMachine *vm_) : VM_UnmatchedPar(vm_,
+                                                                                                  "Unmatched curly brackets.")
 {
-    message = "Unmatched curly brackets.";
 }
 
-VM_InvalidNumber::VM_InvalidNumber(VirtualMachine *vm_) : VM_SyntaxError(vm_)
+VM_InvalidNumber::VM_InvalidNumber(VirtualMachine *vm_) : VM_SyntaxError(vm_, "Invalid number.")
 {
-    message = "Invalid number.";
 }
 
-VM_ProcError::VM_ProcError(const VirtualMachine *vm_) : VirtualMachineException(vm_)
+VM_ProcError::VM_ProcError(const VirtualMachine *vm_, const char *msg) : VirtualMachineException(vm_, msg)
 {
-    message = "Procedure related error_handler";
 }
 
-VM_AskedOutputWhenInputting::VM_AskedOutputWhenInputting(const VirtualMachine *vm_) : VM_ProcError(vm_)
+VM_AskedOutputWhenInputting::VM_AskedOutputWhenInputting(const VirtualMachine *vm_) : VM_ProcError(vm_,
+                                                                                                   "Tried to access procedure output when it needed input.")
 {
-    message = "Tried to access procedure output when it needed input.";
 }
 
-VM_UnableToOpenFile::VM_UnableToOpenFile(const VirtualMachine *vm_, const string &file) : VirtualMachineException(vm_)
+VM_UnableToOpenFile::VM_UnableToOpenFile(const VirtualMachine *vm_, const string &file) : VirtualMachineException(vm_,
+                                                                                                                  ("Unable to open file '" +
+                                                                                                                   file +
+                                                                                                                   "'.").c_str())
 {
-    message = "Unable to open file '" + file + "'.";
-
 }
 
 VM_ErrorInProc::VM_ErrorInProc(VirtualMachine *vm_, const VirtualMachineException *error_in_proc_)
-        : VirtualMachineException(
-        vm_), error_in_proc(error_in_proc_)
+        : VirtualMachineException(vm_, "An error occured in child procedure."),
+          error_in_proc(error_in_proc_)
 {
-    message = "An error_handler occured in child procedure.";
 }
