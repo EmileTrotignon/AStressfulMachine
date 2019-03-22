@@ -18,7 +18,7 @@ void print_memory_to_win(Window &win, VirtualMachine *vm)
         if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) win.color_on(1);
         win.printstr(to_string(*i));
         if (i - memory.begin() == vm->get_memory_ptr() - vm->get_memory().begin()) win.color_off(1);
-        printw("  ");
+        win.printstr(" ");
     }
     win.refresh_();
 }
@@ -50,7 +50,22 @@ void raw_vm_callback(VirtualMachine *vm, GameTUI *gi, bool pause_at_each_it)
     gi->typing_field->attron_char(vm->get_current_operator() - vm->get_program().begin(), COLOR_PAIR(1));
     gi->typing_win->refresh_();
     gi->typing_field->refresh_();
-    if (pause_at_each_it) gi->vm_memory_win->get_specific_ch('\n');
+    if (pause_at_each_it)
+    {
+
+        switch (gi->vm_input_win->getch_({'q', '\n'}))
+        {
+            case 'q':
+                gi->game_sequence->get_current_level()->reset_input();
+                throw UserInterrupt();
+
+            case '\n':
+                break;
+
+            default:
+                break;
+        }
+    }
 }
 
 void raw_gl_callback(GameLevel *gl, GameTUI *gi, bool pause_at_each_it)
@@ -60,7 +75,22 @@ void raw_gl_callback(GameLevel *gl, GameTUI *gi, bool pause_at_each_it)
 
     gi->vm_input_win->refresh_();
 
-    if (pause_at_each_it) gi->vm_input_win->get_specific_ch('\n');
+    if (pause_at_each_it)
+    {
+
+        switch (gi->vm_input_win->getch_({'q', '\n'}))
+        {
+            case 'q':
+                gi->game_sequence->get_current_level()->reset_input();
+                throw UserInterrupt();
+
+            case '\n':
+                break;
+
+            default:
+                break;
+        }
+    }
 }
 
 
@@ -245,6 +275,9 @@ void GameTUI::handle_typing()
                                                               vm_output_solution_callback);
         vm_memory_win->erase();
         vm_memory_win->refresh_();
+    } catch (const UserInterrupt &e)
+    {
+        success = false;
     } catch (const VirtualMachineException &e)
     {
         //log2 << e.what() << endl;

@@ -82,6 +82,7 @@ bool GameLevel::attempt(const string &program_,
                         const function<void(int)> &vm_output_solution_callback)
 {
     program_attempt = program_;
+    reset_input();
     while (!input.eof())
     {
         if (gl_callback != nullptr) gl_callback(this);

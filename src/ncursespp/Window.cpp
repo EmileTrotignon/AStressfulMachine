@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <vector>
 #include "Window.h"
 
 namespace ncursespp
@@ -119,6 +120,19 @@ namespace ncursespp
     void Window::get_specific_ch(int c)
     {
         while (getch_() != c);
+    }
+
+    int Window::getch_(const vector<int> &cs)
+    {
+
+        while (true)
+        {
+            int c = getch_();
+            for (int c_:cs)
+            {
+                if (c == c_) return c;
+            }
+        }
     }
 
     void Window::refresh_()

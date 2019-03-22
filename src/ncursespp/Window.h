@@ -6,6 +6,7 @@
 #define A_STRESSFUL_MACHINE_NCURSESWINDOW_H
 
 #include <iostream>
+#include <vector>
 #include <ncurses.h>
 
 using namespace std;
@@ -54,6 +55,8 @@ namespace ncursespp
         int getch_();
 
         void get_specific_ch(int c);
+
+        int getch_(const vector<int> &s);
 
         void sbox();
 

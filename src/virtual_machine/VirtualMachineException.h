@@ -132,4 +132,10 @@ public:
     explicit VM_ErrorInProc(VirtualMachine *vm, const VirtualMachineException *error_in_proc);
 };
 
+class UserInterrupt : public exception
+{
+public:
+    UserInterrupt();
+};
+
 #endif //A_STRESSFUL_MACHINE_VIRTUALMACHINEEXCEPTION_H
