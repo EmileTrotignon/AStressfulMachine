@@ -11,29 +11,18 @@
 #include <vector>
 #include <cstdlib>
 #include <windows.h>
-#include <filesystem>
 
-#define _SECOND ((int64) 10000000)
-#define _MINUTE (60 * _SECOND)
-#define _HOUR   (60 * _MINUTE)
-#define _DAY    (24 * _HOUR)
 
 
 using namespace std;
 
-/*typedef struct _FILETIME {
-
-    DWORD dwLowDateTime;
-    DWORD dwHighDateTime;
-} FILETIME;
-*/
 // Function prototypes for save
 void createFile(string &name); // Create a file named.
-void copFile(); // Copy the whole code from processName() to createFile()
-void addName(); // Add a nametag in the XML
-void succeededLevel(); // Add succeededLevel
-void addTry(); // Add the attempts.
-void addAverage(); // Add The average.
+void copFile(string &name); // Copy the whole code from processName() to createFile()
+void addName(string &jeu); // Add a nametag in the XML
+void succeededLevel(string &jeu); // Add succeededLevel
+void addTry(string &jeu); // Add the attempts.
+void addAverage(string &jeu); // Add The average.
 
 // Function prototypes for load
 string getFile( string filename );                         // Reads whole file into a string buffer
@@ -91,7 +80,7 @@ void save_in_file(){ // A CHAQUE DEMANDE DE SAUVEGARDE, createFile PUIS copy
 //======================================================================
 
 void createFile(string &name){ // &name : to create the file with a name.
-    std::ofstream o(name".xml");
+    std::ofstream o(name+".xml");
 
     //o << "Hello, World\n" << std::endl;
 }
@@ -104,7 +93,7 @@ void createFile(string &name){ // &name : to create the file with a name.
 void copFile(string &name){ // copy-a-text-file-into-another // &name = name of the new file empty
     ifstream infile;
     infile.open("/data/saves/save.xml");
-    ofstream outfile("/data/saves/"name".xml");
+    ofstream outfile("/data/saves/"+name+".xml");
     string content = "";
     int i;
 
@@ -127,15 +116,12 @@ void copFile(string &name){ // copy-a-text-file-into-another // &name = name of 
 
 void addName(string &jeu){
 
-    string found, line,x;
-    ofstream myfile ("/data/saves/"jeu".xml");
+    string found, line;
+    ofstream myfile ("/data/saves/"+jeu+".xml");
     if (myfile.is_open()) // file opened
     {
         found = "<lvl ";
-        line=myfile.getline(myfile,x);
-
-
-        while(getline(file,line)){ // Not at the end of the file
+        while(getline(myfile,line)){ // Not at the end of the file
             if(found.compare(line)==0){// compare found with the line to get the exact position.
                 myfile << " <lvl name='level '" << current_level <<'\n';
 
@@ -151,11 +137,11 @@ void addName(string &jeu){
 
 void succeededLevel(string &jeu){
     string found, line;
-    ofstream myfile ("/data/saves/jeu.xml");
+    ofstream myfile ("/data/saves/"+jeu+".xml");
     if (myfile.is_open()) // file opened
     {
         if(succeeded_levels){
-            found = "<congrats>"
+            found = "<congrats>";
 
             while(getline(myfile,line)){ // Not at the end of the file
                 if(found.compare(line)==0){// compare found with the line to get the exact position.
