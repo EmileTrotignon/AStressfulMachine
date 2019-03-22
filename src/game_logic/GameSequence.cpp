@@ -16,16 +16,17 @@ void addTry(string &jeu); // Add the attempts.
 void addAverage(string &jeu); // Add The average.
 
 // Function prototypes for load
-string getFile( string filename );                         // Reads whole file into a string buffer
-vector<string> getData( const string &text, string tag );  // Gets collection of items between given tags
-void stripTags( string &text );                            // Strips any tags
+string getFile(string filename);                         // Reads whole file into a string buffer
+vector<string> getData(const string &text, string tag);  // Gets collection of items between given tags
+void stripTags(string &text);                            // Strips any tags
 
 
 
 
 
-GameSequence::GameSequence(const string &savename, const string &gamefiles_dir_) : gamefiles_dir(gamefiles_dir_),
-                                                                                   current_level(nullptr)
+GameSequence::GameSequence(const string &savename_, const string &gamefiles_dir_) : savename(savename_),
+                                                                                    gamefiles_dir(gamefiles_dir_),
+                                                                                    current_level(nullptr)
 {
     available_levels = filesystem_ls(gamefiles_dir + "/levels");
 }

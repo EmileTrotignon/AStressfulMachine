@@ -14,6 +14,7 @@ class GameSequence
 {
 private:
 
+    string savename;
     vector<string> available_levels;
     GameLevel *current_level;
     string gamefiles_dir;
@@ -26,6 +27,7 @@ private:
 
     void load_from_save();
 
+
 public:
     GameSequence(const string &savename, const string &gamefiles_dir);
 
@@ -34,6 +36,9 @@ public:
     vector<string> get_available_levels() const;
 
     GameLevel *get_current_level();
+
+    void save_to_save(vector<string> attempts);
+
 
 
 };
