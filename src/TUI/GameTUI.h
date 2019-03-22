@@ -31,7 +31,8 @@ private:
     Window *level_picking_win;
     Window *save_picking_win;
     Window *success_menu_win;
-    Field *typing_field;
+    array<Field *, 5> typing_field;
+    array<Field *, 5>::iterator current_field;
 
     int n_lines_sol_output;
     int n_lines_attempt_output;
