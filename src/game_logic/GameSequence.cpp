@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
-#include <windows.h>
 
 
 
@@ -117,7 +116,8 @@ void copFile(string &name){ // copy-a-text-file-into-another // &name = name of 
 void addName(string &jeu){
 
     string found, line;
-    ofstream myfile ("/data/saves/"+jeu+".xml");
+    fstream myfile ("/data/saves/"+jeu+".xml");
+
     if (myfile.is_open()) // file opened
     {
         found = "<lvl ";
@@ -137,7 +137,7 @@ void addName(string &jeu){
 
 void succeededLevel(string &jeu){
     string found, line;
-    ofstream myfile ("/data/saves/"+jeu+".xml");
+    fstream myfile ("/data/saves/"+jeu+".xml");
     if (myfile.is_open()) // file opened
     {
         if(succeeded_levels){
@@ -160,7 +160,7 @@ void addTry(string &jeu){ // Add all of the tests the player send
 
     string found,line;
 
-    ofstream myfile ("/data/saves/"+jeu+".xml");
+    fstream myfile ("/data/saves/"+jeu+".xml");
     if (myfile.is_open()) // file opened
         // if()
     {
@@ -186,7 +186,7 @@ void addAverage(string &jeu){ // Add all of the tests the player send
 
     string found,line; // Word to find
 
-    ofstream myfile ("/data/saves/"+jeu+".xml"); //Path of the XML file
+    fstream myfile ("/data/saves/"+jeu+".xml"); //Path of the XML file
     if (myfile.is_open()) // file opened
     {
         found = "</attempt>";
