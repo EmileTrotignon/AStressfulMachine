@@ -42,7 +42,9 @@ namespace ncursespp
 
         void printw(const char *s, ...);
 
-        void mvprintstr(int y, int x, string str, int border_size_x = 0);
+        void mvprint_line(int y, int x, const string &str);
+
+        void mvprint_multiline_str(int y, int x, string str, int x_padding = 0);
 
         void printstr(const string &str);
 

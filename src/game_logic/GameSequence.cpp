@@ -5,14 +5,6 @@
 #include "GameSequence.h"
 
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <cstdlib>
-
-
-
 using namespace std;
 
 // Function prototypes for save
@@ -56,7 +48,7 @@ GameLevel *GameSequence::get_current_level()
 
 
 
-
+/*
 //======================================================================
 
 void save_in_file(string &jeu){ // A CHAQUE DEMANDE DE SAUVEGARDE, createFile PUIS copy
@@ -286,3 +278,4 @@ void stripTags( string &text )
 
 
 //======================================================================
+*/

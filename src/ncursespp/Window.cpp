@@ -55,12 +55,12 @@ namespace ncursespp
 
     void Window::printstr_centered(int y, const string &s)
     {
-        mvprintstr(y, (int) ((width / 2) - (s.size() / 2)), s);
+        mvprint_multiline_str(y, (int) ((width / 2) - (s.size() / 2)), s);
     }
 
     void Window::printstr_in_middle(const string &s)
     {
-        mvprintstr(height / 2, (int) ((width / 2) - (s.size() / 2)), s);
+        mvprint_multiline_str(height / 2, (int) ((width / 2) - (s.size() / 2)), s);
     }
 
     void Window::printw(const char *s, ...)
@@ -70,13 +70,13 @@ namespace ncursespp
         wprintw(window, s, args);
     }
 
-    void Window::mvprintstr(int y, int x, string str, int border_size_x)
+    void Window::mvprint_multiline_str(int y, int x, string str, int x_padding)
     {
         istringstream strs(str);
         string buff;
         if (boxing)
         {
-            border_size_x++;
+            x_padding++;
         }
         while (!strs.eof())
         {
@@ -84,7 +84,7 @@ namespace ncursespp
             for (int x_on_screen = x, x_in_str = 0; x_in_str < buff.size(); x_in_str++)
             {
 
-                if (x_on_screen == (get_width() - border_size_x))
+                if (x_on_screen == (get_width() - x_padding))
                 {
                     x_on_screen = x;
                     y++;
@@ -225,5 +225,10 @@ namespace ncursespp
     void Window::attroff_(int attr)
     {
         wattroff(window, attr);
+    }
+
+    void Window::mvprint_line(int y, int x, const string &str)
+    {
+        mvwaddstr(window, y, x, str.c_str());
     }
 }

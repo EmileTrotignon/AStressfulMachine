@@ -37,7 +37,7 @@ namespace ncursespp
         }
 
         //log << s + " " << current_y << " " << current_x << " " << x_buffer << endl;
-        window->mvprintstr(current_y, current_x, s, x_buffer);
+        window->mvprint_multiline_str(current_y, current_x, s, x_buffer);
 
         ptrdiff_t n = pptr() - pbase();
         pbump((int) -n);
@@ -67,7 +67,7 @@ namespace ncursespp
     streamsize CursedBuffer::xsputn(const char *s, streamsize count)
     {
 
-        window->mvprintstr(current_y, current_x, string(s), x_buffer);
+        window->mvprint_multiline_str(current_y, current_x, string(s), x_buffer);
         current_x = window->get_x();
         current_y = window->get_y();
         return streambuf::xsputn(s, count);

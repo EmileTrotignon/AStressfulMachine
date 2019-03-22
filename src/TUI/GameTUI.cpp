@@ -27,20 +27,20 @@ void print_memory_to_win(Window &win, VirtualMachine *vm)
 void print_input_to_win(Window &win, GameLevel *gl)
 {
     win.erase();
-    win.mvprintstr(2, 2, gl->get_input_as_string());
+    win.mvprint_multiline_str(2, 2, gl->get_input_as_string());
     win.refresh_();
 }
 
 void raw_vm_solution_out_callback(int output, GameTUI *gi)
 {
-    gi->vm_output_solution_win->mvprintstr(gi->n_lines_attempt_output, 0, to_string(output));
+    gi->vm_output_solution_win->mvprint_multiline_str(gi->n_lines_attempt_output, 0, to_string(output));
     gi->vm_output_solution_win->refresh_();
     gi->n_lines_attempt_output++;
 }
 
 void raw_vm_attempt_out_callback(int output, GameTUI *gi)
 {
-    gi->vm_output_attempt_win->mvprintstr(gi->n_lines_attempt_output, 0, to_string(output));
+    gi->vm_output_attempt_win->mvprint_multiline_str(gi->n_lines_attempt_output, 0, to_string(output));
     gi->vm_output_attempt_win->refresh_();
 }
 
@@ -211,6 +211,15 @@ void GameTUI::pick_level()
 void GameTUI::play_level()
 {
     control_hint_win->refresh_();
+
+    const int tab_width = int(((*current_field)->get_width() - 2) / typing_field.size());
+
+    for (int i = 0; i < typing_field.size(); i++)
+    {
+        if (i == current_field - typing_field.begin()) typing_win->color_on(2);
+        typing_win->mvprint_line(1, 1 + tab_width / 2 + i * tab_width, "[TAB #" + to_string(i) + "]");
+        if (i == current_field - typing_field.begin()) typing_win->color_off(2);
+    }
     typing_win->refresh_();
     instruction_win->refresh_();
     vm_input_win->refresh_();
@@ -228,17 +237,15 @@ void GameTUI::play_level()
 
 void GameTUI::fill_instructions()
 {
-    instruction_win->mvprintstr(1, 2, game_sequence->get_current_level()->get_instructions());
+    instruction_win->mvprint_multiline_str(1, 2, game_sequence->get_current_level()->get_instructions());
 }
 
 void GameTUI::draw_title()
 {
-    instruction_win->mvprintstr(1, 2, "Instructions :");
 
-    typing_win->printstr_centered(1, "Type here");
-
-    vm_output_win->mvprintstr(1, 2, "Your output :");
-    vm_output_win->mvprintstr(1, vm_output_win->get_width() / 2 + 1, "Expected output :");
+    instruction_win->mvprint_line(1, 2, "Instructions :");
+    vm_output_win->mvprint_line(1, 2, "Your output :");
+    vm_output_win->mvprint_line(1, vm_output_win->get_width() / 2 + 1, "Expected output :");
 }
 
 void GameTUI::handle_typing()
@@ -255,9 +262,9 @@ void GameTUI::handle_typing()
     print_input_to_win(*(vm_input_win), game_sequence->get_current_level());
 
     control_hint_win->erase();
-    control_hint_win->mvprintstr(0, 1, "When you're done, execute your code with: [F5] Step by step    "
-                                       "[F6] Input block by input block    "
-                                       "[F7] Fullspeed");
+    control_hint_win->mvprint_multiline_str(0, 1, "When you're done, execute your code with: [F5] Step by step    "
+                                                  "[F6] Input block by input block    "
+                                                  "[F7] Fullspeed");
     control_hint_win->refresh_();
     int exit_key = (*current_field)->type();
     vm_output_attempt_win->erase();
@@ -275,11 +282,13 @@ void GameTUI::handle_typing()
                 else current_field = typing_field.end() - 1;
                 play_level();
                 return;
+
             case KEY_F(12):
                 if (current_field + 1 != typing_field.end()) current_field++;
                 else current_field = typing_field.begin();
                 play_level();
                 return;
+
             case KEY_F(5):
                 vm_callback = bind(function<void(VirtualMachine *, GameTUI *, bool)>(raw_vm_callback), _1, this, true);
                 gl_callback = bind(function<void(GameLevel *, GameTUI *, bool)>(raw_gl_callback), _1, this, true);
@@ -289,6 +298,7 @@ void GameTUI::handle_typing()
                 vm_callback = bind(function<void(VirtualMachine *, GameTUI *, bool)>(raw_vm_callback), _1, this, false);
                 gl_callback = bind(function<void(GameLevel *, GameTUI *, bool)>(raw_gl_callback), _1, this, true);
                 break;
+
             case KEY_F(7):
                 vm_callback = bind(function<void(VirtualMachine *, GameTUI *, bool)>(raw_vm_callback), _1, this, false);
                 gl_callback = bind(function<void(GameLevel *, GameTUI *, bool)>(raw_gl_callback), _1, this, false);
@@ -299,7 +309,7 @@ void GameTUI::handle_typing()
 
         }
         control_hint_win->erase();
-        control_hint_win->mvprintstr(0, 1, "[ENTER] to advance execution    [Q] to interrupt execution");
+        control_hint_win->mvprint_multiline_str(0, 1, "[ENTER] to advance execution    [Q] to interrupt execution");
         control_hint_win->refresh_();
         success = game_sequence->get_current_level()->attempt((*current_field)->get_typed_text(),
                                                               vm_callback,
@@ -377,6 +387,7 @@ void GameTUI::play()
         }
         start_color();
         init_pair(1, COLOR_BLACK, COLOR_GREEN);
+        init_pair(2, COLOR_BLACK, COLOR_YELLOW);
         curs_set(0);
         Window starting_screen(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
         starting_screen.printstr_in_middle("Welcome to A Stressful Machine. Press any key to start the game...");

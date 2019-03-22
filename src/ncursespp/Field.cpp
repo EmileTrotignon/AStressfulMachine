@@ -24,7 +24,7 @@ namespace ncursespp
     int Field::type()
     {
         curs_set(1);
-        mvprintstr(0, 0, string(typed_text), 0);
+        mvprint_multiline_str(0, 0, string(typed_text), 0);
         refresh_();
         int ch;
         while (find(validate_keys.begin(), validate_keys.end(), (ch = getch_())) == validate_keys.end())
@@ -173,7 +173,7 @@ namespace ncursespp
 
             }
             erase();
-            mvprintstr(0, 0, string(typed_text), 0);
+            mvprint_multiline_str(0, 0, string(typed_text), 0);
             refresh_();
             move_cursor((int) typing_pos_y, (int) typing_cursor_x);
         }
@@ -190,7 +190,7 @@ namespace ncursespp
     void Field::attron_char(size_t ch_index, int attr)
     {
 
-        mvprintstr(0, 0, string(typed_text), 0);
+        mvprint_multiline_str(0, 0, string(typed_text), 0);
         size_t i = 0;
         auto y = typed_text.begin();
         size_t y_pos = 0;
@@ -214,7 +214,7 @@ namespace ncursespp
 
     void Field::attroff_char(size_t ch_index, int attr)
     {
-        mvprintstr(0, 0, string(typed_text), 0);
+        mvprint_multiline_str(0, 0, string(typed_text), 0);
         size_t i = 0;
         auto y = typed_text.begin();
         size_t y_pos = 0;

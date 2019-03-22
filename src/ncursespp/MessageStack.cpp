@@ -37,13 +37,13 @@ namespace ncursespp
         {
             for (int i = 0; i < messages.size(); i++)
             {
-                mvprintstr(sy + i, sx, messages[i]);
+                mvprint_multiline_str(sy + i, sx, messages[i]);
             }
         } else
         {
             for (int i = h - 1; i >= 0; i--)
             {
-                mvprintstr(sy + i, sx, messages[messages.size() - h + i]);
+                mvprint_multiline_str(sy + i, sx, messages[messages.size() - h + i]);
             }
         }
         Window::refresh_();
