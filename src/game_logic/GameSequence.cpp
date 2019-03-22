@@ -16,8 +16,8 @@
 using namespace std;
 
 // Function prototypes for save
-void createFile(string &name); // Create a file named.
-void copFile(string &name); // Copy the whole code from processName() to createFile()
+//void createFile(string &name); // Create a file named.
+//void copFile(string &name); // Copy the whole code from processName() to createFile()
 void addName(string &jeu); // Add a nametag in the XML
 void succeededLevel(string &jeu); // Add succeededLevel
 void addTry(string &jeu); // Add the attempts.
@@ -59,21 +59,21 @@ GameLevel *GameSequence::get_current_level()
 
 //======================================================================
 
-void save_in_file(){ // A CHAQUE DEMANDE DE SAUVEGARDE, createFile PUIS copy
-    int fileincrement=0;
-    string x = std::to_string(fileincrement);
-    string save = "save";
-    createFile(save+x);
-    copFile(save+x);
-    addName();
+void save_in_file(string &jeu){ // A CHAQUE DEMANDE DE SAUVEGARDE, createFile PUIS copy
+    // int fileincrement=0;
+   // string x = std::to_string(fileincrement);
+    //string save = "save.xml";
+    //createFile(save);
+    //copFile(save);
+    addName(jeu);
     while(!succeeded_levels){
-        addTry();
-        addAverage();
+        addTry(jeu);
+        addAverage(jeu);
     }
     if(succeeded_levels){
-        succeededLevel();
+        succeededLevel(jeu);
     }
-    fileincrement++;
+   // fileincrement++;
 }
 
 //======================================================================
@@ -81,6 +81,7 @@ void save_in_file(){ // A CHAQUE DEMANDE DE SAUVEGARDE, createFile PUIS copy
 void createFile(string &name){ // &name : to create the file with a name.
     std::ofstream o(name+".xml");
 
+    //return fstream
     //o << "Hello, World\n" << std::endl;
 }
 
@@ -216,13 +217,13 @@ void addAverage(string &jeu){ // Add all of the tests the player send
 //======================================================================
 
 
-void load_from_save(){
-    string filename = "jeu.xml";
-    string tag = "level";
+void load_from_save(string &jeu){
+   // string filename = "save.xml";
+    string tag = "player";
 // string tag = "object";
     bool stripOtherTags = true;
 
-    string text = getFile( filename );
+    string text = getFile( jeu );
     vector<string> all = getData( text, tag );
     for ( string &s : all )
     {
