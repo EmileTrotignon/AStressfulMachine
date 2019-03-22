@@ -6,16 +6,21 @@
 
 using namespace std;
 
-GameLevel::GameLevel(const string &gamefiles_dir_, const string &level_name_, VirtualMachine *vm_attempt_) :
-        gamefiles_dir(gamefiles_dir_),
-        level_name(level_name_),
+GameLevel::GameLevel(string gamefiles_dir_, string level_name_, vector<string> attempts_, VirtualMachine *vm_attempt_) :
+        gamefiles_dir(move(gamefiles_dir_)),
+        level_name(move(level_name_)),
+        attempts(move(attempts_)),
         vm_attempt(vm_attempt_)
 {
     solution = file_to_string(gamefiles_dir + "/levels/" + level_name + "/solution");
     instructions = file_to_string(gamefiles_dir + "/levels/" + level_name + "/instructions");
     input = ifstream(gamefiles_dir + "/levels/" + level_name + "/input");
     vm_sol = nullptr;
-    program_attempt = "";
+    if (attempts.empty())
+    {
+        attempts.emplace_back("");
+    }
+    program_attempt = attempts[0];
 }
 
 GameLevel::~GameLevel()

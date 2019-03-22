@@ -156,7 +156,7 @@ void GameTUI::pick_level()
     }
 
     Menu level_picking(possible_levels, level_picking_win, "Please pick a level :");
-    game_sequence->select_level(possible_levels[level_picking.select_item()]);
+    game_sequence->select_level(level_picking.select_item());
 
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();
@@ -237,7 +237,7 @@ void GameTUI::play_level()
 
 void GameTUI::fill_instructions()
 {
-    instruction_win->mvprint_multiline_str(1, 2, game_sequence->get_current_level()->get_instructions());
+    instruction_win->mvprint_multiline_str(1, 2, (*game_sequence->get_current_level())->get_instructions());
 }
 
 void GameTUI::draw_title()
@@ -259,7 +259,7 @@ void GameTUI::handle_typing()
     function<void(int)> vm_output_solution_callback = bind(function<void(int, GameTUI *)>(raw_vm_solution_out_callback),
                                                            _1, this);
 
-    print_input_to_win(*(vm_input_win), game_sequence->get_current_level());
+    print_input_to_win(*(vm_input_win), *(game_sequence->get_current_level()));
 
     control_hint_win->erase();
     control_hint_win->mvprint_multiline_str(0, 1, "When you're done, execute your code with: [F5] Step by step    "
@@ -281,12 +281,14 @@ void GameTUI::handle_typing()
                 if (current_field != typing_field.begin()) current_field--;
                 else current_field = typing_field.end() - 1;
                 play_level();
+                send_typed_texts_to_gamelevel();
                 return;
 
             case KEY_F(12):
                 if (current_field + 1 != typing_field.end()) current_field++;
                 else current_field = typing_field.begin();
                 play_level();
+                send_typed_texts_to_gamelevel();
                 return;
 
             case KEY_F(5):
@@ -308,14 +310,15 @@ void GameTUI::handle_typing()
                 gl_callback = nullptr;
 
         }
+        send_typed_texts_to_gamelevel();
         control_hint_win->erase();
         control_hint_win->mvprint_multiline_str(0, 1, "[ENTER] to advance execution    [Q] to interrupt execution");
         control_hint_win->refresh_();
-        success = game_sequence->get_current_level()->attempt((*current_field)->get_typed_text(),
-                                                              vm_callback,
-                                                              gl_callback,
-                                                              vm_output_attempt_callback,
-                                                              vm_output_solution_callback);
+        success = (*game_sequence->get_current_level())->attempt((*current_field)->get_typed_text(),
+                                                                 vm_callback,
+                                                                 gl_callback,
+                                                                 vm_output_attempt_callback,
+                                                                 vm_output_solution_callback);
         vm_memory_win->erase();
         vm_memory_win->refresh_();
     } catch (const UserInterrupt &e)
@@ -402,5 +405,16 @@ void GameTUI::play()
         rethrow_exception(current_exception());
     }
     endwin_();
+}
+
+void GameTUI::send_typed_texts_to_gamelevel()
+{
+    vector<string> texts;
+    for (auto f : typing_field)
+    {
+        texts.push_back(f->get_typed_text());
+    }
+
+    (*(game_sequence->get_current_level()))->attempts = texts;
 }
 

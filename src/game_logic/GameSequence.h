@@ -16,7 +16,8 @@ private:
 
     string savename;
     vector<string> available_levels;
-    GameLevel *current_level;
+    vector<GameLevel *> levels;
+    vector<GameLevel *>::iterator current_level;
     string gamefiles_dir;
 
     vector<bool> attempted;
@@ -27,15 +28,16 @@ private:
 
     void load_from_save();
 
+    void conform_save_to_gamefiles();
 
 public:
     GameSequence(const string &savename, const string &gamefiles_dir);
 
-    void select_level(const string &level);
+    void select_level(int level_index);
 
     vector<string> get_available_levels() const;
 
-    GameLevel *get_current_level();
+    vector<GameLevel *>::iterator get_current_level();
 
     void save_to_save(vector<string> attempts);
 

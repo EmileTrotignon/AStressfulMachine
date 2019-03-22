@@ -53,6 +53,8 @@ private:
 
     void handle_failure();
 
+    void send_typed_texts_to_gamelevel();
+
 public:
 
     GameTUI(const string &saves_dir, const string &gamefiles_dir);

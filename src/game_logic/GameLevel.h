@@ -38,7 +38,7 @@ public:
      * Basic constructor that uses the level name to open the correct file.
      * @param level_name The name of the level (it is the directory, you cannot put anything here)
      */
-    GameLevel(const string &gamefiles_dir, const string &level_name,
+    GameLevel(string gamefiles_dir, string level_name, vector<string> attempts,
               VirtualMachine *vm_attempt = nullptr);
 
     ~GameLevel();
@@ -68,6 +68,8 @@ public:
     ifstream &get_input();
 
     string get_input_as_string();
+
+    vector<string> attempts;
 
     //friend void print_input_to_win(WINDOW *win, GameLevel *gl);
 
