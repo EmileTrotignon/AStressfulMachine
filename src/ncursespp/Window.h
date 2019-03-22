@@ -58,6 +58,8 @@ namespace ncursespp
 
         int getch_(const vector<int> &s);
 
+        int nodelay_getch();
+
         void sbox();
 
         virtual void refresh_();

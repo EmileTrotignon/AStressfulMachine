@@ -117,6 +117,14 @@ namespace ncursespp
         return wgetch(window);
     }
 
+    int Window::nodelay_getch()
+    {
+        nodelay(window, TRUE);
+        int c = getch_();
+        nodelay(window, FALSE);
+        return c;
+    }
+
     void Window::get_specific_ch(int c)
     {
         while (getch_() != c);

@@ -19,6 +19,7 @@ class GameTUI : public Game
 {
 private:
 
+    Window *control_hint_win;
     Window *typing_win;
     Window *instruction_win;
     Window *vm_input_win;

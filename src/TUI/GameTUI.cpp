@@ -56,7 +56,6 @@ void raw_vm_callback(VirtualMachine *vm, GameTUI *gi, bool pause_at_each_it)
         switch (gi->vm_input_win->getch_({'q', '\n'}))
         {
             case 'q':
-                gi->game_sequence->get_current_level()->reset_input();
                 throw UserInterrupt();
 
             case '\n':
@@ -65,6 +64,9 @@ void raw_vm_callback(VirtualMachine *vm, GameTUI *gi, bool pause_at_each_it)
             default:
                 break;
         }
+    } else if (gi->vm_input_win->nodelay_getch() == 'q')
+    {
+        throw UserInterrupt();
     }
 }
 
@@ -81,7 +83,6 @@ void raw_gl_callback(GameLevel *gl, GameTUI *gi, bool pause_at_each_it)
         switch (gi->vm_input_win->getch_({'q', '\n'}))
         {
             case 'q':
-                gi->game_sequence->get_current_level()->reset_input();
                 throw UserInterrupt();
 
             case '\n':
@@ -95,6 +96,7 @@ void raw_gl_callback(GameLevel *gl, GameTUI *gi, bool pause_at_each_it)
 
 
 GameTUI::GameTUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(saves_dir_, gamefiles_dir_),
+                                                                           control_hint_win(nullptr),
                                                                            typing_win(nullptr),
                                                                            instruction_win(nullptr),
                                                                            vm_input_win(nullptr),
@@ -122,6 +124,7 @@ GameTUI::~GameTUI()
     delete vm_memory_win;
     delete vm_message_win;
     delete game_sequence;
+    delete control_hint_win;
 }
 
 void GameTUI::pick_saves()
@@ -151,6 +154,7 @@ void GameTUI::pick_level()
     Menu level_picking(possible_levels, level_picking_win, "Please pick a level :");
     game_sequence->select_level(possible_levels[level_picking.select_item()]);
 
+    delete control_hint_win;
     delete typing_win;
     delete typing_field;
     delete instruction_win;
@@ -164,6 +168,7 @@ void GameTUI::pick_level()
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();
 
+    control_hint_win = new Window(1, w, h - 1, 0);
     typing_win = new Window(h / 2, w / 2, 0, w / 2, true);
     typing_field = new Field(vector<int>({KEY_F(5), KEY_F(6), KEY_F(7)}), typing_win->get_height() - 4,
                              typing_win->get_width() - 4,
@@ -171,8 +176,8 @@ void GameTUI::pick_level()
     instruction_win = new Window(h / 2, w / 2, 0, 0, true);
     fill_instructions();
 
-    vm_input_win = new Window(h / 2, w / 4, h / 2, 0, true);
-    vm_output_win = new Window(h / 2, w / 4, h / 2, w / 4, true);
+    vm_input_win = new Window(h / 2 - 1, w / 4, h / 2, 0, true);
+    vm_output_win = new Window(h / 2 - 1, w / 4, h / 2, w / 4, true);
     vm_output_attempt_win = new Window(vm_output_win,
                                        vm_output_win->get_height() - 3,
                                        vm_output_win->get_width() / 2 - 2,
@@ -186,18 +191,16 @@ void GameTUI::pick_level()
                                         vm_output_win->get_width() / 2 + 1);
 
     vm_message_win = new MessageStack(h / 4, w / 2, h / 2, w / 2, true);
-    vm_memory_win = new Window(h / 4, w / 2, h / 2 + h / 4, w / 2, true);
+    vm_memory_win = new Window(h / 4 - 1, w / 2, h / 2 + h / 4, w / 2, true);
     draw_title();
-
-
 }
 
 void GameTUI::play_level()
 {
+    control_hint_win->refresh_();
     typing_win->refresh_();
     instruction_win->refresh_();
     vm_input_win->refresh_();
-
 
 
     vm_output_win->refresh_();
@@ -219,8 +222,7 @@ void GameTUI::draw_title()
 {
     instruction_win->mvprintstr(1, 2, "Instructions :");
 
-    typing_win->mvprintstr(1, 2, "[F5] step by step    [F6] input block by input block    "
-                                 "[F7] all at once");
+    typing_win->printstr_centered(1, "Type here");
 
     vm_output_win->mvprintstr(1, 2, "Your output :");
     vm_output_win->mvprintstr(1, vm_output_win->get_width() / 2 + 1, "Expected output :");
@@ -239,6 +241,11 @@ void GameTUI::handle_typing()
 
     print_input_to_win(*(vm_input_win), game_sequence->get_current_level());
 
+    control_hint_win->erase();
+    control_hint_win->mvprintstr(0, 1, "When you're done, execute your code with: [F5] Step by step    "
+                                       "[F6] Input block by input block    "
+                                       "[F7] Fullspeed");
+    control_hint_win->refresh_();
     int exit_key = typing_field->type();
     vm_output_attempt_win->erase();
     vm_output_solution_win->erase();
@@ -268,6 +275,9 @@ void GameTUI::handle_typing()
                 gl_callback = nullptr;
 
         }
+        control_hint_win->erase();
+        control_hint_win->mvprintstr(0, 1, "[ENTER] to advance execution    [Q] to interrupt execution");
+        control_hint_win->refresh_();
         success = game_sequence->get_current_level()->attempt(typing_field->get_typed_text(),
                                                               vm_callback,
                                                               gl_callback,
