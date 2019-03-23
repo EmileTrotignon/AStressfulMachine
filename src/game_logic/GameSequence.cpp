@@ -286,8 +286,7 @@ void stripTags( string &text )
 //======================================================================
 */
 
-void save_all( string &save_name )
-{
+void save_all(){
 
     TiXmlDocument doc;
     TiXmlElement* msg;
@@ -299,9 +298,9 @@ void save_all( string &save_name )
 
     TiXmlElement * level = new TiXmlElement( "Level" );
     root->LinkEndChild( level );
-    level->SetAttribute("name", "Nom_du_niveau");
+    level->SetAttribute("name", "Nom_du_niveau"); // Variable contenant le nom_du_niveau à ajouter
 
-    if(succeeded_levels){
+    if(succeeded_levels){ // toujours pas reconnu.
         TiXmlElement * congrats = new TiXmlElement("Congrats");
         congrats->SetValue("Yes" ); // A voir si on change par la variable elle même ou pas
         level->LinkEndChild( congrats );
@@ -316,7 +315,44 @@ void save_all( string &save_name )
     avg->SetValue("  " );
     level->LinkEndChild( avg );
 
-    dump_to_stdout( &doc );
-    //doc.SaveFile( save_name+".xml" );
-    doc.SaveFile( "save.xml" );
+    //dump_to_stdout( &doc );
+    //doc.SaveFile( save_name );
+    doc.SaveFile( "/data/saves/save.xml" );
+}
+
+void load_all(){
+    TiXmlDocument doc( "/data/saves/save.xml" );
+    doc.LoadFile();
+
+    TiXmlElement *l_pRootElement = doc.RootElement();
+
+    if( NULL != l_pRootElement )
+    {
+        TiXmlElement *l_level = l_pRootElement->FirstChildElement( "Level" );
+
+        if ( NULL != l_level )
+        {
+            std::cout << l_level->GetText(); // display the hole file directly
+
+            TiXmlElement *l_congrats = l_level->FirstChildElement( "Congrats" );
+
+            if ( NULL != l_congrats )
+            {
+                std::cout << l_congrats->GetText();
+            }
+            //while( l_level )
+            //{
+                TiXmlElement *l_avg = l_level->FirstChildElement( "Avg" );
+
+                if ( NULL != l_avg )
+                {
+                    std::cout << l_avg->GetText();
+                }
+
+                std::cout << std::endl;
+
+                //l_level = l_level->NextSiblingElement( "level" ); If there was another <level> in the same file
+            //}
+        }
+    }
 }

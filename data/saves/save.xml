@@ -15,27 +15,10 @@ Les differentes informations sur chaque niveau :
 
 -->
 
-<player>
-    <object>
-
-        <!--  <current_level>save</current_level> -->
-
-        <!-- A REMPLIR -->
-        <!-- Do not modify -->
-        <level>
-            <lvl name='level1'>
-                <congrats> </congrats> <!-- BOOL niveau réussi ou non -->
-                <attempts>
-                    <attempt>
-
-                    </attempt>
-                    <avg>
-
-                    </avg>
-                </attempts>
-            </lvl>
-
-        </level>
-
-    </object>
-</player>
+<Player>
+    <Level name='level1'>
+        <Congrats></Congrats> <!-- BOOL niveau réussi ou non -->
+        <Avg>
+        </Avg>
+    </Level>
+</Player>
