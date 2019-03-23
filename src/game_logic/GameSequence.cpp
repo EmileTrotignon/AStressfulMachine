@@ -3,26 +3,9 @@
 //
 
 #include "GameSequence.h"
-
+#include "../tinyxml/tinyxml.h"
 
 using namespace std;
-
-// Function prototypes for save
-//void createFile(string &name); // Create a file named.
-//void copFile(string &name); // Copy the whole code from processName() to createFile()
-void addName(string &jeu); // Add a nametag in the XML
-void succeededLevel(string &jeu); // Add succeededLevel
-void addTry(string &jeu); // Add the attempts.
-void addAverage(string &jeu); // Add The average.
-
-// Function prototypes for load
-string getFile(string filename);                         // Reads whole file into a string buffer
-vector<string> getData(const string &text, string tag);  // Gets collection of items between given tags
-void stripTags(string &text);                            // Strips any tags
-
-
-
-
 
 GameSequence::GameSequence(const string &savename_, const string &gamefiles_dir_) : savename(savename_),
                                                                                     gamefiles_dir(gamefiles_dir_),
@@ -302,3 +285,38 @@ void stripTags( string &text )
 
 //======================================================================
 */
+
+void save_all( string &save_name )
+{
+
+    TiXmlDocument doc;
+    TiXmlElement* msg;
+    TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
+    doc.LinkEndChild( decl );
+
+    TiXmlElement * root = new TiXmlElement( "Player" );
+    doc.LinkEndChild( root );
+
+    TiXmlElement * level = new TiXmlElement( "Level" );
+    root->LinkEndChild( level );
+    level->SetAttribute("name", "Nom_du_niveau");
+
+    if(succeeded_levels){
+        TiXmlElement * congrats = new TiXmlElement("Congrats");
+        congrats->SetValue("Yes" ); // A voir si on change par la variable elle même ou pas
+        level->LinkEndChild( congrats );
+    }
+    else{
+        TiXmlElement * congrats = new TiXmlElement("Congrats");
+        congrats->SetValue("No" );
+        level->LinkEndChild( congrats );
+    }
+
+    TiXmlElement * avg = new TiXmlElement("Avg");
+    avg->SetValue("  " );
+    level->LinkEndChild( avg );
+
+    dump_to_stdout( &doc );
+    //doc.SaveFile( save_name+".xml" );
+    doc.SaveFile( "save.xml" );
+}
