@@ -3,6 +3,7 @@
 //
 
 #include "GameSequence.h"
+#include "GameLevel.h"
 #include "../tinyxml/tinyxml.h"
 
 
@@ -69,9 +70,9 @@ void save_all(){
 
     TiXmlElement * level = new TiXmlElement( "Level" );
     root->LinkEndChild( level );
-    level->SetAttribute("name", "Nom_du_niveau"); // Variable contenant le nom_du_niveau à ajouter
+    level->SetAttribute("name", level_name); // c'est quel fonction qui get level_name dans GameLevel
 
-    if(succeeded_levels){ // toujours pas reconnu.
+    if(succeeded_levels){ // Toujours pas reconnu.
         TiXmlElement * congrats = new TiXmlElement("Congrats");
         congrats->SetValue("Yes" ); // A voir si on change par la variable elle même ou pas
         level->LinkEndChild( congrats );
