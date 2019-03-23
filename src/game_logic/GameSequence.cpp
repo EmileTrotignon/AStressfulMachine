@@ -5,6 +5,11 @@
 #include "GameSequence.h"
 #include "../tinyxml/tinyxml.h"
 
+
+// Function prototypes
+void save_all(); // Save the complete file
+void load_all(); // Load the different values
+
 using namespace std;
 
 GameSequence::GameSequence(const string &savename_, const string &gamefiles_dir_) : savename(savename_),
@@ -40,7 +45,7 @@ void GameSequence::load_from_save()
 {
     // Todo : This should initialize :
     //    vector<bool> attempted;
-    //    vector<bool> succeeded_levels;
+    //    vector<bool> succeeded_levels; // vector<bool> succeeded_levels {false};
     //    vector<vector<string>> attempts;
     //    vector<vector<float>> average_speed;
     //    vector<vector<float>> average_memory_use;
