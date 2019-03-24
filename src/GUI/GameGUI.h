@@ -7,10 +7,22 @@
 
 #include "../game_logic/Game.h"
 
-class GameGUI
+#include <QApplication>
+
+class GameGUI : public Game
 {
 private:
-    Game *game;
+    // Game *game;
+public:
+    // GameGUI();
+    GameGUI(const string &saves_dir, const string &gamefiles_dir);
+
+    int play(int argc, char ** argv);
+
+    /* This is only implemented to ensure project compiles
+     * (GameGUI is a virtual class and requires inherited virtual functions to be implemented)
+     */
+    void play() override;
 };
 
 
