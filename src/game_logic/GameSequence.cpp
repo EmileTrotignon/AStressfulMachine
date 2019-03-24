@@ -19,10 +19,11 @@ GameSequence::GameSequence(const string &savename_, const string &gamefiles_dir_
     available_levels = filesystem_ls(gamefiles_dir + "/levels");
     conform_save_to_gamefiles();
     load_from_save();
-
+    levels = vector<GameLevel *>();
     for (int i = 0; i < available_levels.size(); i++)
     {
-        levels.push_back(new GameLevel(gamefiles_dir, available_levels[i], attempts[i]));
+        auto gl = new GameLevel(gamefiles_dir, available_levels[i], attempts[i]);
+        levels.push_back(gl);
     }
 }
 
@@ -49,6 +50,12 @@ void GameSequence::load_from_save()
     //    vector<vector<string>> attempts;
     //    vector<vector<float>> average_speed;
     //    vector<vector<float>> average_memory_use;
+
+    for (int i = 0; i < available_levels.size(); i++) // Fills attempts with empty string.
+        // Todo : fill attempts with actual attempts
+    {
+        attempts.push_back({""});
+    }
 }
 
 void GameSequence::conform_save_to_gamefiles()
@@ -57,6 +64,8 @@ void GameSequence::conform_save_to_gamefiles()
 
 }
 
+
+/*
 void save_all(){
 
     // Il est obligatoire que cette fonction corresponde a une instance de GameSequence, soit par un passage
@@ -130,4 +139,4 @@ void load_all(){
             //}
         }
     }
-}
+}*/
