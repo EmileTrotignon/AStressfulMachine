@@ -17,6 +17,11 @@ clean:
 	rm -r build/CMake*
 	rm -r build/cmake*
 
+.PHONY: superclean
+superclean:
+	rm -r build
+	rm -r cmake-build-debug
+
 ifeq ($(findstring clean, $(MAKECMDGOALS)),)
 ifeq ($(findstring doc, $(MAKECMDGOALS)),)
 $(MAKECMDGOALS): ./build/Makefile
