@@ -71,6 +71,8 @@ public:
 
     vector<string> attempts;
 
+    string get_level_name();
+
     //friend void print_input_to_win(WINDOW *win, GameLevel *gl);
 
 

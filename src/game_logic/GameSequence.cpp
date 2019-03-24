@@ -3,7 +3,6 @@
 //
 
 #include "GameSequence.h"
-#include "GameLevel.h"
 #include "../tinyxml/tinyxml.h"
 
 
@@ -60,30 +59,34 @@ void GameSequence::conform_save_to_gamefiles()
 
 void save_all(){
 
+    // Il est obligatoire que cette fonction corresponde a une instance de GameSequence, soit par un passage
+    // d'argument soit en la mettant comme methode.
+    // En l'état il est impossible qu'elle accede a level_name ou aux variables de GameSequence
+
     TiXmlDocument doc;
     TiXmlElement* msg;
-    TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
+    auto decl = new TiXmlDeclaration("1.0", "", "");
     doc.LinkEndChild( decl );
 
-    TiXmlElement * root = new TiXmlElement( "Player" );
+    auto root = new TiXmlElement("Player");
     doc.LinkEndChild( root );
 
-    TiXmlElement * level = new TiXmlElement( "Level" );
+    auto *level = new TiXmlElement("Level");
     root->LinkEndChild( level );
     level->SetAttribute("name", level_name); // c'est quel fonction qui get level_name dans GameLevel
 
     if(succeeded_levels){ // Toujours pas reconnu.
-        TiXmlElement * congrats = new TiXmlElement("Congrats");
+        auto *congrats = new TiXmlElement("Congrats");
         congrats->SetValue("Yes" ); // A voir si on change par la variable elle même ou pas
         level->LinkEndChild( congrats );
     }
     else{
-        TiXmlElement * congrats = new TiXmlElement("Congrats");
+        auto *congrats = new TiXmlElement("Congrats");
         congrats->SetValue("No" );
         level->LinkEndChild( congrats );
     }
 
-    TiXmlElement * avg = new TiXmlElement("Avg");
+    auto *avg = new TiXmlElement("Avg");
     avg->SetValue("  " );
     level->LinkEndChild( avg );
 
@@ -98,17 +101,17 @@ void load_all(){
 
     TiXmlElement *l_pRootElement = doc.RootElement();
 
-    if( NULL != l_pRootElement )
+    if (nullptr != l_pRootElement)
     {
         TiXmlElement *l_level = l_pRootElement->FirstChildElement( "Level" );
 
-        if ( NULL != l_level )
+        if (nullptr != l_level)
         {
-            std::cout << l_level->GetText(); // display the hole file directly
+            std::cout << l_level->GetText(); // display the whole file directly
 
             TiXmlElement *l_congrats = l_level->FirstChildElement( "Congrats" );
 
-            if ( NULL != l_congrats )
+            if (nullptr != l_congrats)
             {
                 std::cout << l_congrats->GetText();
             }
@@ -116,7 +119,7 @@ void load_all(){
             //{
                 TiXmlElement *l_avg = l_level->FirstChildElement( "Avg" );
 
-                if ( NULL != l_avg )
+            if (nullptr != l_avg)
                 {
                     std::cout << l_avg->GetText();
                 }

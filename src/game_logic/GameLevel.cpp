@@ -118,3 +118,8 @@ string GameLevel::get_input_as_string()
     reset_input(pos);
     return in;
 }
+
+string GameLevel::get_level_name()
+{
+    return level_name;
+}
