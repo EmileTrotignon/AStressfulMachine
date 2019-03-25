@@ -44,7 +44,8 @@ public:
      * @param size_
      * @param memory_
      */
-    VirtualMachineProcedure(VirtualMachine *master_vm, const string &program_, int depth_);
+    VirtualMachineProcedure(VirtualMachine *master_vm, const string &program_, int depth_,
+                            const vector<string> include_directories = {}, ostream *verbose_out = &cout);
 
     /**
      * This should be used to access the output of the procedure.
