@@ -26,6 +26,7 @@ namespace ncursespp
         mousemask(mouse_mask, nullptr);
         curs_set(1);
         mvprint_multiline_str(0, 0, string(typed_text), 0);
+        move_cursor((int) typing_pos_y, (int) typing_cursor_x);
         refresh_();
         int ch;
         while (find(validate_keys.begin(), validate_keys.end(), (ch = getch_())) == validate_keys.end())
