@@ -167,7 +167,8 @@ void GameTUI::pick_level()
     for (auto i = typing_field.begin(); i != typing_field.end(); i++)
     {
         delete *i;
-        *i = new Field(vector<int>({KEY_F(1), KEY_F(5), KEY_F(6), KEY_F(7), KEY_F(12)}), typing_win->get_height() - 4,
+        *i = new Field(vector<int>({KEY_F(1), KEY_F(3), KEY_F(5), KEY_F(6), KEY_F(7), KEY_F(12)}),
+                       typing_win->get_height() - 4,
                        typing_win->get_width() - 4,
                        typing_win->get_starty() + 2, typing_win->get_startx() + 2);
     }
@@ -262,9 +263,12 @@ void GameTUI::handle_typing()
     print_input_to_win(*(vm_input_win), *(game_sequence->get_current_level()));
 
     control_hint_win->erase();
-    control_hint_win->mvprint_multiline_str(0, 1, "When you're done, execute your code with: [F5] Step by step    "
-                                                  "[F6] Input block by input block    "
-                                                  "[F7] Fullspeed");
+    control_hint_win->mvprint_multiline_str(0, 1, "[F1] Previous tab    "
+                                                  "[F3] Quit    "
+                                                  "[F5] Step by step execution    "
+                                                  "[F6] Input block by input block execution    "
+                                                  "[F7] Fullspeed execution    "
+                                                  "[F12] Next tab");
     control_hint_win->refresh_();
     int exit_key = (*current_field)->type();
     vm_output_attempt_win->erase();
@@ -280,17 +284,23 @@ void GameTUI::handle_typing()
             case KEY_F(1):
                 if (current_field != typing_field.begin()) current_field--;
                 else current_field = typing_field.end() - 1;
-                play_level();
                 send_typed_texts_to_gamelevel();
                 game_sequence->save_to_save();
+                play_level();
+                return;
+
+            case KEY_F(3):
+                send_typed_texts_to_gamelevel();
+                game_sequence->save_to_save();
+                quit_level_menu();
                 return;
 
             case KEY_F(12):
                 if (current_field + 1 != typing_field.end()) current_field++;
                 else current_field = typing_field.begin();
-                play_level();
                 send_typed_texts_to_gamelevel();
                 game_sequence->save_to_save();
+                play_level();
                 return;
 
             case KEY_F(5):
@@ -343,7 +353,10 @@ void GameTUI::handle_typing()
     n_lines_attempt_output = 0;
     if (success)
     {
-        handle_success();
+        vm_message_win->push_message("Congratulation, you solved this level !");
+        vm_message_win->refresh_();
+        vm_message_win->getch_();
+        quit_level_menu();
     } else
     {
         handle_failure();
@@ -351,16 +364,18 @@ void GameTUI::handle_typing()
 
 }
 
-void GameTUI::handle_success()
+void GameTUI::quit_level_menu()
 {
 
-    vector<string> options{"Retry this level", "Play another level", "Quit the game"};
+    vector<string> options{"Continue to edit this level", "Play another level", "Quit the game"};
 
     if (success_menu_win == nullptr)
         success_menu_win = new Window(stdscr_->get_height(), stdscr_->get_width(), 0, 0);
+    success_menu_win->clear();
+    success_menu_win->refresh_();
 
     auto menu = new Menu(options, success_menu_win,
-                         "Congratulation, you have solved this level. What do you want to do now ?");
+                         "What do you want to do ?");
     switch (menu->select_item())
     {
         default:

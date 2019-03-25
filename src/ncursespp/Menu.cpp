@@ -51,7 +51,7 @@ namespace ncursespp
         int ch;
         selected_item = 0;
 
-        this->refresh_();
+        refresh_();
 
         while ((ch = getch_()) != '\n')
         {

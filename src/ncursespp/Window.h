@@ -74,6 +74,8 @@ namespace ncursespp
 
         void erase();
 
+        void clear();
+
         int get_width() const;
 
         int get_height() const;

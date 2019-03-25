@@ -231,4 +231,9 @@ namespace ncursespp
     {
         mvwaddstr(window, y, x, str.c_str());
     }
+
+    void Window::clear()
+    {
+        wclear(window);
+    }
 }

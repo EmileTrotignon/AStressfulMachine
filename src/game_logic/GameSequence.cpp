@@ -3,7 +3,6 @@
 //
 
 #include "GameSequence.h"
-#include "../tinyxml/tinyxml.h"
 #include <filesystem>
 
 
@@ -55,7 +54,6 @@ void GameSequence::load_from_save()
     // Todo : This should initialize :
     //    vector<bool> attempted;
     //    vector<bool> succeeded_levels; // vector<bool> succeeded_levels {false};
-    //    vector<vector<string>> attempts;
     //    vector<vector<float>> average_speed;
     //    vector<vector<float>> average_memory_use;
 

@@ -49,7 +49,7 @@ private:
 
     void handle_typing();
 
-    void handle_success();
+    void quit_level_menu();
 
     void handle_failure();
 
