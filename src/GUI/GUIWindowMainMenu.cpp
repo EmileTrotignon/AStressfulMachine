@@ -7,10 +7,12 @@
 // #include <QPushButton>
 #include <QApplication>
 #include <iostream>
+#include "GUIWindowGameplay.h"
 
 GUIWindowMainMenu::GUIWindowMainMenu(QWidget *parent) : QWidget(parent)
 {
     this->setObjectName("this"); // For debugging purposes
+    this->setWindowTitle("A Stressful Machine");
 
     // Create font
     titleFont.setFamily("arial");
@@ -58,9 +60,9 @@ GUIWindowMainMenu::GUIWindowMainMenu(QWidget *parent) : QWidget(parent)
     // this->setLayout(windowLayout);
 
 
-
     // Create events
     connect(quitGameButton, SIGNAL (clicked(bool)), QApplication::instance(), SLOT (quit()));
+    connect(newGameButton, SIGNAL (clicked(bool)), this, SLOT (createNewGameDialog()));
 }
 
 GUIWindowMainMenu::~GUIWindowMainMenu()
@@ -68,4 +70,22 @@ GUIWindowMainMenu::~GUIWindowMainMenu()
     // Does this call parent's destructor?
     std::cout << "Destructing GUIWindowMainMenu" << std::endl;
     delete buttonLayout;
+}
+
+void GUIWindowMainMenu::createNewGameDialog()
+{
+    newGameDialog = new QInputDialog(this);
+    newGameDialog->setObjectName("newGameDialog");
+    newGameDialog->setWindowTitle("Create a new save");
+    newGameDialog->setInputMode(QInputDialog::TextInput);
+    newGameDialog->setLabelText("Name:");
+    newGameDialog->show();
+
+    connect(newGameDialog, SIGNAL (accepted()), this, SLOT (createGameplayWindow()));
+}
+
+void GUIWindowMainMenu::createGameplayWindow()
+{
+    auto *gameplayWindow = new GUIWindowGameplay;
+    gameplayWindow->show();
 }
