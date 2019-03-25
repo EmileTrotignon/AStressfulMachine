@@ -173,6 +173,7 @@ namespace ncursespp
 
             }
             erase();
+
             mvprint_multiline_str(0, 0, string(typed_text), 0);
             refresh_();
             move_cursor((int) typing_pos_y, (int) typing_cursor_x);
@@ -185,6 +186,12 @@ namespace ncursespp
     string Field::get_typed_text()
     {
         return string(typed_text);
+    }
+
+    void Field::set_typed_text(const string &new_text)
+    {
+        typed_text = String2D(new_text);
+        typing_cursor_y = typed_text.begin();
     }
 
     void Field::attron_char(size_t ch_index, int attr)
@@ -235,7 +242,6 @@ namespace ncursespp
         }
         throw invalid_argument("Index out of bounds");
     }
-
 }
 
 

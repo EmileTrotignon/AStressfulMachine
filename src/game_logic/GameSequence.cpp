@@ -4,6 +4,7 @@
 
 #include "GameSequence.h"
 #include "../tinyxml/tinyxml.h"
+#include <filesystem>
 
 
 // Function prototypes
@@ -11,6 +12,8 @@ void save_all(); // Save the complete file
 void load_all(); // Load the different values
 
 using namespace std;
+namespace fs = std::filesystem;
+
 
 GameSequence::GameSequence(const string &savename_, const string &gamefiles_dir_) : savename(savename_),
                                                                                     gamefiles_dir(gamefiles_dir_),
@@ -18,17 +21,22 @@ GameSequence::GameSequence(const string &savename_, const string &gamefiles_dir_
 {
     available_levels = filesystem_ls(gamefiles_dir + "/levels");
     conform_save_to_gamefiles();
-    load_from_save();
     levels = vector<GameLevel *>();
     for (int i = 0; i < available_levels.size(); i++)
     {
-        auto gl = new GameLevel(gamefiles_dir, available_levels[i], attempts[i]);
+        auto gl = new GameLevel(gamefiles_dir, available_levels[i]);
         levels.push_back(gl);
     }
+    load_from_save();
+
 }
 
 void GameSequence::select_level(int level_index)
 {
+    if (levels.begin() <= current_level && current_level < levels.end())
+    {
+
+    }
     current_level = levels.begin() + level_index;
 }
 
@@ -54,14 +62,43 @@ void GameSequence::load_from_save()
     for (int i = 0; i < available_levels.size(); i++) // Fills attempts with empty string.
         // Todo : fill attempts with actual attempts
     {
-        attempts.push_back({""});
+        levels[i]->attempts = {};
+        for (int j = 0; j < 5; j++)
+        {
+            levels[i]->attempts.push_back(
+                    file_to_string("data/saves/" + savename + "/" + available_levels[i] + "/" + to_string(j)));
+        }
     }
 }
 
 void GameSequence::conform_save_to_gamefiles()
 {
     // Todo : This should create new folders for levels that does not have one
+    for (auto &l:available_levels)
+    {
+        fs::create_directory("data/saves/" + savename + "/" + l);
+        for (int i = 0; i < 5; i++)
+        {
+            if (!fs::exists("data/saves/" + savename + "/" + l + "/" + to_string(i)))
+            {
+                ofstream a("data/saves/" + savename + "/" + l + "/" + to_string(i));
+                a.close();
+            }
+        }
+    }
+}
 
+void GameSequence::save_to_save()
+{
+    // Save all attempts for all levels
+    for (int i = 0; i < available_levels.size(); i++)
+    {
+        for (int j = 0; j < levels[i]->attempts.size(); j++)
+        {
+            string_to_file(levels[i]->attempts[j],
+                           "data/saves/" + savename + "/" + levels[i]->get_level_name() + "/" + to_string(j));
+        }
+    }
 }
 
 

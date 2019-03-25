@@ -173,6 +173,7 @@ void GameTUI::pick_level()
     }
 
     current_field = typing_field.begin();
+    get_attempts_from_gamelevel();
 
     delete instruction_win;
     delete vm_input_win;
@@ -181,7 +182,6 @@ void GameTUI::pick_level()
     delete vm_output_solution_win;
     delete vm_memory_win;
     delete vm_message_win;
-
 
 
     control_hint_win = new Window(1, w, h - 1, 0);
@@ -282,6 +282,7 @@ void GameTUI::handle_typing()
                 else current_field = typing_field.end() - 1;
                 play_level();
                 send_typed_texts_to_gamelevel();
+                game_sequence->save_to_save();
                 return;
 
             case KEY_F(12):
@@ -289,6 +290,7 @@ void GameTUI::handle_typing()
                 else current_field = typing_field.begin();
                 play_level();
                 send_typed_texts_to_gamelevel();
+                game_sequence->save_to_save();
                 return;
 
             case KEY_F(5):
@@ -311,14 +313,19 @@ void GameTUI::handle_typing()
 
         }
         send_typed_texts_to_gamelevel();
+        game_sequence->save_to_save();
         control_hint_win->erase();
         control_hint_win->mvprint_multiline_str(0, 1, "[ENTER] to advance execution    [Q] to interrupt execution");
         control_hint_win->refresh_();
-        success = (*game_sequence->get_current_level())->attempt((*current_field)->get_typed_text(),
-                                                                 vm_callback,
-                                                                 gl_callback,
-                                                                 vm_output_attempt_callback,
-                                                                 vm_output_solution_callback);
+
+        send_typed_texts_to_gamelevel();
+
+        success = (*game_sequence->get_current_level())->attempt(
+                (*(game_sequence->get_current_level()))->attempts.begin() + (current_field - typing_field.begin()),
+                vm_callback,
+                gl_callback,
+                vm_output_attempt_callback,
+                vm_output_solution_callback);
         vm_memory_win->erase();
         vm_memory_win->refresh_();
     } catch (const UserInterrupt &e)
@@ -416,5 +423,13 @@ void GameTUI::send_typed_texts_to_gamelevel()
     }
 
     (*(game_sequence->get_current_level()))->attempts = texts;
+}
+
+void GameTUI::get_attempts_from_gamelevel()
+{
+    for (int i = 0; i < typing_field.size(); i++)
+    {
+        typing_field[i]->set_typed_text((*(game_sequence->get_current_level()))->attempts[i]);
+    }
 }
 

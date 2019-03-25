@@ -19,7 +19,15 @@ string file_to_string(const string &filename)
         throw invalid_argument("Unable to open file '" + filename + "'");
     }
     string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+    file.close();
     return c;
+}
+
+void string_to_file(const string &content, const string &filename)
+{
+    ofstream file(filename);
+    file << content;
+    file.close();
 }
 
 vector<string> filesystem_ls(const string &dir)

@@ -26,6 +26,8 @@ namespace ncursespp
 
         string get_typed_text();
 
+        void set_typed_text(const string &new_text);
+
         void attron_char(size_t ch_index, int attr);
 
         void attroff_char(size_t ch_index, int attr);

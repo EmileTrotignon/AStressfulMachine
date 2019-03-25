@@ -20,7 +20,7 @@ GameLevel::GameLevel(string gamefiles_dir_, string level_name_, vector<string> a
     {
         attempts.emplace_back("");
     }
-    program_attempt = attempts[0];
+    current_attempt = attempts.begin();
 }
 
 GameLevel::~GameLevel()
@@ -50,7 +50,7 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
     //  replace(input_line_str.begin(), input_line_str.end(), ' ', '\n');
     istringstream input_line(input_line_str);
 
-    vm_attempt = new VirtualMachine(program_attempt, &input_line, &attempt_ostream);
+    vm_attempt = new VirtualMachine(*current_attempt, &input_line, &attempt_ostream);
     vm_attempt->set_output_callback(vm_output_attempt_callback);
 
     try
@@ -86,7 +86,28 @@ bool GameLevel::attempt(const string &program_,
                         const function<void(int)> &vm_output_attempt_callback,
                         const function<void(int)> &vm_output_solution_callback)
 {
-    program_attempt = program_;
+    *current_attempt = program_;
+    reset_input();
+    while (!input.eof())
+    {
+        if (gl_callback != nullptr) gl_callback(this);
+        if (!attempt_one_input(vm_callback, vm_output_attempt_callback, vm_output_solution_callback))
+        {
+            reset_input();
+            return false;
+        }
+    }
+    reset_input();
+    return true;
+}
+
+bool GameLevel::attempt(vector<string>::iterator current_attempt_,
+                        const function<void(VirtualMachine *)> &vm_callback,
+                        const function<void(GameLevel *)> &gl_callback,
+                        const function<void(int)> &vm_output_attempt_callback,
+                        const function<void(int)> &vm_output_solution_callback)
+{
+    current_attempt = current_attempt_;
     reset_input();
     while (!input.eof())
     {
@@ -123,3 +144,4 @@ string GameLevel::get_level_name()
 {
     return level_name;
 }
+

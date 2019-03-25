@@ -26,7 +26,7 @@ private:
     string level_name;
     string solution;
     string instructions;
-    string program_attempt;
+    vector<string>::iterator current_attempt;
 
     VirtualMachine *vm_sol;
     VirtualMachine *vm_attempt;
@@ -38,7 +38,7 @@ public:
      * Basic constructor that uses the level name to open the correct file.
      * @param level_name The name of the level (it is the directory, you cannot put anything here)
      */
-    GameLevel(string gamefiles_dir, string level_name, vector<string> attempts,
+    GameLevel(string gamefiles_dir, string level_name, vector<string> attempts = {},
               VirtualMachine *vm_attempt = nullptr);
 
     ~GameLevel();
@@ -58,6 +58,12 @@ public:
                            const function<void(int)> &vm_output_solution_callback);
 
     bool attempt(const string &program_,
+                 const function<void(VirtualMachine *)> &vm_callback = nullptr,
+                 const function<void(GameLevel *)> &gl_callback = nullptr,
+                 const function<void(int)> &vm_output_attempt_callback = nullptr,
+                 const function<void(int)> &vm_output_solution_callback = nullptr);
+
+    bool attempt(vector<string>::iterator current_attempts,
                  const function<void(VirtualMachine *)> &vm_callback = nullptr,
                  const function<void(GameLevel *)> &gl_callback = nullptr,
                  const function<void(int)> &vm_output_attempt_callback = nullptr,

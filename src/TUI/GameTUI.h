@@ -55,6 +55,8 @@ private:
 
     void send_typed_texts_to_gamelevel();
 
+    void get_attempts_from_gamelevel();
+
 public:
 
     GameTUI(const string &saves_dir, const string &gamefiles_dir);
