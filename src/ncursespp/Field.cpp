@@ -23,6 +23,7 @@ namespace ncursespp
 
     int Field::type()
     {
+        mousemask(mouse_mask, nullptr);
         curs_set(1);
         mvprint_multiline_str(0, 0, string(typed_text), 0);
         refresh_();
@@ -136,7 +137,37 @@ namespace ncursespp
                     }
                     break;
 
-
+                case KEY_MOUSE:
+                    if(getmouse(&mouse_event) == OK )
+                    {
+                        if(mouse_event.bstate & BUTTON1_CLICKED)
+                        {
+                            int* mouseX = new int(mouse_event.x);
+                            int* mouseY = new int(mouse_event.y);
+                            // Verify that mouse is in the typing window
+                            if(wmouse_trafo(window, mouseY, mouseX, false))
+                            {
+                                // Verify that mouseY points to a valid position for cursor & mouseX points to a valid position for cursor
+                                if (*mouseY < typed_text.size())
+                                {
+                                    typing_pos_y = 0;
+                                    typing_cursor_y = typed_text.begin();
+                                    for (int i = 0; i < *mouseY; i++)
+                                    {
+                                        typing_cursor_y++;
+                                        typing_pos_y++;
+                                    }
+                                    if (*mouseX <= (*typing_cursor_y).length()) typing_cursor_x = (size_t) *mouseX;
+                                    else typing_cursor_x = (*typing_cursor_y).length();
+                                }
+                            }
+                            delete mouseX;
+                            delete mouseY;
+                            mouseX = nullptr;
+                            mouseY = nullptr;
+                        }
+                    }
+                    break;
 
                 default:
                     if (isprint(ch))
