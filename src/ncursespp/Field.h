@@ -18,6 +18,8 @@ namespace ncursespp
         String2D::iterator typing_cursor_y;
         size_t typing_pos_y;
         const vector<int> validate_keys;
+        MEVENT mouse_event;
+        mmask_t mouse_mask;
     public:
 
         Field(const vector<int> &validate_keys, int height, int width, int starty, int startx, bool boxing = false);
