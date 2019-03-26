@@ -55,14 +55,21 @@ string::iterator corresponding_par(const string &s, char open, char close, strin
 }
 
 
-VirtualMachine::VirtualMachine(const string &program_, istream *in_, ostream *out_) : program(program_), in(in_),
-                                                                                      out(out_),
-                                                                                      output_callback(nullptr),
-                                                                                      procedure_call(nullptr),
-                                                                                      verbose(false),
-                                                                                      verbose_procedure(false),
-                                                                                      depth(0),
-                                                                                      print_errors(false)
+VirtualMachine::VirtualMachine(const string &program_,
+                               istream *in_,
+                               ostream *out_,
+                               const vector<string> &include_directories_,
+                               ostream *verbose_out_) : program(program_),
+                                                        in(in_),
+                                                        out(out_),
+                                                        verbose_out(verbose_out_),
+                                                        output_callback(nullptr),
+                                                        procedure_call(nullptr),
+                                                        verbose(false),
+                                                        verbose_procedure(false),
+                                                        depth(0),
+                                                        print_errors(false),
+                                                        include_directories(include_directories_)
 {
     status = STATUS_PAUSED;
 
@@ -167,7 +174,9 @@ void VirtualMachine::val_out()
             procedure_call->input(*memory_ptr);
         } else
         {
+            if (output_callback != nullptr) output_callback(*memory_ptr);
             *out << *memory_ptr;
+            out->flush();
         }
     }
 }
@@ -295,7 +304,7 @@ void VirtualMachine::do_n_time()
     current_operator = program.begin() + t;
     for (int j = 0; j < n; j++)
     {
-        do_one_iteration(false);
+        do_one_iteration();
         if (status != STATUS_RUNNING) return;
     }
 }
@@ -308,7 +317,7 @@ void VirtualMachine::call_procedure()
 
         string procedure = string(current_operator + 1, i);
         string code;
-        if (i - 1 == current_operator) // If there is no filename it mean a recursive call
+        if (i - 1 == current_operator) // If there is no filename it means a recursive call
         {
             code = program;
         } else
@@ -316,7 +325,7 @@ void VirtualMachine::call_procedure()
             current_operator = i;
             if (procedure[0] == SYNTAX_FILE_MARKER)
             {
-                code = file_to_string(procedure.substr(1, procedure.size() - 2));
+                code = file_to_string(procedure.substr(1, procedure.size() - 1));
                 if (status == STATUS_ERROR) return;
             } else
             {
@@ -324,7 +333,7 @@ void VirtualMachine::call_procedure()
             }
         }
         if (verbose_procedure) message(MESSAGE_STARTING_PROCEDURE MESSAGE_DEPTH);
-        procedure_call = new VirtualMachineProcedure(this, code, depth + 1);
+        procedure_call = new VirtualMachineProcedure(this, code, depth + 1, include_directories, verbose_out);
         if (verbose_procedure) procedure_call->be_verbose();
         loop_procedure();
     } catch (const invalid_argument &e)
@@ -337,7 +346,18 @@ void VirtualMachine::call_procedure()
 
 string VirtualMachine::file_to_string(string filename)
 {
-    ifstream file(filename);
+    ifstream file;
+    for (const auto &p:include_directories)
+    {
+        file.open(p + "/" + filename);
+        if (file.is_open())
+        {
+            string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+            return c;
+        }
+    }
+
+    file.open(filename);
     if (!file.is_open())
     {
         throw VM_UnableToOpenFile(this, filename);
@@ -364,16 +384,16 @@ void VirtualMachine::terminate_procedure()
 
 void VirtualMachine::error_handler(const VirtualMachineException &error)
 {
-    if (print_errors) cout << error.what();
+    if (print_errors) *verbose_out << error.what();
     status = STATUS_ERROR;
     throw error;
 }
 
-void VirtualMachine::do_one_iteration(bool advance)
+void VirtualMachine::do_one_iteration()
 {
     if (status != STATUS_RUNNING) return;
 
-    //cout << program[current_operator] << endl;
+    //verbose_out << program[current_operator] << endl;
     switch (*current_operator)
     {
         default:
@@ -453,8 +473,7 @@ void VirtualMachine::do_one_iteration(bool advance)
     {
         throw VM_NegativeMemoryAccess(this);
     }
-    if (advance) current_operator++;
-    if (verbose && status == STATUS_RUNNING) cout << (string) (*this);
+    if (verbose && status == STATUS_RUNNING) *verbose_out << (string) (*this);
 
 }
 
@@ -463,13 +482,13 @@ void VirtualMachine::loop(function<void(VirtualMachine *)> vm_callback)
     if (verbose)
     {
         message(MESSAGE_LAUNCHING);
-        cout << (string) (*this);
+        (*verbose_out) << (string) (*this);
     }
     status = STATUS_RUNNING;
     while (status == STATUS_RUNNING)
     {
         while (current_operator < program.end() && !is_operator(*current_operator)) current_operator++;
-        if (current_operator == program.end())
+        if (current_operator >= program.end())
         {
             status = STATUS_PAUSED;
             if (verbose) message(MESSAGE_FINISHED);
@@ -479,7 +498,9 @@ void VirtualMachine::loop(function<void(VirtualMachine *)> vm_callback)
         try
         {
             do_one_iteration();
-            if (current_operator == program.end())
+            if (status == STATUS_PROC_OUTPUTTING) return;
+            current_operator++;
+            if (current_operator >= program.end())
             {
                 status = STATUS_PAUSED;
                 if (verbose) message(MESSAGE_FINISHED);
@@ -601,7 +622,7 @@ int VirtualMachine::extract_number_from_program(size_t *t)
 
 void VirtualMachine::message(const string &message)
 {
-    cout << message << endl;
+    *verbose_out << message << endl;
 }
 
 string VirtualMachine::program_to_string() const

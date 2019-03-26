@@ -50,12 +50,14 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
     //  replace(input_line_str.begin(), input_line_str.end(), ' ', '\n');
     istringstream input_line(input_line_str);
 
-    vm_attempt = new VirtualMachine(*current_attempt, &input_line, &attempt_ostream);
+    vm_attempt = new VirtualMachine(*current_attempt, &input_line, &attempt_ostream,
+                                    {gamefiles_dir + "/levels/" + level_name + "/lib"});
     vm_attempt->set_output_callback(vm_output_attempt_callback);
 
     try
     {
-        vm_sol = new VirtualMachine(solution, &input_line, &solution_ostream);
+        vm_sol = new VirtualMachine(solution, &input_line, &solution_ostream,
+                                    {gamefiles_dir + "/levels/" + level_name + "/lib"});
     } catch (const VirtualMachineException &e)
     {
         throw runtime_error(string("Solution initialisation throw exception : ") + string(e.what()));
@@ -74,7 +76,14 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
     input_line.clear();
     input_line.seekg(0);
 
-    vm_sol->loop();
+    try
+    {
+        vm_sol->loop();
+    } catch (VirtualMachineException &e)
+    {
+        throw runtime_error(string("Solution looping throw exception : ") + string(e.what()));
+    }
+
 
     bool r = (attempt_ostream.str() == solution_ostream.str());
     return r;

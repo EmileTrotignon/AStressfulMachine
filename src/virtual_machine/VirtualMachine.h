@@ -104,6 +104,7 @@ protected:
 
     istream *in;
     ostream *out;
+    ostream *verbose_out;
     function<void(int)> output_callback;
     string program;
     vector<int> memory;
@@ -115,6 +116,7 @@ protected:
     bool verbose_procedure;
     map<unsigned int, string::iterator> anchor_map;
     int depth;
+    vector<string> include_directories;
 
     VirtualMachineProcedure *procedure_call;
 
@@ -172,14 +174,15 @@ public:
     /**
      * @brief Constructor that initializes all the fields
      * @param program_ The code to be executed
-     * @param in The input stream
+     * @param in The input strestring("Solution initialisation throw exception : ") + string(e.what())am
      * @param out The output stream
      */
-     /*
-      * @param size The size of the memory. If the program starts with a number, this will be ignored
-      * @param memory The memory to be used by the machine. Allocated automatically if not specified.
-      */
-    VirtualMachine(const string &program, istream *in, ostream *out);
+    /*
+     * @param size The size of the memory. If the program starts with a number, this will be ignored
+     * @param memory The memory to be used by the machine. Allocated automatically if not specified.
+     */
+    VirtualMachine(const string &program, istream *in, ostream *out, const vector<string> &include_directories = {},
+                   ostream *verbose_out = &cout);
 
     VirtualMachine(const VirtualMachine &vm);
 
@@ -195,7 +198,7 @@ public:
      * @brief This does one iteration of the execution
      * @param advance This bool is here to tell the VM if it should advance in the program or redo the same operator next time.
      */
-    void do_one_iteration(bool advance = true);
+    void do_one_iteration();
 
     /**
      * @brief This execute the program until it halts.
@@ -251,6 +254,7 @@ public:
     void stop_verbose();
 
     bool is_verbose() const;
+
     /**
      * @brief Make the VM and its procedures verbose.
      */
