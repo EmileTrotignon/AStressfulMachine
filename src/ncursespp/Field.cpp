@@ -170,6 +170,14 @@ namespace ncursespp
                     }
                     break;
 
+                case KEY_HOME:
+                    typing_cursor_x = 0;
+                    break;
+
+                case KEY_END:
+                    typing_cursor_x = (*typing_cursor_y).length();
+                    break;
+
                 default:
                     if (isprint(ch))
                     {
