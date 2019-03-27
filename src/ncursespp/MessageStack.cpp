@@ -4,6 +4,7 @@
 
 #include "ncurses++.h"
 
+
 namespace ncursespp
 {
     MessageStack::MessageStack(int height_, int width_, int starty_, int startx_, bool boxing_, int ypadding_,
@@ -47,5 +48,12 @@ namespace ncursespp
             }
         }
         Window::refresh_();
+    }
+
+    MessageStack::MessageStack(Window *master_win, int height_, int width_, int starty_, int startx_, bool boxing_,
+                               int ypadding_, int xpadding_) :
+            Window(master_win, height_, width_, starty_, startx_, boxing_), ypadding(ypadding_), xpadding(xpadding_)
+    {
+
     }
 }

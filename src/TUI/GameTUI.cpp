@@ -33,14 +33,14 @@ void print_input_to_win(Window &win, GameLevel *gl)
 
 void raw_vm_solution_out_callback(int output, GameTUI *gi)
 {
-    gi->vm_output_solution_win->mvprint_multiline_str(gi->n_lines_attempt_output, 0, to_string(output));
+    gi->vm_output_solution_win->push_message(to_string(output));
     gi->vm_output_solution_win->refresh_();
     gi->n_lines_attempt_output++;
 }
 
 void raw_vm_attempt_out_callback(int output, GameTUI *gi)
 {
-    gi->vm_output_attempt_win->mvprint_multiline_str(gi->n_lines_attempt_output, 0, to_string(output));
+    gi->vm_output_attempt_win->push_message(to_string(output));
     gi->vm_output_attempt_win->refresh_();
 }
 
@@ -192,16 +192,16 @@ void GameTUI::pick_level()
 
     vm_input_win = new Window(h / 2 - 1, w / 4, h / 2, 0, true);
     vm_output_win = new Window(h / 2 - 1, w / 4, h / 2, w / 4, true);
-    vm_output_attempt_win = new Window(vm_output_win,
+    vm_output_attempt_win = new MessageStack(vm_output_win,
                                        vm_output_win->get_height() - 3,
                                        vm_output_win->get_width() / 2 - 2,
-                                       2,
-                                       2);
+                                             2,
+                                             2);
 
-    vm_output_solution_win = new Window(vm_output_win,
+    vm_output_solution_win = new MessageStack(vm_output_win,
                                         vm_output_win->get_height() - 3,
                                         vm_output_win->get_width() / 2 - 2,
-                                        2,
+                                              2,
                                         vm_output_win->get_width() / 2 + 1);
 
     vm_message_win = new MessageStack(h / 4, w / 2, h / 2, w / 2, true);

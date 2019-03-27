@@ -23,6 +23,10 @@ namespace ncursespp
         MessageStack(int height, int width, int starty, int startx, bool boxing = false, int ypadding = 0,
                      int xpadding = 0);
 
+        MessageStack(Window *master_win, int height, int width, int starty, int startx, bool boxing = false,
+                     int ypadding = 0,
+                     int xpadding = 0);
+
         void push_message(string message);
 
         void refresh_() override;
