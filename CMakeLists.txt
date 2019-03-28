@@ -81,7 +81,7 @@ if(Qt5Widgets_FOUND)
             ${GAME_LOGIC}
             ${TINYXML}
             src/file_utilities/file_utilities.cpp src/file_utilities/file_utilities.h
-            )
+            src/GUI/GUISandbox.cpp src/GUI/GUISandbox.h)
 
     target_link_libraries(a_stressful_machine_gui Qt5::Widgets)
     target_link_libraries(a_stressful_machine_gui libstdc++fs.a)

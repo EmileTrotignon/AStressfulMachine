@@ -10,7 +10,7 @@ GUIGameplay::GUIGameplay(QWidget *parent) : QWidget(parent)
     this->setWindowTitle("A Stressful Machine");
 
     // Create font
-    displayFont.setFamily("arial");
+    displayFont.setFamily("helvetica");
     displayFont.setPointSize(20);
 
     // Create Window Layout
