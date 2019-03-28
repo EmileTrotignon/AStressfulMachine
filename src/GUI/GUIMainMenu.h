@@ -5,8 +5,6 @@
 #ifndef A_STRESSFUL_MACHINE_GUIWINDOWMAINMENU_H
 #define A_STRESSFUL_MACHINE_GUIWINDOWMAINMENU_H
 
-#include "GUIWindowGameplay.h"
-
 #include <QWidget>
 #include <QPushButton>
 #include <QGridLayout>
@@ -16,18 +14,17 @@
 #include <QInputDialog>
 
 // class QPushButton;
-class GUIWindowMainMenu : public QWidget
+class GUIMainMenu : public QWidget
 {
     // Initialize macro for qt
     Q_OBJECT
 
 public:
-    explicit GUIWindowMainMenu(QWidget *parent = nullptr);
-    ~GUIWindowMainMenu();
+    explicit GUIMainMenu(QWidget *parent = nullptr);
+    ~GUIMainMenu();
 
 private slots:
     void createNewGameDialog();
-    void createGameplayWindow();
 
 private:
     QGridLayout *windowLayout;

@@ -2,9 +2,9 @@
 // Created by marcel on 25/03/19.
 //
 
-#include "GUIWindowGameplay.h"
+#include "GUIGameplay.h"
 
-GUIWindowGameplay::GUIWindowGameplay(QWidget *parent) : QWidget(parent)
+GUIGameplay::GUIGameplay(QWidget *parent) : QWidget(parent)
 {
     this->setObjectName("gameplayWindow");
     this->setWindowTitle("A Stressful Machine");

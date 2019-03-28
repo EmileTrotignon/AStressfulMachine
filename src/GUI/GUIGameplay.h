@@ -13,13 +13,13 @@
 #include <QTextBrowser>
 #include <QVBoxLayout>
 
-class GUIWindowGameplay : public QWidget
+class GUIGameplay : public QWidget
 {
     // Initialize macro for qt
     Q_OBJECT
 
 public:
-    explicit GUIWindowGameplay(QWidget *parent = nullptr);
+    explicit GUIGameplay(QWidget *parent = nullptr);
 
 private:
     QGridLayout *windowLayout;

@@ -6,6 +6,7 @@
 #define A_STRESSFUL_MACHINE_GAMEGUI_H
 
 #include "../game_logic/Game.h"
+#include "GUIWindow.h"
 
 #include <QApplication>
 
@@ -13,6 +14,7 @@ class GameGUI : public Game
 {
 private:
     // Game *game;
+    // GUIWindow gameWindow;
 public:
     // GameGUI();
     GameGUI(const string &saves_dir, const string &gamefiles_dir);
