@@ -3,6 +3,7 @@
 //
 
 #include <VirtualMachine.h>
+#include <fstream>
 #include "GUISandbox.h"
 
 void raw_vm_callback(VirtualMachine *vm, QTextEdit *typing_field, QTextEdit *memory_printer)
@@ -50,7 +51,7 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     // Create buttons
 
     run_button = new QPushButton("Run", this);
-    connect(run_button, SIGNAL(accepted()), this, SLOT(run_code()));
+    connect(run_button, SIGNAL(clicked(bool)), this, SLOT(run_code()));
 
     stop_button = new QPushButton("Stop");
 
@@ -84,6 +85,7 @@ void GUISandbox::run_code()
     using namespace std::placeholders;
     function<void(VirtualMachine *)> vm_callback = bind(function(raw_vm_callback), _1, typing_field, memory_printer);
     function<void(int)> vm_output_callback = bind(function(raw_vm_output_callback), _1, vm_output);
+
 
     istringstream input(vm_input_field->toPlainText().toStdString());
     ostringstream output("");
