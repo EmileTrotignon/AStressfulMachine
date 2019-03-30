@@ -156,7 +156,7 @@ protected:
 
     void call_procedure();
 
-    string file_to_string(string filename);
+    string file_to_string(const string &filename);
 
     void loop_procedure();
 
@@ -182,6 +182,7 @@ public:
      * @param memory The memory to be used by the machine. Allocated automatically if not specified.
      */
     VirtualMachine(const string &program, istream *in, ostream *out, const vector<string> &include_directories = {},
+                   const function<void(int)> output_callback = nullptr,
                    ostream *verbose_out = &cout);
 
     VirtualMachine(const VirtualMachine &vm);
@@ -273,7 +274,7 @@ public:
 
     bool is_printing_errors() const;
 
-    void set_output_callback(const function<void(int)> &ouput_callback);
+    void set_output_callback(const function<void(int)> &output_callback);
 
     virtual string memory_to_string() const;
 

@@ -59,11 +59,12 @@ VirtualMachine::VirtualMachine(const string &program_,
                                istream *in_,
                                ostream *out_,
                                const vector<string> &include_directories_,
+                               const function<void(int)> output_callback_,
                                ostream *verbose_out_) : program(program_),
                                                         in(in_),
                                                         out(out_),
                                                         verbose_out(verbose_out_),
-                                                        output_callback(nullptr),
+                                                        output_callback(output_callback_),
                                                         procedure_call(nullptr),
                                                         verbose(false),
                                                         verbose_procedure(false),
@@ -344,7 +345,7 @@ void VirtualMachine::call_procedure()
 
 }
 
-string VirtualMachine::file_to_string(string filename)
+string VirtualMachine::file_to_string(const string &filename)
 {
     ifstream file;
     for (const auto &p:include_directories)

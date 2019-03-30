@@ -10,6 +10,7 @@
 
 #include "GUIGameplay.h"
 #include "GUIMainMenu.h"
+#include "GUISandbox.h"
 
 class GUIWindow : public QStackedWidget
 {
@@ -21,9 +22,12 @@ public:
 
 private slots:
     // Used in GUIMainMenu
-    void createNewGameWindow();
+    void create_new_game_window();
+
+    void open_sandbox();
 
 private:
+    GUISandbox *sandbox;
     GUIMainMenu *mainMenuWidget;
     GUIGameplay *gameplayWidget;
 };

@@ -24,15 +24,24 @@ public:
     explicit GUISandbox(QWidget *parent = nullptr);
 
 private:
+
     QGridLayout *windowLayout;
+    QVBoxLayout *io_fields_layout;
     QVBoxLayout *typing_zone_layout;
     QHBoxLayout *button_layout;
     QLabel *typing_field_label;
     QTextEdit *typing_field;
+    QTextEdit *vm_input_field;
+    QTextEdit *vm_output;
     QFont displayFont;
     QPushButton *run_button;
     QPushButton *stop_button;
     QPushButton *pause_button;
+    QTextEdit *memory_printer;
+
+private slots:
+
+    void run_code();
 };
 
 

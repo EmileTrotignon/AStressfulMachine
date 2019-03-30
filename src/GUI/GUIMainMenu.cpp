@@ -7,59 +7,63 @@
 #include <QApplication>
 #include <iostream>
 
-GUIMainMenu::GUIMainMenu(QWidget *parent) : QWidget(parent)
+GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
 {
     this->setObjectName("this"); // For debugging purposes
 
     // Create font
-    titleFont.setFamily("arial");
-    titleFont.setPointSize(24);
-    titleFont.setBold(true);
+    title_font.setFamily("arial");
+    title_font.setPointSize(24);
+    title_font.setBold(true);
 
 
     // Create title
     title = new QLabel("A Stressful Machine", this);
     title->setAlignment(Qt::AlignCenter);
-    title->setFont(titleFont);
+    title->setFont(title_font);
     // title->setStyleSheet("background-color: rgb(52, 255, 239)");
 
     // Create buttons
-    newGameButton = new QPushButton("New Game", this);
-    // newGameButton->setGeometry(10, 10, 100, 40);
-    loadGameButton = new QPushButton("Load Game", this);
-    settingsButton = new QPushButton("Settings", this);
-    quitGameButton = new QPushButton("Quit Game", this);
-    // quitGameButton->setGeometry(10, 60, 100, 40);
+    new_game_button = new QPushButton("New Game", this);
+    new_sandbox_button = new QPushButton("Sandbox mode", this);
+
+    // new_game_button->setGeometry(10, 10, 100, 40);
+    load_game_button = new QPushButton("Load Game", this);
+    settings_button = new QPushButton("Settings", this);
+    quit_game_button = new QPushButton("Quit Game", this);
+    // quit_game_button->setGeometry(10, 60, 100, 40);
 
     // Insert buttons in button layout
-    buttonLayout = new QVBoxLayout;
-    buttonLayout->setObjectName("buttonLayout");
-    // buttonLayout->setSpacing(6);
-    buttonLayout->addWidget(newGameButton);
-    buttonLayout->addWidget(loadGameButton);
-    buttonLayout->addWidget(settingsButton);
-    buttonLayout->addWidget(quitGameButton);
+    button_layout = new QVBoxLayout;
+    button_layout->setObjectName("button_layout");
+    // button_layout->setSpacing(6);
+    button_layout->addWidget(new_game_button);
+    button_layout->addWidget(load_game_button);
+    button_layout->addWidget(new_sandbox_button);
+    button_layout->addWidget(settings_button);
+    button_layout->addWidget(quit_game_button);
 
     // Create main layout
-    windowLayout = new QGridLayout(this);
-    windowLayout->setObjectName("windowLayout");
-    windowLayout->addLayout(buttonLayout, 3, 1, 1, 1);
-    windowLayout->addWidget(title, 1, 0, 1, 3);
-    windowLayout->setRowStretch(0, 1);
-    windowLayout->setRowStretch(2, 1);
-    windowLayout->setRowStretch(4, 1);
-    windowLayout->setColumnStretch(2, 1);
-    windowLayout->setColumnStretch(0, 1);
+    window_Layout = new QGridLayout(this);
+    window_Layout->setObjectName("window_Layout");
+    window_Layout->addLayout(button_layout, 3, 1, 1, 1);
+    window_Layout->addWidget(title, 1, 0, 1, 3);
+    window_Layout->setRowStretch(0, 1);
+    window_Layout->setRowStretch(2, 1);
+    window_Layout->setRowStretch(4, 1);
+    window_Layout->setColumnStretch(2, 1);
+    window_Layout->setColumnStretch(0, 1);
 
-    // windowLayout->setVerticalSpacing(0);
+    // window_Layout->setVerticalSpacing(0);
 
     // Set window layout
-    // this->setLayout(windowLayout);
+    // this->setLayout(window_Layout);
 
 
     // Create events
-    connect(quitGameButton, SIGNAL (clicked(bool)), QApplication::instance(), SLOT (quit()));
-    connect(newGameButton, SIGNAL (clicked(bool)), this, SLOT (createNewGameDialog()));
+    connect(quit_game_button, SIGNAL (clicked(bool)), QApplication::instance(), SLOT (quit()));
+    connect(new_game_button, SIGNAL (clicked(bool)), this, SLOT (createNewGameDialog()));
+    connect(new_sandbox_button, SIGNAL(clicked(bool)), parent(), SLOT (open_sandbox()));
 }
 
 GUIMainMenu::~GUIMainMenu()
@@ -67,17 +71,17 @@ GUIMainMenu::~GUIMainMenu()
 {
     // Does this call parent's destructor?
     std::cout << "Destructing GUIWindowMainMenu" << std::endl;
-    delete buttonLayout;
+    delete button_layout;
 }
 
 void GUIMainMenu::createNewGameDialog()
 {
-    newGameDialog = new QInputDialog(this);
-    newGameDialog->setObjectName("newGameDialog");
-    newGameDialog->setWindowTitle("Create a new save");
-    newGameDialog->setInputMode(QInputDialog::TextInput);
-    newGameDialog->setLabelText("Name:");
-    newGameDialog->show();
+    new_game_dialog = new QInputDialog(this);
+    new_game_dialog->setObjectName("new_game_dialog");
+    new_game_dialog->setWindowTitle("Create a new save");
+    new_game_dialog->setInputMode(QInputDialog::TextInput);
+    new_game_dialog->setLabelText("Name:");
+    new_game_dialog->show();
 
-    connect(newGameDialog, SIGNAL (accepted()), parent() , SLOT (createNewGameWindow()));
+    connect(new_game_dialog, SIGNAL (accepted()), parent(), SLOT (create_new_game_window()));
 }

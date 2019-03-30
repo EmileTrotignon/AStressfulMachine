@@ -20,22 +20,24 @@ class GUIMainMenu : public QWidget
     Q_OBJECT
 
 public:
-    explicit GUIMainMenu(QWidget *parent = nullptr);
-    ~GUIMainMenu();
+    explicit GUIMainMenu(QWidget *parent_ = nullptr);
+
+    ~GUIMainMenu() override;
 
 private slots:
     void createNewGameDialog();
 
 private:
-    QGridLayout *windowLayout;
-    QVBoxLayout *buttonLayout;
+    QGridLayout *window_Layout;
+    QVBoxLayout *button_layout;
     QLabel *title;
-    QFont titleFont;
-    QPushButton *newGameButton;
-    QPushButton *loadGameButton;
-    QPushButton *settingsButton;
-    QPushButton *quitGameButton;
-    QInputDialog *newGameDialog;
+    QFont title_font;
+    QPushButton *new_game_button;
+    QPushButton *new_sandbox_button;
+    QPushButton *load_game_button;
+    QPushButton *settings_button;
+    QPushButton *quit_game_button;
+    QInputDialog *new_game_dialog;
 };
 
 
