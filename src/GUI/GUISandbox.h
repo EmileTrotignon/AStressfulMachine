@@ -32,16 +32,26 @@ private:
     QVBoxLayout *io_fields_layout;
     QVBoxLayout *typing_zone_layout;
     QHBoxLayout *button_layout;
+
     QLabel *typing_field_label;
+    QLabel *input_label;
+    QLabel *output_label;
+    QLabel *message_label;
+    QLabel *memory_label;
+
     QTextEdit *typing_field;
     QTextEdit *vm_input_field;
+    QTextEdit *vm_memory_printer;
     QTextEdit *vm_output;
-    QFont displayFont;
+    QTextEdit *message_field;
+
+    QFont label_font;
+    QFont field_font;
+
     QPushButton *run_button;
     QPushButton *next_operation_button;
     QPushButton *stop_button;
     QPushButton *pause_button;
-    QTextEdit *memory_printer;
 
 private slots:
 
