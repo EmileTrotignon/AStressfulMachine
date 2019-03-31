@@ -4,11 +4,41 @@
 
 #include <VirtualMachine.h>
 #include <fstream>
+#include <thread>
+#include <QtCore/QEventLoop>
+#include <sys/socket.h>
 #include "GUISandbox.h"
 
-void raw_vm_callback(VirtualMachine *vm, QTextEdit *typing_field, QTextEdit *memory_printer)
-{
+ofstream logg("log");
 
+void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox)
+{
+    QTextCharFormat format;
+    QTextCharFormat old_format = sandbox->typing_field->currentCharFormat();
+    format.setForeground(QBrush(QColor("black")));
+    format.setBackground(QBrush(QColor("green")));
+
+    sandbox->typing_field->clear();
+    sandbox->typing_field->textCursor().setPosition(QTextCursor::Start);
+
+    string program = vm->get_program();
+    string::iterator current_operator = vm->get_current_operator() - vm->get_program().begin() + program.begin();
+    string first_half(program.begin(), current_operator);
+    string operator_str(1, *current_operator);
+    string second_half(current_operator + 1, program.end());
+
+    logg << first_half << endl << operator_str << endl << second_half << endl;
+
+    sandbox->typing_field->insertPlainText(QString::fromStdString(first_half));
+    sandbox->typing_field->setCurrentCharFormat(format);
+    sandbox->typing_field->insertPlainText(QString::fromStdString(operator_str));
+    sandbox->typing_field->setCurrentCharFormat(old_format);
+    sandbox->typing_field->insertPlainText(QString::fromStdString(second_half));
+
+
+    QEventLoop loop;
+    GUISandbox::connect(sandbox->next_operation_button, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
+    loop.exec();
 }
 
 void raw_vm_output_callback(int output, QTextEdit *output_field)
@@ -53,6 +83,8 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     run_button = new QPushButton("Run", this);
     connect(run_button, SIGNAL(clicked(bool)), this, SLOT(run_code()));
 
+    next_operation_button = new QPushButton("Next", this);
+
     stop_button = new QPushButton("Stop");
 
     pause_button = new QPushButton("Pause");
@@ -66,6 +98,7 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     button_layout->addWidget(stop_button);
     button_layout->addWidget(pause_button);
     button_layout->addWidget(run_button);
+    button_layout->addWidget(next_operation_button);
 
 
     typing_zone_layout->addWidget(typing_field_label);
@@ -83,7 +116,7 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
 void GUISandbox::run_code()
 {
     using namespace std::placeholders;
-    function<void(VirtualMachine *)> vm_callback = bind(function(raw_vm_callback), _1, typing_field, memory_printer);
+    function<void(VirtualMachine *)> vm_callback = bind(function(raw_vm_callback), _1, this);
     function<void(int)> vm_output_callback = bind(function(raw_vm_output_callback), _1, vm_output);
 
 

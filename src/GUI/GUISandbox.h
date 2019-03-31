@@ -13,6 +13,7 @@
 #include <QFont>
 #include <QTextBrowser>
 #include <QVBoxLayout>
+#include "VirtualMachine.h"
 
 
 class GUISandbox : public QWidget
@@ -22,6 +23,8 @@ Q_OBJECT
 
 public:
     explicit GUISandbox(QWidget *parent = nullptr);
+
+    friend void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox);
 
 private:
 
@@ -35,6 +38,7 @@ private:
     QTextEdit *vm_output;
     QFont displayFont;
     QPushButton *run_button;
+    QPushButton *next_operation_button;
     QPushButton *stop_button;
     QPushButton *pause_button;
     QTextEdit *memory_printer;
