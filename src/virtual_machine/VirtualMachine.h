@@ -168,6 +168,11 @@ protected:
 
     virtual void message(const string &message);
 
+    /**
+     * @brief This does one iteration of the execution
+     */
+    void do_one_iteration();
+
 public:
 
 
@@ -194,12 +199,6 @@ public:
      * @param in
      */
     void reset(istream *in);
-
-    /**
-     * @brief This does one iteration of the execution
-     * @param advance This bool is here to tell the VM if it should advance in the program or redo the same operator next time.
-     */
-    void do_one_iteration();
 
     /**
      * @brief This execute the program until it halts.

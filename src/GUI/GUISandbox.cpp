@@ -81,6 +81,10 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     field_font.setPointSize(12);
 
 
+    // Create menu bar and menus
+
+    menu_bar = new QMenuBar;
+
     // Create layouts
 
     windowLayout = new QGridLayout(this);
@@ -134,10 +138,13 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     connect(run_button, SIGNAL(clicked(bool)), this, SLOT(run_code()));
 
     next_operation_button = new QPushButton("Next", this);
+    next_operation_button->setEnabled(false);
 
     stop_button = new QPushButton("Stop");
+    stop_button->setEnabled(false);
 
     pause_button = new QPushButton("Pause");
+    pause_button->setEnabled(false);
 
 
     // Add fonts to widgets
@@ -192,6 +199,9 @@ void GUISandbox::run_code()
     function<void(VirtualMachine *)> vm_callback = bind(function(raw_vm_callback), _1, this);
     function<void(int)> vm_output_callback = bind(function(raw_vm_output_callback), _1, vm_output);
 
+    vm_output->clear();
+    run_button->setEnabled(false);
+    next_operation_button->setEnabled(true);
 
     istringstream input(vm_input_field->toPlainText().toStdString());
     ostringstream output("");
@@ -201,13 +211,12 @@ void GUISandbox::run_code()
         vm.loop(vm_callback);
     } catch (const VirtualMachineException &e)
     {
-        message_field->append(QString::fromStdString(e.what()));
+        message_field->append("Error : " + QString::fromStdString(e.what()));
     }
     message_field->append("The execution is finished");
     typing_field->clear();
     typing_field->insertPlainText(QString::fromStdString(vm.get_program()));
     typing_field->setReadOnly(false);
-
-
-
+    run_button->setEnabled(true);
+    next_operation_button->setEnabled(false);
 }

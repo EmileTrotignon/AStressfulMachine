@@ -13,6 +13,7 @@
 #include <QFont>
 #include <QTextBrowser>
 #include <QVBoxLayout>
+#include <QtWidgets/QMenuBar>
 #include "VirtualMachine.h"
 
 
@@ -26,7 +27,13 @@ public:
 
     friend void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox);
 
+protected:
+
+    //virtual void place_widgets_on_layout();
+
 private:
+
+    QMenuBar *menu_bar;
 
     QGridLayout *windowLayout;
     QVBoxLayout *io_fields_layout;
