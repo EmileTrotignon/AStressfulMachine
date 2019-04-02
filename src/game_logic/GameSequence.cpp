@@ -3,7 +3,9 @@
 //
 
 #include "GameSequence.h"
+#include "../tinyxml/tinyxml.h"
 #include <filesystem>
+
 
 
 // Function prototypes
@@ -69,6 +71,7 @@ void GameSequence::load_from_save()
     }
 }
 
+
 void GameSequence::conform_save_to_gamefiles()
 {
     // Todo : This should create new folders for levels that does not have one
@@ -97,11 +100,12 @@ void GameSequence::save_to_save()
                            "data/saves/" + savename + "/" + levels[i]->get_level_name() + "/" + to_string(j));
         }
     }
+    save_to_xml();
 }
 
 
-/*
-void save_all(){
+
+void GameSequence::save_to_xml(){
 
     // Il est obligatoire que cette fonction corresponde a une instance de GameSequence, soit par un passage
     // d'argument soit en la mettant comme methode.
@@ -109,28 +113,28 @@ void save_all(){
 
     TiXmlDocument doc;
     TiXmlElement* msg;
-    auto decl = new TiXmlDeclaration("1.0", "", "");
+    TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
     doc.LinkEndChild( decl );
 
-    auto root = new TiXmlElement("Player");
+    TiXmlElement * root = new TiXmlElement( "Player" );
     doc.LinkEndChild( root );
 
-    auto *level = new TiXmlElement("Level");
+    TiXmlElement * level = new TiXmlElement( "Level" );
     root->LinkEndChild( level );
-    level->SetAttribute("name", level_name); // c'est quel fonction qui get level_name dans GameLevel
+    level->SetAttribute("name", "Nom_du_niveau");
 
-    if(succeeded_levels){ // Toujours pas reconnu.
-        auto *congrats = new TiXmlElement("Congrats");
-        congrats->SetValue("Yes" ); // A voir si on change par la variable elle même ou pas
+    if(succeeded_levels[1]==true){
+        TiXmlElement * congrats = new TiXmlElement("Congrats");
+        congrats->SetValue("True" ); // A voir si on change par la variable elle même
         level->LinkEndChild( congrats );
     }
     else{
-        auto *congrats = new TiXmlElement("Congrats");
+        TiXmlElement * congrats = new TiXmlElement("Congrats");
         congrats->SetValue("No" );
         level->LinkEndChild( congrats );
     }
 
-    auto *avg = new TiXmlElement("Avg");
+    TiXmlElement * avg = new TiXmlElement("Avg");
     avg->SetValue("  " );
     level->LinkEndChild( avg );
 
@@ -139,7 +143,7 @@ void save_all(){
     doc.SaveFile( "/data/saves/save.xml" );
 }
 
-void load_all(){
+void GameSequence::load_to_xml(){
     TiXmlDocument doc( "/data/saves/save.xml" );
     doc.LoadFile();
 
@@ -174,4 +178,4 @@ void load_all(){
             //}
         }
     }
-}*/
+}

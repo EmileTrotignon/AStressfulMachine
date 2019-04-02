@@ -12,6 +12,8 @@
  */
 class GameSequence
 {
+
+    friend class GameLevel; // Pour pouvoir acceder à
 private:
 
     string savename;
@@ -28,6 +30,10 @@ private:
     void load_from_save();
 
     void conform_save_to_gamefiles();
+    
+    void save_to_xml();
+
+    void load_to_xml();
 
 public:
     GameSequence(const string &savename, const string &gamefiles_dir);
@@ -39,8 +45,6 @@ public:
     vector<GameLevel *>::iterator get_current_level();
 
     void save_to_save();
-
-
 
 };
 
