@@ -29,7 +29,7 @@ public:
 
 protected:
 
-    //virtual void place_widgets_on_layout();
+    virtual void place_widgets_on_layout();
 
 private:
 

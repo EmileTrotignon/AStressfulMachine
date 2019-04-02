@@ -9,7 +9,6 @@
 #include <sys/socket.h>
 #include "GUISandbox.h"
 
-ofstream logg("log");
 
 void print_memory(VirtualMachine *vm, QTextEdit *memory_printer)
 {
@@ -45,8 +44,6 @@ void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox)
     string first_half(program.begin(), current_operator);
     string operator_str(1, *current_operator);
     string second_half(current_operator + 1, program.end());
-
-    logg << first_half << endl << operator_str << endl << second_half << endl;
 
     sandbox->typing_field->insertPlainText(QString::fromStdString(first_half));
     sandbox->typing_field->setCurrentCharFormat(format);
@@ -161,8 +158,12 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     vm_output->setFont(field_font);
     message_field->setFont(field_font);
 
+    place_widgets_on_layout();
+}
 
-    // Add Widget to layout
+void GUISandbox::place_widgets_on_layout()
+{
+// Add Widget to layout
 
     io_fields_layout->addWidget(input_label);
     io_fields_layout->addWidget(vm_input_field);
@@ -188,7 +189,6 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     typing_zone_layout->addLayout(button_layout);
     windowLayout->addLayout(typing_zone_layout, 0, 0);
     windowLayout->addLayout(io_fields_layout, 0, 1);
-
 }
 
 void GUISandbox::run_code()
