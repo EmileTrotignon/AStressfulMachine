@@ -15,8 +15,6 @@ string::iterator corresponding_par(const string &s, char open, char close, strin
 
 int corresponding_par_backward(const string &s, char open, char close, unsigned int par_address);
 
-string add_message_before_each_line(string s, string message);
-
 string file_to_string(const string &filename);
 
 void string_to_file(const string &content, const string &filename);

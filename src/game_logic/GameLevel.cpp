@@ -2,19 +2,22 @@
 // Created by emile on 04/03/19.
 //
 
+#include <filesystem>
 #include "GameLevel.h"
 
 using namespace std;
+namespace fs = filesystem;
 
-GameLevel::GameLevel(string gamefiles_dir_, string level_name_, vector<string> attempts_, VirtualMachine *vm_attempt_) :
+GameLevel::GameLevel(fs::path gamefiles_dir_, string level_name_, vector<string> attempts_, VirtualMachine *vm_attempt_)
+        :
         gamefiles_dir(move(gamefiles_dir_)),
         level_name(move(level_name_)),
         attempts(move(attempts_)),
         vm_attempt(vm_attempt_)
 {
-    solution = file_to_string(gamefiles_dir + "/levels/" + level_name + "/solution");
-    instructions = file_to_string(gamefiles_dir + "/levels/" + level_name + "/instructions");
-    input = ifstream(gamefiles_dir + "/levels/" + level_name + "/input");
+    solution = file_to_string(gamefiles_dir / "levels" / level_name / "solution");
+    instructions = file_to_string(gamefiles_dir / "levels" / level_name / "instructions");
+    input = ifstream(gamefiles_dir / "levels" / level_name / "input");
     vm_sol = nullptr;
     if (attempts.empty())
     {
@@ -51,13 +54,13 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
     istringstream input_line(input_line_str);
 
     vm_attempt = new VirtualMachine(*current_attempt, &input_line, &attempt_ostream,
-                                    {gamefiles_dir + "/levels/" + level_name + "/lib"});
+                                    {gamefiles_dir / "levels" / level_name / "lib"});
     vm_attempt->set_output_callback(vm_output_attempt_callback);
 
     try
     {
         vm_sol = new VirtualMachine(solution, &input_line, &solution_ostream,
-                                    {gamefiles_dir + "/levels/" + level_name + "/lib"});
+                                    {gamefiles_dir / "levels" / level_name / "lib"});
     } catch (const VirtualMachineException &e)
     {
         throw runtime_error(string("Solution initialisation throw exception : ") + string(e.what()));

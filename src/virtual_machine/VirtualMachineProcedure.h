@@ -11,8 +11,8 @@
 #define PROC_PRINTING_MESSAGE (string)"[ PROC ]"
 
 //Status macros
-#define STATUS_PROC_OUTPUTTING 101
-#define STATUS_PROC_INPUTTING 102
+//#define STATUS_PROC_OUTPUTTING 101
+//#define STATUS_PROC_INPUTTING 102
 
 /**
  * This class is used by VirtualMachine to perform procedure calls.
@@ -45,7 +45,7 @@ public:
      * @param memory_
      */
     VirtualMachineProcedure(VirtualMachine *master_vm, const string &program_, int depth_,
-                            const vector<string> include_directories = {}, ostream *verbose_out = &cout);
+                            const vector<string> &include_directories = {}, ostream *verbose_out = &cout);
 
     /**
      * This should be used to access the output of the procedure.

@@ -54,9 +54,9 @@ const char SYNTAX_FILE_MARKER =    '~';
 #define PRINTING_POINTER "^\n"
 
 // Status macros
-#define STATUS_ERROR -1
-#define STATUS_RUNNING 1
-#define STATUS_PAUSED 0
+//#define STATUS_ERROR -1
+//#define STATUS_RUNNING 1
+//#define STATUS_PAUSED 0
 
 // Message macros
 #define MESSAGE_LAUNCHING "[ UNPAUSING VM ]"
@@ -64,6 +64,7 @@ const char SYNTAX_FILE_MARKER =    '~';
 #define MESSAGE_STARTING_PROCEDURE "[ START PROCEDURE ]"
 #define MESSAGE_DEPTH "[ DEPTH " + to_string(depth) + " ]"
 
+/*
 // Syntax macros
 #define SYNTAX_PTR_INCR        '>'
 #define SYNTAX_PTR_DINCR       '<'
@@ -87,7 +88,7 @@ const char SYNTAX_FILE_MARKER =    '~';
 #define SYNTAX_CLOSE_PROC      '}'
 #define SYNTAX_TERMINATE_PROC  '!'
 #define SYNTAX_FILE_MARKER     '~'
-
+*/
 using namespace std;
 
 class VirtualMachineProcedure;
@@ -100,18 +101,48 @@ class UnitTest;
  */
 class VirtualMachine
 {
+public:
+
+    enum Status
+    {
+        s_error, s_running, s_paused, s_proc_inputting, s_proc_outputting
+    };
+
+    static const char SYNTAX_PTR_INCR = '>';
+    static const char SYNTAX_PTR_DINCR = '<';
+    static const char SYNTAX_VAL_INCR = '+';
+    static const char SYNTAX_VAL_DINCR = '-';
+    static const char SYNTAX_VAL_OUT = '.';
+    static const char SYNTAX_CHAR_OUT = ':';
+    static const char SYNTAX_VAL_IN = ',';
+    static const char SYNTAX_OPEN_GOTO = '[';
+    static const char SYNTAX_CLOSE_GOTO = ']';
+    static const char SYNTAX_GOTO_MARKER = '|';
+    static const char SYNTAX_COND_GREATER = '>';
+    static const char SYNTAX_COND_LESSER = '<';
+    static const char SYNTAX_COND_EQUAL = '=';
+    static const char SYNTAX_COND_DIFF = '/';
+    static const char SYNTAX_PTR_JUMP = '^';
+    static const char SYNTAX_PTR_RESET = '#';
+    static const char SYNTAX_VAL_RESET = '_';
+    static const char SYNTAX_DO_N_TIME = '*';
+    static const char SYNTAX_OPEN_PROC = '{';
+    static const char SYNTAX_CLOSE_PROC = '}';
+    static const char SYNTAX_TERMINATE_PROC = '!';
+    static const char SYNTAX_FILE_MARKER = '~';
+
 protected:
 
-    istream *in;
-    ostream *out;
-    ostream *verbose_out;
-    function<void(int)> output_callback;
-    string program;
-    vector<int> memory;
-    vector<int>::iterator memory_ptr;
+    istream *in; // The stream used to get the input
+    ostream *out; // The stream used to output
+    ostream *verbose_out; // The stream used to log information
+    function<void(int)> output_callback; // Callback called each time the VM outputs
+    string program; // The code
     string::iterator current_operator;
-    int status; // 1 means running, 0 means stopped, and -1 mean an error_handler occurred.
-    bool print_errors;
+    vector<int> memory; // The internal memory of the VM
+    vector<int>::iterator memory_ptr;
+    Status status;
+    bool print_errors; // In
     bool verbose;
     bool verbose_procedure;
     map<unsigned int, string::iterator> anchor_map;
@@ -174,8 +205,6 @@ protected:
     void do_one_iteration();
 
 public:
-
-
     /**
      * @brief Constructor that initializes all the fields
      * @param program_ The code to be executed
@@ -190,7 +219,7 @@ public:
                    const function<void(int)> output_callback = nullptr,
                    ostream *verbose_out = &cout);
 
-    VirtualMachine(const VirtualMachine &vm);
+    VirtualMachine(const VirtualMachine &vm) = default;
 
     ~VirtualMachine();
 

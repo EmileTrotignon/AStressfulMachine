@@ -7,6 +7,7 @@
 #include <thread>
 #include <QtCore/QEventLoop>
 #include <sys/socket.h>
+#include <QTimer>
 #include "GUISandbox.h"
 
 
@@ -53,9 +54,23 @@ void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox)
 
     print_memory(vm, sandbox->vm_memory_printer);
 
-    QEventLoop loop;
-    GUISandbox::connect(sandbox->next_operation_button, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
-    loop.exec();
+    if (sandbox->speed_slider->value() == 0)
+    {
+        sandbox->next_operation_button->setEnabled(true);
+
+        QEventLoop loop;
+        GUISandbox::connect(sandbox->next_operation_button, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
+        loop.exec();
+        sandbox->next_operation_button->setEnabled(false);
+    } else if (sandbox->speed_slider->value() < GUISandbox::max_speed)
+    {
+        QTimer timer(nullptr);
+        QEventLoop loop;
+
+        timer.start(500 / sandbox->speed_slider->value());
+        QWidget::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+        loop.exec();
+    }
 }
 
 void raw_vm_output_callback(int output, QTextEdit *output_field)
@@ -140,9 +155,10 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     stop_button = new QPushButton("Stop");
     stop_button->setEnabled(false);
 
-    pause_button = new QPushButton("Pause");
-    pause_button->setEnabled(false);
+    // Create slider
 
+    speed_slider = new QSlider(Qt::Horizontal, this);
+    speed_slider->setMaximum(GUISandbox::max_speed);
 
     // Add fonts to widgets
 
@@ -173,8 +189,8 @@ void GUISandbox::place_widgets_on_layout()
     io_fields_layout->addWidget(vm_output);
 
     button_layout->addWidget(stop_button);
-    button_layout->addWidget(pause_button);
     button_layout->addWidget(run_button);
+    button_layout->addWidget(speed_slider, 1);
     button_layout->addWidget(next_operation_button);
 
 
@@ -201,7 +217,7 @@ void GUISandbox::run_code()
 
     vm_output->clear();
     run_button->setEnabled(false);
-    next_operation_button->setEnabled(true);
+    next_operation_button->setEnabled(false);
 
     istringstream input(vm_input_field->toPlainText().toStdString());
     ostringstream output("");

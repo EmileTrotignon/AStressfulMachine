@@ -14,6 +14,8 @@
 #include <QTextBrowser>
 #include <QVBoxLayout>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QSlider>
+
 #include "VirtualMachine.h"
 
 
@@ -32,6 +34,8 @@ protected:
     virtual void place_widgets_on_layout();
 
 private:
+
+    static const int max_speed = 10;
 
     QMenuBar *menu_bar;
 
@@ -58,11 +62,12 @@ private:
     QPushButton *run_button;
     QPushButton *next_operation_button;
     QPushButton *stop_button;
-    QPushButton *pause_button;
 
-private slots:
+    QSlider *speed_slider;
 
-    void run_code();
+protected slots:
+
+    virtual void run_code();
 };
 
 

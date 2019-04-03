@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <functional>
+#include <filesystem>
 #include "../virtual_machine/VirtualMachine.h"
 #include "../file_utilities/file_utilities.h"
 
@@ -18,10 +19,12 @@
  * This class enables the player to complete a level.
  */
 
+namespace fs = filesystem;
+
 class GameLevel
 {
 private:
-    string gamefiles_dir;
+    fs::path gamefiles_dir;
     ifstream input;
     string level_name;
     string solution;
@@ -38,7 +41,7 @@ public:
      * Basic constructor that uses the level name to open the correct file.
      * @param level_name The name of the level (it is the directory, you cannot put anything here)
      */
-    GameLevel(string gamefiles_dir, string level_name, vector<string> attempts = {},
+    GameLevel(fs::path gamefiles_dir, string level_name, vector<string> attempts = {},
               VirtualMachine *vm_attempt = nullptr);
 
     ~GameLevel();

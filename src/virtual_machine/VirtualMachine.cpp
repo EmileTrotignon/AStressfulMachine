@@ -6,38 +6,19 @@
 #include "VirtualMachine.h"
 #include "VirtualMachineProcedure.h"
 
-#define SYNTAX_PTR_INCR       '>'
-#define SYNTAX_PTR_DINCR      '<'
-#define SYNTAX_VAL_INCR       '+'
-#define SYNTAX_VAL_DINCR      '-'
-#define SYNTAX_VAL_OUT        '.'
-#define SYNTAX_CHAR_OUT       ':'
-#define SYNTAX_VAL_IN         ','
-#define SYNTAX_OPEN_GOTO      '['
-#define SYNTAX_CLOSE_GOTO     ']'
-#define SYNTAX_GOTO_MARKER    '|'
-#define SYNTAX_COND_GREATER   '>'
-#define SYNTAX_COND_LESSER    '<'
-#define SYNTAX_COND_EQUAL     '='
-#define SYNTAX_COND_DIFF      '/'
-#define SYNTAX_PTR_JUMP       '^'
-#define SYNTAX_PTR_RESET      '#'
-#define SYNTAX_VAL_RESET      '_'
-#define SYNTAX_DO_N_TIME      '*'
-#define SYNTAX_OPEN_PROC      '{'
-#define SYNTAX_CLOSE_PROC     '}'
-#define SYNTAX_TERMINATE_PROC '!'
-#define SYNTAX_FILE_MARKER    '~'
-
 bool is_operator(char ch)
 {
-    return (ch == SYNTAX_CHAR_OUT || ch == SYNTAX_CLOSE_GOTO || ch == SYNTAX_CLOSE_PROC || ch == SYNTAX_COND_DIFF ||
-            ch == SYNTAX_COND_EQUAL || ch == SYNTAX_COND_GREATER || ch == SYNTAX_COND_LESSER ||
-            ch == SYNTAX_DO_N_TIME ||
-            ch == SYNTAX_FILE_MARKER || ch == SYNTAX_GOTO_MARKER || ch == SYNTAX_OPEN_GOTO || ch == SYNTAX_OPEN_PROC ||
-            ch == SYNTAX_PTR_DINCR || ch == SYNTAX_PTR_INCR || ch == SYNTAX_PTR_JUMP || ch == SYNTAX_PTR_RESET ||
-            ch == SYNTAX_TERMINATE_PROC || ch == SYNTAX_VAL_DINCR || ch == SYNTAX_VAL_IN || ch == SYNTAX_VAL_INCR ||
-            ch == SYNTAX_VAL_OUT || ch == SYNTAX_VAL_RESET);
+    return (ch == VirtualMachine::SYNTAX_CHAR_OUT || ch == VirtualMachine::SYNTAX_CLOSE_GOTO ||
+            ch == VirtualMachine::SYNTAX_CLOSE_PROC || ch == VirtualMachine::SYNTAX_COND_DIFF ||
+            ch == VirtualMachine::SYNTAX_COND_EQUAL || ch == VirtualMachine::SYNTAX_COND_GREATER ||
+            ch == VirtualMachine::SYNTAX_COND_LESSER || ch == VirtualMachine::SYNTAX_DO_N_TIME ||
+            ch == VirtualMachine::SYNTAX_FILE_MARKER || ch == VirtualMachine::SYNTAX_GOTO_MARKER ||
+            ch == VirtualMachine::SYNTAX_OPEN_GOTO || ch == VirtualMachine::SYNTAX_OPEN_PROC ||
+            ch == VirtualMachine::SYNTAX_PTR_DINCR || ch == VirtualMachine::SYNTAX_PTR_INCR ||
+            ch == VirtualMachine::SYNTAX_PTR_JUMP || ch == VirtualMachine::SYNTAX_PTR_RESET ||
+            ch == VirtualMachine::SYNTAX_TERMINATE_PROC || ch == VirtualMachine::SYNTAX_VAL_DINCR ||
+            ch == VirtualMachine::SYNTAX_VAL_IN || ch == VirtualMachine::SYNTAX_VAL_INCR ||
+            ch == VirtualMachine::SYNTAX_VAL_OUT || ch == VirtualMachine::SYNTAX_VAL_RESET);
 }
 
 string::iterator corresponding_par(const string &s, char open, char close, string::iterator par_address)
@@ -72,7 +53,7 @@ VirtualMachine::VirtualMachine(const string &program_,
                                                         print_errors(false),
                                                         include_directories(include_directories_)
 {
-    status = STATUS_PAUSED;
+    status = s_paused;
 
     // If program is a filename, open the file and use that as the program
     if (program[0] == SYNTAX_FILE_MARKER) program = file_to_string(program.substr(1));
@@ -94,11 +75,6 @@ VirtualMachine::VirtualMachine(const string &program_,
 
     // Anchor map is used for the gotoes
     initialize_anchor_map();
-}
-
-VirtualMachine::VirtualMachine(const VirtualMachine &vm_)
-{
-    throw runtime_error("Copy constructor not implemented yet");
 }
 
 VirtualMachine::~VirtualMachine()
@@ -170,7 +146,7 @@ void VirtualMachine::val_out()
         out->flush();
     } else
     {
-        if (procedure_call->status == STATUS_PROC_INPUTTING)
+        if (procedure_call->status == s_proc_inputting)
         {
             procedure_call->input(*memory_ptr);
         } else
@@ -306,7 +282,7 @@ void VirtualMachine::do_n_time()
     for (int j = 0; j < n; j++)
     {
         do_one_iteration();
-        if (status != STATUS_RUNNING) return;
+        if (status != s_running) return;
     }
 }
 
@@ -327,7 +303,7 @@ void VirtualMachine::call_procedure()
             if (procedure[0] == SYNTAX_FILE_MARKER)
             {
                 code = file_to_string(procedure.substr(1, procedure.size() - 1));
-                if (status == STATUS_ERROR) return;
+                if (status == s_error) return;
             } else
             {
                 code = procedure;
@@ -370,7 +346,7 @@ string VirtualMachine::file_to_string(const string &filename)
 void VirtualMachine::loop_procedure()
 {
     procedure_call->loop();
-    if (procedure_call->status == STATUS_PAUSED)
+    if (procedure_call->status == s_paused)
     {
         delete procedure_call;
         procedure_call = nullptr;
@@ -386,13 +362,13 @@ void VirtualMachine::terminate_procedure()
 void VirtualMachine::error_handler(const VirtualMachineException &error)
 {
     if (print_errors) *verbose_out << error.what();
-    status = STATUS_ERROR;
+    status = s_error;
     throw error;
 }
 
 void VirtualMachine::do_one_iteration()
 {
-    if (status != STATUS_RUNNING) return;
+    if (status != s_running) return;
 
     //verbose_out << program[current_operator] << endl;
     switch (*current_operator)
@@ -474,7 +450,7 @@ void VirtualMachine::do_one_iteration()
     {
         throw VM_NegativeMemoryAccess(this);
     }
-    if (verbose && status == STATUS_RUNNING) *verbose_out << (string) (*this);
+    if (verbose && status == s_running) *verbose_out << (string) (*this);
 
 }
 
@@ -485,13 +461,13 @@ void VirtualMachine::loop(function<void(VirtualMachine *)> vm_callback)
         message(MESSAGE_LAUNCHING);
         (*verbose_out) << (string) (*this);
     }
-    status = STATUS_RUNNING;
-    while (status == STATUS_RUNNING)
+    status = s_running;
+    while (status == s_running)
     {
         while (current_operator < program.end() && !is_operator(*current_operator)) current_operator++;
         if (current_operator >= program.end())
         {
-            status = STATUS_PAUSED;
+            status = s_paused;
             if (verbose) message(MESSAGE_FINISHED);
             return;
         }
@@ -499,11 +475,11 @@ void VirtualMachine::loop(function<void(VirtualMachine *)> vm_callback)
         try
         {
             do_one_iteration();
-            if (status == STATUS_PROC_OUTPUTTING) return;
+            if (status == s_proc_outputting) return;
             current_operator++;
             if (current_operator >= program.end())
             {
-                status = STATUS_PAUSED;
+                status = s_paused;
                 if (verbose) message(MESSAGE_FINISHED);
                 return;
             }
