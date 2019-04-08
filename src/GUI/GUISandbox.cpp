@@ -34,11 +34,11 @@ void print_memory(VirtualMachine *vm, QTextEdit *memory_printer)
 void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox)
 {
     QTextCharFormat format;
-    QTextCharFormat old_format = sandbox->typing_field->currentCharFormat();
+    QTextCharFormat old_format = ((QTextEdit *) sandbox->typing_tabs->currentWidget())->currentCharFormat();
     format.setForeground(QBrush(QColor("black")));
     format.setBackground(QBrush(QColor("green")));
 
-    sandbox->typing_field->clear();
+    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->clear();
 
     string program = vm->get_program();
     string::iterator current_operator = vm->get_current_operator() - vm->get_program().begin() + program.begin();
@@ -46,11 +46,11 @@ void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox)
     string operator_str(1, *current_operator);
     string second_half(current_operator + 1, program.end());
 
-    sandbox->typing_field->insertPlainText(QString::fromStdString(first_half));
-    sandbox->typing_field->setCurrentCharFormat(format);
-    sandbox->typing_field->insertPlainText(QString::fromStdString(operator_str));
-    sandbox->typing_field->setCurrentCharFormat(old_format);
-    sandbox->typing_field->insertPlainText(QString::fromStdString(second_half));
+    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(first_half));
+    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->setCurrentCharFormat(format);
+    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(operator_str));
+    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->setCurrentCharFormat(old_format);
+    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(second_half));
 
     print_memory(vm, sandbox->vm_memory_printer);
 
@@ -128,9 +128,21 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     message_label->setAlignment(Qt::AlignVCenter);
 
 
+    // Create tabs
+
+    typing_tabs = new QTabWidget(this);
+
     // Create typing fields
 
-    typing_field = new QTextEdit(this);
+    for (int i = 0; i < 5; i++)
+    {
+        auto text_edit = new QTextEdit(this);
+        text_edit->setFont(field_font);
+        //typing_zone_layout->addWidget(text_edit, 4);
+        typing_tabs->addTab(text_edit, QString::number(i));
+
+    }
+    //typing_field = new QTextEdit(this);
     message_field = new QTextEdit(this);
     message_field->setReadOnly(true);
 
@@ -168,7 +180,6 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     memory_label->setFont(label_font);
     output_label->setFont(label_font);
 
-    typing_field->setFont(field_font);
     vm_input_field->setFont(field_font);
     vm_memory_printer->setFont(field_font);
     vm_output->setFont(field_font);
@@ -195,7 +206,7 @@ void GUISandbox::place_widgets_on_layout()
 
 
     typing_zone_layout->addWidget(typing_field_label);
-    typing_zone_layout->addWidget(typing_field, 4);
+    typing_zone_layout->addWidget(typing_tabs, 4);
     typing_zone_layout->addWidget(message_label);
     typing_zone_layout->addWidget(message_field, 1);
 
@@ -209,7 +220,14 @@ void GUISandbox::place_widgets_on_layout()
 
 void GUISandbox::run_code()
 {
-    typing_field->setReadOnly(true);
+    for (int i = 0; i < typing_tabs->count(); i++)
+    {
+        if (i != typing_tabs->currentIndex())
+        {
+            typing_tabs->setEnabled(false);
+        }
+    }
+    ((QTextEdit *) typing_tabs->currentWidget())->setReadOnly(true);
 
     using namespace std::placeholders;
     function<void(VirtualMachine *)> vm_callback = bind(function(raw_vm_callback), _1, this);
@@ -221,7 +239,8 @@ void GUISandbox::run_code()
 
     istringstream input(vm_input_field->toPlainText().toStdString());
     ostringstream output("");
-    VirtualMachine vm(typing_field->toPlainText().toStdString(), &input, &output, {}, vm_output_callback);
+    VirtualMachine vm(((QTextEdit *) typing_tabs->currentWidget())->toPlainText().toStdString(), &input, &output, {},
+                      vm_output_callback);
     try
     {
         vm.loop(vm_callback);
@@ -230,9 +249,14 @@ void GUISandbox::run_code()
         message_field->append("Error : " + QString::fromStdString(e.what()));
     }
     message_field->append("The execution is finished");
-    typing_field->clear();
-    typing_field->insertPlainText(QString::fromStdString(vm.get_program()));
-    typing_field->setReadOnly(false);
+    ((QTextEdit *) typing_tabs->currentWidget())->clear();
+    ((QTextEdit *) typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(vm.get_program()));
+    ((QTextEdit *) typing_tabs->currentWidget())->setReadOnly(false);
+
+    for (int i = 0; i < typing_tabs->count(); i++)
+    {
+        typing_tabs->setEnabled(true);
+    }
     run_button->setEnabled(true);
     next_operation_button->setEnabled(false);
 }

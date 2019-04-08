@@ -15,6 +15,7 @@
 #include <QVBoxLayout>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QSlider>
+#include <QtWidgets/QTabWidget>
 
 #include "VirtualMachine.h"
 
@@ -41,6 +42,7 @@ private:
 
     QGridLayout *windowLayout;
     QVBoxLayout *io_fields_layout;
+    QTabWidget *typing_tabs;
     QVBoxLayout *typing_zone_layout;
     QHBoxLayout *button_layout;
 
@@ -50,7 +52,7 @@ private:
     QLabel *message_label;
     QLabel *memory_label;
 
-    QTextEdit *typing_field;
+    //QTextEdit *typing_field;
     QTextEdit *vm_input_field;
     QTextEdit *vm_memory_printer;
     QTextEdit *vm_output;
