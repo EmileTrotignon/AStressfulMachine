@@ -15,7 +15,7 @@ GameGUI::GameGUI(const string &saves_dir_, const string &gamefiles_dir_) : QStac
 
     // Create the tree windows
     main_menu_widget = new GUIMainMenu(this);
-    adventure_mode_widget = new GUIAdventureMode(this, this);
+    adventure_mode_widget = new GUIAdventureMode(this);
     sandbox = new GUISandbox(this);
 
     // Add them to the stack

@@ -16,7 +16,7 @@ class GUIAdventureMode : public QStackedWidget
 Q_OBJECT
 
 public:
-    explicit GUIAdventureMode(QWidget *parent, GameGUI *game);
+    explicit GUIAdventureMode(GameGUI *game);
 
 private slots:
 

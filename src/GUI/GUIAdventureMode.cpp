@@ -3,8 +3,9 @@
 //
 
 #include "GUIAdventureMode.h"
+#include "GameGUI.h"
 
-GUIAdventureMode::GUIAdventureMode(QWidget *parent, GameGUI *game) : QStackedWidget(parent)
+GUIAdventureMode::GUIAdventureMode(GameGUI *game) : QStackedWidget(game)
 {
     game_widget = new GUIGameplay(this);
     save_picker = new GUIPickSave(this, game);

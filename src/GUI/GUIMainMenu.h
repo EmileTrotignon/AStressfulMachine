@@ -24,21 +24,15 @@ public:
 
     ~GUIMainMenu() override;
 
-private slots:
-    void createNewGameDialog();
-
 private:
     QGridLayout *window_Layout;
     QVBoxLayout *button_layout;
     QLabel *title;
     QFont title_font;
-    QPushButton *new_game_button;
     QPushButton *adventure_mode_button;
     QPushButton *sandbox_button;
-    QPushButton *load_game_button;
     QPushButton *settings_button;
     QPushButton *quit_game_button;
-    QInputDialog *new_game_dialog;
 };
 
 

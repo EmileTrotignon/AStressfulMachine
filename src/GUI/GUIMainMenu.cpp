@@ -25,21 +25,17 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
     // title->setStyleSheet("background-color: rgb(52, 255, 239)");
 
     // Create buttons
-    new_game_button = new QPushButton("New Game", this);
+    adventure_mode_button = new QPushButton("Adventure Mode", this);
     sandbox_button = new QPushButton("Sandbox mode", this);
 
-    // new_game_button->setGeometry(10, 10, 100, 40);
-    load_game_button = new QPushButton("Load Game", this);
     settings_button = new QPushButton("Settings", this);
     quit_game_button = new QPushButton("Quit Game", this);
-    // quit_game_button->setGeometry(10, 60, 100, 40);
 
     // Insert buttons in button layout
     button_layout = new QVBoxLayout;
     button_layout->setObjectName("button_layout");
-    // button_layout->setSpacing(6);
-    button_layout->addWidget(new_game_button);
-    button_layout->addWidget(load_game_button);
+
+    button_layout->addWidget(adventure_mode_button);
     button_layout->addWidget(sandbox_button);
     button_layout->addWidget(settings_button);
     button_layout->addWidget(quit_game_button);
@@ -63,7 +59,8 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
 
     // Create events
     connect(quit_game_button, SIGNAL (clicked(bool)), QApplication::instance(), SLOT (quit()));
-    connect(new_game_button, SIGNAL (clicked(bool)), this, SLOT (createNewGameDialog()));
+    connect(adventure_mode_button, SIGNAL(clicked(bool)), parent(), SLOT (open_adventure_mode()));
+    //connect(new_game_button, SIGNAL (clicked(bool)), this, SLOT (createNewGameDialog()));
     connect(sandbox_button, SIGNAL(clicked(bool)), parent(), SLOT (open_sandbox()));
 }
 
@@ -75,7 +72,7 @@ GUIMainMenu::~GUIMainMenu()
     delete button_layout;
 }
 
-void GUIMainMenu::createNewGameDialog()
+/*void GUIMainMenu::createNewGameDialog()
 {
     new_game_dialog = new QInputDialog(this);
     new_game_dialog->setObjectName("new_game_dialog");
@@ -85,4 +82,4 @@ void GUIMainMenu::createNewGameDialog()
     new_game_dialog->show();
 
     connect(new_game_dialog, SIGNAL (accepted()), parent(), SLOT (create_new_game_window()));
-}
+}*/
