@@ -7,13 +7,27 @@
 
 
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QListWidget>
+
+class GameGUI;
 
 class GUIPickLevel : public QWidget
 {
 Q_OBJECT
 public :
-    explicit GUIPickLevel(QWidget *parent);
+    explicit GUIPickLevel(QWidget *parent, GameGUI *game);
 
+private:
+    QListWidget *levels_list;
+    GameGUI *game;
+
+public slots:
+
+    void pick_level(QListWidgetItem *w);
+
+signals:
+
+    void level_picked();
 };
 
 

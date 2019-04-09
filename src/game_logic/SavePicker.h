@@ -23,6 +23,7 @@ private:
 
     vector<string> saves;
     string gamefiles;
+    fs::path save_dir;
 
 public:
 

@@ -9,7 +9,7 @@
 #include <QtWidgets/QStackedWidget>
 #include "GUIGameplay.h"
 #include "GUIPickSave.h"
-#include "GuiPickLevel.h"
+#include "GUIPickLevel.h"
 
 class GUIAdventureMode : public QStackedWidget
 {
@@ -30,6 +30,7 @@ private:
     GUIGameplay *game_widget;
     GUIPickSave *save_picker;
     GUIPickLevel *level_picker;
+    GameGUI *game;
 };
 
 

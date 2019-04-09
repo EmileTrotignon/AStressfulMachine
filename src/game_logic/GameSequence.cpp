@@ -16,29 +16,27 @@ using namespace std;
 namespace fs = std::filesystem;
 
 
-GameSequence::GameSequence(const string &savename_, const string &gamefiles_dir_) : savename(savename_),
+GameSequence::GameSequence(const string &savename_, const fs::path &saves_dir_, const fs::path &gamefiles_dir_) :
+        saves_dir(saves_dir_),
+        savename(savename_),
                                                                                     gamefiles_dir(gamefiles_dir_),
                                                                                     current_level(nullptr)
 {
     available_levels = filesystem_ls(gamefiles_dir + "/levels");
     conform_save_to_gamefiles();
-    levels = vector<GameLevel *>();
-    for (int i = 0; i < available_levels.size(); i++)
+    levels = map<string, GameLevel *>();
+    for (const string &level_name:available_levels)
     {
-        auto gl = new GameLevel(gamefiles_dir, available_levels[i]);
-        levels.push_back(gl);
+        auto gl = new GameLevel(gamefiles_dir, level_name);
+        levels[level_name] = gl;
     }
     load_from_save();
 
 }
 
-void GameSequence::select_level(int level_index)
+void GameSequence::select_level(const string &level_name)
 {
-    if (levels.begin() <= current_level && current_level < levels.end())
-    {
-
-    }
-    current_level = levels.begin() + level_index;
+    current_level = levels[level_name];
 }
 
 vector<string> GameSequence::get_available_levels() const
@@ -46,7 +44,7 @@ vector<string> GameSequence::get_available_levels() const
     return available_levels;
 }
 
-vector<GameLevel *>::iterator GameSequence::get_current_level()
+GameLevel *GameSequence::get_current_level()
 {
     return current_level;
 }
@@ -59,14 +57,14 @@ void GameSequence::load_from_save()
     //    vector<vector<float>> average_speed;
     //    vector<vector<float>> average_memory_use;
 
-    for (int i = 0; i < available_levels.size(); i++) // Fills attempts with empty string.
+    for (auto s : levels) // Fills attempts with empty string.
         // Todo : fill attempts with actual attempts
     {
-        levels[i]->attempts = {};
+        s.second->attempts = {};
         for (int j = 0; j < 5; j++)
         {
-            levels[i]->attempts.push_back(
-                    file_to_string("data/saves/" + savename + "/" + available_levels[i] + "/" + to_string(j)));
+            s.second->attempts.push_back(
+                    file_to_string(saves_dir / savename / s.second->get_level_name() / to_string(j)));
         }
     }
 }
@@ -77,12 +75,12 @@ void GameSequence::conform_save_to_gamefiles()
     // Todo : This should create new folders for levels that does not have one
     for (auto &l:available_levels)
     {
-        fs::create_directory("data/saves/" + savename + "/" + l);
+        fs::create_directory(saves_dir / savename / l);
         for (int i = 0; i < 5; i++)
         {
-            if (!fs::exists("data/saves/" + savename + "/" + l + "/" + to_string(i)))
+            if (!fs::exists(saves_dir / savename / l / to_string(i)))
             {
-                ofstream a("data/saves/" + savename + "/" + l + "/" + to_string(i));
+                ofstream a(saves_dir / savename / l / to_string(i));
                 a.close();
             }
         }
@@ -92,12 +90,12 @@ void GameSequence::conform_save_to_gamefiles()
 void GameSequence::save_to_save()
 {
     // Save all attempts for all levels
-    for (int i = 0; i < available_levels.size(); i++)
+    for (auto p : levels)
     {
-        for (int j = 0; j < levels[i]->attempts.size(); j++)
+        for (int j = 0; j < p.second->attempts.size(); j++)
         {
-            string_to_file(levels[i]->attempts[j],
-                           "data/saves/" + savename + "/" + levels[i]->get_level_name() + "/" + to_string(j));
+            string_to_file(p.second->attempts[j],
+                           saves_dir / savename / p.second->get_level_name() / to_string(j));
         }
     }
     save_to_xml();

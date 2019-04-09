@@ -8,7 +8,7 @@
 
 namespace fs = std::filesystem;
 
-SavePicker::SavePicker(const string &save_dir, const string &gamefiles_) : gamefiles(gamefiles_)
+SavePicker::SavePicker(const string &save_dir_, const string &gamefiles_) : save_dir(save_dir_), gamefiles(gamefiles_)
 {
     saves = filesystem_ls(save_dir);
 
@@ -21,5 +21,5 @@ vector<string> SavePicker::get_saves() const
 
 GameSequence SavePicker::select_save(string save) const
 {
-    return GameSequence(save, gamefiles);
+    return GameSequence(save, save_dir, gamefiles);
 }

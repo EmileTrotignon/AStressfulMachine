@@ -8,8 +8,12 @@
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 
 class GameGUI;
+
+using namespace std;
 
 class GUIPickSave : public QWidget
 {
@@ -21,9 +25,13 @@ private:
     QListWidget *saves_list;
     GameGUI *game;
 
+public slots:
+
+    void pick_save(QListWidgetItem *w);
+
 signals:
 
-    void saved_picked(QString);
+    void save_picked();
 
 };
 

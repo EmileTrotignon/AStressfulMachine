@@ -16,10 +16,11 @@ class GameSequence
     friend class GameLevel; // Pour pouvoir acceder à
 private:
 
+    fs::path saves_dir;
     string savename;
     vector<string> available_levels;
-    vector<GameLevel *> levels;
-    vector<GameLevel *>::iterator current_level;
+    map<string, GameLevel *> levels;
+    GameLevel *current_level;
     string gamefiles_dir;
 
     vector<bool> attempted;
@@ -36,13 +37,13 @@ private:
     void load_to_xml();
 
 public:
-    GameSequence(const string &savename, const string &gamefiles_dir);
+    GameSequence(const string &savename, const fs::path &saves_dir, const fs::path &gamefiles_dir);
 
-    void select_level(int level_index);
+    void select_level(const string &level_name);
 
     vector<string> get_available_levels() const;
 
-    vector<GameLevel *>::iterator get_current_level();
+    GameLevel *get_current_level();
 
     void save_to_save();
 
