@@ -130,6 +130,7 @@ void GameSequence::save_to_xml(){
         level->LinkEndChild( congrats );
     }
 
+
     TiXmlElement * avg = new TiXmlElement("Avg");
     avg->SetValue("  " );
     level->LinkEndChild( avg );
