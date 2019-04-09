@@ -12,7 +12,12 @@
 #include "GUIAdventureMode.h"
 
 #include <QApplication>
-#include <QtWidgets/QStackedWidget>
+// #include <QtWidgets/QStackedWidget>
+#include <QStackedWidget>
+#include <QDialog>
+#include <QPushButton>
+#include <QDebug>
+#include <QShortcut>
 
 class GUIPickSave;
 
@@ -22,6 +27,7 @@ class GUIPickLevel;
 class GameGUI : public QStackedWidget, public Game
 {
 Q_OBJECT
+
 private:
     GUISandbox *sandbox;
     GUIMainMenu *main_menu_widget;
@@ -39,12 +45,20 @@ public:
     friend GUIPickSave;
     friend GUIPickLevel;
 
-public slots:
+private slots:
 
     // Used in GUIMainMenu
     void open_adventure_mode();
-
     void open_sandbox();
+
+    // Slots for escape menu
+    void open_esc_menu();
+    void esc_dlg_rejected();
+    void esc_dlg_quit();
+
+signals:
+    void resume_play(int dialog_rejected = QDialog::Rejected);
+
 };
 
 
