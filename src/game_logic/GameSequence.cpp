@@ -7,7 +7,6 @@
 #include <filesystem>
 
 
-
 // Function prototypes
 void save_all(); // Save the complete file
 void load_all(); // Load the different values
@@ -67,6 +66,7 @@ void GameSequence::load_from_save()
                     file_to_string(saves_dir / savename / s.second->get_level_name() / to_string(j)));
         }
     }
+    load_to_xml();
 }
 
 
@@ -105,12 +105,8 @@ void GameSequence::save_to_save()
 
 void GameSequence::save_to_xml(){
 
-    // Il est obligatoire que cette fonction corresponde a une instance de GameSequence, soit par un passage
-    // d'argument soit en la mettant comme methode.
-    // En l'état il est impossible qu'elle accede a level_name ou aux variables de GameSequence
-
     TiXmlDocument doc;
-    TiXmlElement* msg;
+    //TiXmlElement* msg;
     TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
     doc.LinkEndChild( decl );
 
@@ -132,6 +128,7 @@ void GameSequence::save_to_xml(){
         level->LinkEndChild( congrats );
     }
 
+
     TiXmlElement * avg = new TiXmlElement("Avg");
     avg->SetValue("  " );
     level->LinkEndChild( avg );
@@ -144,36 +141,37 @@ void GameSequence::save_to_xml(){
 void GameSequence::load_to_xml(){
     TiXmlDocument doc( "/data/saves/save.xml" );
     doc.LoadFile();
-
-    TiXmlElement *l_pRootElement = doc.RootElement();
-
-    if (nullptr != l_pRootElement)
+    if(!doc.LoadFile())
     {
-        TiXmlElement *l_level = l_pRootElement->FirstChildElement( "Level" );
+        throw runtime_error(doc.ErrorDesc());
+    }
+    else { // May be deleted if this verrification have problems.
+        TiXmlElement *l_pRootElement = doc.RootElement();
 
-        if (nullptr != l_level)
-        {
-            std::cout << l_level->GetText(); // display the whole file directly
+        if (nullptr != l_pRootElement) {
+            TiXmlElement *l_level = l_pRootElement->FirstChildElement("Level");
 
-            TiXmlElement *l_congrats = l_level->FirstChildElement( "Congrats" );
+            if (nullptr != l_level) {
+                std::cout << l_level->GetText(); // display the whole file directly
 
-            if (nullptr != l_congrats)
-            {
-                std::cout << l_congrats->GetText();
-            }
-            //while( l_level )
-            //{
-                TiXmlElement *l_avg = l_level->FirstChildElement( "Avg" );
+                TiXmlElement *l_congrats = l_level->FirstChildElement("Congrats");
 
-            if (nullptr != l_avg)
-                {
+                if (nullptr != l_congrats) {
+                    std::cout << l_congrats->GetText();
+                }
+                //while( l_level )
+                //{
+                TiXmlElement *l_avg = l_level->FirstChildElement("Avg");
+
+                if (nullptr != l_avg) {
                     std::cout << l_avg->GetText();
                 }
 
                 std::cout << std::endl;
 
                 //l_level = l_level->NextSiblingElement( "level" ); If there was another <level> in the same file
-            //}
+                //}
+            }
         }
     }
 }
