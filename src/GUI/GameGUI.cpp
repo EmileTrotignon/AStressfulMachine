@@ -6,36 +6,38 @@
 
 #include <iostream>
 
-GameGUI::GameGUI(const string &saves_dir_, const string &gamefiles_dir_) : Game(saves_dir_, gamefiles_dir_)
+GameGUI::GameGUI(const string &saves_dir_, const string &gamefiles_dir_) : QStackedWidget(nullptr),
+                                                                           Game(saves_dir_, gamefiles_dir_)
 {
     std::cout << "Constructing GameGUI" << std::endl;
+    setObjectName("GUIWindow");
+    setWindowTitle("A Stressful Machine");
+
+    // Create the tree windows
+    main_menu_widget = new GUIMainMenu(this);
+    adventure_mode_widget = new GUIAdventureMode(this, this);
+    sandbox = new GUISandbox(this);
+
+    // Add them to the stack
+    addWidget(main_menu_widget);
+    addWidget(adventure_mode_widget);
+    addWidget(sandbox);
+
+    setCurrentWidget(main_menu_widget);
 }
 
-int GameGUI::play(int argc, char **argv)
-{
-    // Creates the process
-    QApplication app(argc, argv);
-    std::cout << "Created app" << std::endl;
-    //GUIWindowMainMenu mainMenu;
-    //mainMenu.show();
-
-    GUIWindow gameWindow;
-    gameWindow.show();
-
-    return app.exec();
-
-
-}
 
 void GameGUI::play()
 {
-    char myChar = 'a';
-    char *myCharStar = &myChar;
-    char **defaultString = &myCharStar;
-    GameGUI::play(1, defaultString);
+    show();
 }
-/*
-void GameGUI::createGameplayWindow()
-{
 
-}*/
+void GameGUI::open_adventure_mode()
+{
+    setCurrentWidget(adventure_mode_widget);
+}
+
+void GameGUI::open_sandbox()
+{
+    setCurrentWidget(sandbox);
+}

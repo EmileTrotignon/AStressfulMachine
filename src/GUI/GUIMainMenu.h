@@ -33,7 +33,8 @@ private:
     QLabel *title;
     QFont title_font;
     QPushButton *new_game_button;
-    QPushButton *new_sandbox_button;
+    QPushButton *adventure_mode_button;
+    QPushButton *sandbox_button;
     QPushButton *load_game_button;
     QPushButton *settings_button;
     QPushButton *quit_game_button;

@@ -7,13 +7,16 @@
 
 #include "SavePicker.h"
 
+namespace fs = filesystem;
+
 class Game
 {
 protected:
 
     SavePicker *save_picker;
     GameSequence *game_sequence;
-    string gamefiles_dir;
+    fs::path gamefiles_dir;
+
 
 public:
 

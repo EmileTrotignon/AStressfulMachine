@@ -3,6 +3,7 @@
 //
 
 #include "GUIMainMenu.h"
+#include "GameGUI.h"
 
 #include <QApplication>
 #include <iostream>
@@ -25,7 +26,7 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
 
     // Create buttons
     new_game_button = new QPushButton("New Game", this);
-    new_sandbox_button = new QPushButton("Sandbox mode", this);
+    sandbox_button = new QPushButton("Sandbox mode", this);
 
     // new_game_button->setGeometry(10, 10, 100, 40);
     load_game_button = new QPushButton("Load Game", this);
@@ -39,7 +40,7 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
     // button_layout->setSpacing(6);
     button_layout->addWidget(new_game_button);
     button_layout->addWidget(load_game_button);
-    button_layout->addWidget(new_sandbox_button);
+    button_layout->addWidget(sandbox_button);
     button_layout->addWidget(settings_button);
     button_layout->addWidget(quit_game_button);
 
@@ -63,7 +64,7 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
     // Create events
     connect(quit_game_button, SIGNAL (clicked(bool)), QApplication::instance(), SLOT (quit()));
     connect(new_game_button, SIGNAL (clicked(bool)), this, SLOT (createNewGameDialog()));
-    connect(new_sandbox_button, SIGNAL(clicked(bool)), parent(), SLOT (open_sandbox()));
+    connect(sandbox_button, SIGNAL(clicked(bool)), parent(), SLOT (open_sandbox()));
 }
 
 GUIMainMenu::~GUIMainMenu()
