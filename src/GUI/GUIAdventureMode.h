@@ -26,6 +26,8 @@ private slots:
 
     void launch_game();
 
+    void return_pick_save();
+
 private:
     GUIGameplay *game_widget;
     GUIPickSave *save_picker;

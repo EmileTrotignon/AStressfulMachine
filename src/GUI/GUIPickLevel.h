@@ -8,6 +8,8 @@
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QPushButton>
 
 class GameGUI;
 
@@ -19,6 +21,8 @@ public :
 
 private:
     QListWidget *levels_list;
+    QVBoxLayout *layout;
+    QPushButton *back_button;
     GameGUI *game;
 
 public slots:

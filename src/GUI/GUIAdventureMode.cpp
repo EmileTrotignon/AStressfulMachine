@@ -44,3 +44,8 @@ void GUIAdventureMode::launch_game()
     }
     setCurrentWidget(game_widget);
 }
+
+void GUIAdventureMode::return_pick_save()
+{
+    setCurrentWidget(save_picker);
+}

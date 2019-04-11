@@ -23,7 +23,9 @@ public:
 
 private:
     QListWidget *saves_list;
+    QVBoxLayout *layout;
     GameGUI *game;
+    QPushButton *back_button;
 
 public slots:
 
