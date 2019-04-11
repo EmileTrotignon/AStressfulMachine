@@ -3,35 +3,53 @@
 //
 
 #include "GUIGameplay.h"
+#include "GameGUI.h"
 
-GUIGameplay::GUIGameplay(QWidget *parent) : QWidget(parent)
+void GUIGameplay::raw_gl_callback(GameLevel *gl)
 {
-    this->setObjectName("gameplayWindow");
-    this->setWindowTitle("A Stressful Machine");
+    vm_input_field->clear();
+    vm_input_field->insertPlainText(
+            QString::fromStdString(game->game_sequence->get_current_level()->get_input_as_string()));
+}
 
-    // Create font
-    displayFont.setFamily("helvetica");
-    displayFont.setPointSize(20);
+GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(parent), game(game_), vm_input()
+{
+    instruction_field = new QTextEdit(this);
+    instruction_field->insertPlainText(
+            QString::fromStdString(game->game_sequence->get_current_level()->get_instructions()));
 
-    // Create Window Layout
-    windowLayout = new QGridLayout(this);
+    vm_input_field->setReadOnly(true);
+    vm_input_field->insertPlainText(
+            QString::fromStdString(game->game_sequence->get_current_level()->get_instructions()));
 
-    // Create typing field
-    typingFieldLayout = new QVBoxLayout;
-    typingFieldLabel = new QLabel(this);
-    typingFieldLabel->setText("Write your program here");
-    typingFieldLabel->setAlignment(Qt::AlignVCenter);
-    typingFieldLabel->setFont(displayFont);
-    typingFieldLayout->addWidget(typingFieldLabel);
-    typingField = new QTextEdit(this);
-    typingFieldLayout->addWidget(typingField);
+    vm_solution_output = new QTextEdit(this);
+}
 
-    windowLayout->addLayout(typingFieldLayout, 0, 1);
+void GUIGameplay::place_widgets_on_layout()
+{
+    GUISandbox::place_widgets_on_layout();
+    io_fields_layout->addWidget(instruction_field);
+    io_fields_layout->addWidget(vm_solution_output);
+}
 
-    // Create instruction viewer
-    instructionView = new QTextBrowser(this);
-    instructionView->setText("Level instructions show up here");
+void GUIGameplay::run_code()
+{
+    using namespace placeholders;
+    function<void(GameLevel *)> gl_callback = bind(&GUIGameplay::raw_gl_callback, this, _1);
+    function<void(VirtualMachine *)> vm_callback = bind(&GUIGameplay::raw_vm_callback, this, _1);
+    function<void(int)> vm_output_callback = bind(&GUIGameplay::raw_vm_output_callback, this, _1);
+    function<void(int)> vm_solution_callback = bind(&GUIGameplay::raw_vm_solution_output_callback, this, _1);
 
-    windowLayout->addWidget(instructionView, 0, 0);
+    game->game_sequence->get_current_level()->attempt(
+            ((QTextEdit *) typing_tabs->currentWidget())->toPlainText().toStdString(),
+            vm_callback,
+            gl_callback,
+            vm_output_callback,
+            vm_solution_callback);
+}
+
+void GUIGameplay::raw_vm_solution_output_callback(int output)
+{
+    vm_solution_output->append(QString::number(output));
 
 }

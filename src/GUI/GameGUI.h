@@ -44,6 +44,7 @@ public:
 
     friend GUIPickSave;
     friend GUIPickLevel;
+    friend GUIGameplay;
 
 private slots:
 

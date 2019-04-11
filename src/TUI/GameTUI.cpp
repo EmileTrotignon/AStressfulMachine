@@ -156,7 +156,7 @@ void GameTUI::pick_level()
     }
 
     Menu level_picking(possible_levels, level_picking_win, "Please pick a level :");
-    game_sequence->select_level(level_picking.select_item());
+    game_sequence->select_level(possible_levels[level_picking.select_item()]);
 
     const int h = stdscr_->get_height();
     const int w = stdscr_->get_width();

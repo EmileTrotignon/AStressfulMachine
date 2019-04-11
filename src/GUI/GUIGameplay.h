@@ -12,22 +12,37 @@
 #include <QFont>
 #include <QTextBrowser>
 #include <QVBoxLayout>
+#include "GUISandbox.h"
 
-class GUIGameplay : public QWidget
+class GameGUI;
+
+class GameLevel;
+
+class GUIGameplay : public GUISandbox
 {
     // Initialize macro for qt
     Q_OBJECT
 
 public:
-    explicit GUIGameplay(QWidget *parent = nullptr);
+    explicit GUIGameplay(QWidget *parent, GameGUI *game);
+
+protected:
+
+    void place_widgets_on_layout() override;
+
+protected slots:
+
+    void run_code() override;
 
 private:
-    QGridLayout *windowLayout;
-    QVBoxLayout *typingFieldLayout;
-    QLabel *typingFieldLabel;
-    QTextEdit *typingField;
-    QTextBrowser *instructionView;
-    QFont displayFont;
+    QTextEdit *instruction_field;
+    QTextEdit *vm_solution_output;
+    GameGUI *game;
+    istringstream vm_input;
+
+    void raw_gl_callback(GameLevel *gl);
+
+    void raw_vm_solution_output_callback(int output);
 };
 
 

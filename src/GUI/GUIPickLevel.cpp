@@ -18,7 +18,7 @@ GUIPickLevel::GUIPickLevel(QWidget *parent_, GameGUI *game_) : QWidget(parent_),
     connect(levels_list,
             SIGNAL(itemActivated(QListWidgetItem * )),
             this,
-            SLOT(pick_save(QListWidgetItem * )));
+            SLOT(pick_level(QListWidgetItem * )));
 }
 
 void GUIPickLevel::pick_level(QListWidgetItem *w)

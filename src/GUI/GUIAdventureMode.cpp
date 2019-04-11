@@ -5,13 +5,11 @@
 #include "GUIAdventureMode.h"
 #include "GameGUI.h"
 
-GUIAdventureMode::GUIAdventureMode(GameGUI *game_) : QStackedWidget(game_), game(game_)
+GUIAdventureMode::GUIAdventureMode(GameGUI *game_) : QStackedWidget(game_), game(game_), level_picker(nullptr),
+                                                     game_widget(nullptr)
 {
-    game_widget = new GUIGameplay(this);
     save_picker = new GUIPickSave(this, game);
-    level_picker = nullptr;
 
-    addWidget(game_widget);
     addWidget(save_picker);
 
     setCurrentWidget(save_picker);
@@ -32,9 +30,17 @@ void GUIAdventureMode::pick_level()
         addWidget(level_picker);
     }
     setCurrentWidget(level_picker);
+
+    connect(level_picker, SIGNAL(level_picked()), this, SLOT(launch_game()));
+
 }
 
 void GUIAdventureMode::launch_game()
 {
+    if (game_widget == nullptr)
+    {
+        game_widget = new GUIGameplay(this, game);
+        addWidget(game_widget);
+    }
     setCurrentWidget(game_widget);
 }

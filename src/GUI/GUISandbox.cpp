@@ -11,6 +11,8 @@
 #include "GUISandbox.h"
 
 
+//http://p-nand-q.com/programming/cplusplus/using_member_functions_with_c_function_pointers.html
+
 void print_memory(VirtualMachine *vm, QTextEdit *memory_printer)
 {
     QTextCharFormat format;
@@ -31,14 +33,14 @@ void print_memory(VirtualMachine *vm, QTextEdit *memory_printer)
 
 }
 
-void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox)
+void GUISandbox::raw_vm_callback(VirtualMachine *vm)
 {
     QTextCharFormat format;
-    QTextCharFormat old_format = ((QTextEdit *) sandbox->typing_tabs->currentWidget())->currentCharFormat();
+    QTextCharFormat old_format = ((QTextEdit *) typing_tabs->currentWidget())->currentCharFormat();
     format.setForeground(QBrush(QColor("black")));
     format.setBackground(QBrush(QColor("green")));
 
-    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->clear();
+    ((QTextEdit *) typing_tabs->currentWidget())->clear();
 
     string program = vm->get_program();
     string::iterator current_operator = vm->get_current_operator() - vm->get_program().begin() + program.begin();
@@ -46,36 +48,36 @@ void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox)
     string operator_str(1, *current_operator);
     string second_half(current_operator + 1, program.end());
 
-    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(first_half));
-    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->setCurrentCharFormat(format);
-    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(operator_str));
-    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->setCurrentCharFormat(old_format);
-    ((QTextEdit *) sandbox->typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(second_half));
+    ((QTextEdit *) typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(first_half));
+    ((QTextEdit *) typing_tabs->currentWidget())->setCurrentCharFormat(format);
+    ((QTextEdit *) typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(operator_str));
+    ((QTextEdit *) typing_tabs->currentWidget())->setCurrentCharFormat(old_format);
+    ((QTextEdit *) typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(second_half));
 
-    print_memory(vm, sandbox->vm_memory_printer);
+    print_memory(vm, vm_memory_printer);
 
-    if (sandbox->speed_slider->value() == 0)
+    if (speed_slider->value() == 0)
     {
-        sandbox->next_operation_button->setEnabled(true);
+        next_operation_button->setEnabled(true);
 
         QEventLoop loop;
-        GUISandbox::connect(sandbox->next_operation_button, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
+        GUISandbox::connect(next_operation_button, SIGNAL(clicked(bool)), &loop, SLOT(quit()));
         loop.exec();
-        sandbox->next_operation_button->setEnabled(false);
-    } else if (sandbox->speed_slider->value() < GUISandbox::max_speed)
+        next_operation_button->setEnabled(false);
+    } else if (speed_slider->value() < GUISandbox::max_speed)
     {
         QTimer timer(nullptr);
         QEventLoop loop;
 
-        timer.start(500 / sandbox->speed_slider->value());
+        timer.start(500 / speed_slider->value());
         QWidget::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
         loop.exec();
     }
 }
 
-void raw_vm_output_callback(int output, QTextEdit *output_field)
+void GUISandbox::raw_vm_output_callback(int output)
 {
-    output_field->append(QString::number(output));
+    vm_output->append(QString::number(output));
 }
 
 GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
@@ -230,8 +232,8 @@ void GUISandbox::run_code()
     ((QTextEdit *) typing_tabs->currentWidget())->setReadOnly(true);
 
     using namespace std::placeholders;
-    function<void(VirtualMachine *)> vm_callback = bind(function(raw_vm_callback), _1, this);
-    function<void(int)> vm_output_callback = bind(function(raw_vm_output_callback), _1, vm_output);
+    const function<void(VirtualMachine *)> vm_callback = bind(&GUISandbox::raw_vm_callback, this, _1);
+    function<void(int)> vm_output_callback = bind(&GUISandbox::raw_vm_output_callback, this, _1);
 
     vm_output->clear();
     run_button->setEnabled(false);

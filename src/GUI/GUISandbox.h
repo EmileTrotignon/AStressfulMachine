@@ -28,13 +28,9 @@ Q_OBJECT
 public:
     explicit GUISandbox(QWidget *parent = nullptr);
 
-    friend void raw_vm_callback(VirtualMachine *vm, GUISandbox *sandbox);
-
 protected:
 
     virtual void place_widgets_on_layout();
-
-private:
 
     static const int max_speed = 10;
 
@@ -67,9 +63,14 @@ private:
 
     QSlider *speed_slider;
 
+    virtual void raw_vm_callback(VirtualMachine *vm);
+
+    virtual void raw_vm_output_callback(int output);
+
 protected slots:
 
     virtual void run_code();
+
 };
 
 
