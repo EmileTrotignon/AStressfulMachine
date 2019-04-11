@@ -52,13 +52,15 @@ private slots:
     void open_adventure_mode();
     void open_sandbox();
 
+    void return_main_menu_from_pick_save();
+
     // Slots for escape menu
     void open_esc_menu();
     void esc_dlg_rejected();
     void esc_dlg_quit();
 
 signals:
-    void resume_play(int dialog_rejected = QDialog::Rejected);
+    void resume_game(int dialog_rejected = QDialog::Rejected);
 
 };
 

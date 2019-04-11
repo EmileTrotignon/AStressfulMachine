@@ -16,6 +16,8 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QTabWidget>
+#include <QPixmap>
+#include <QIcon>
 
 #include "VirtualMachine.h"
 
@@ -47,6 +49,7 @@ protected:
     QLabel *output_label;
     QLabel *message_label;
     QLabel *memory_label;
+
 
     //QTextEdit *typing_field;
     QTextEdit *vm_input_field;

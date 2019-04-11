@@ -9,6 +9,7 @@
 #include <sys/socket.h>
 #include <QTimer>
 #include "GUISandbox.h"
+#include <QStyle>
 
 
 void print_memory(VirtualMachine *vm, QTextEdit *memory_printer)
@@ -155,13 +156,23 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     // Create buttons
 
     run_button = new QPushButton("Run", this);
+
+
+    //QIcon *icon_test = new QIcon("../data/assets/icons/icons.png");
+
+    //run_button->setIcon(*icon_test);
+    run_button->setIcon(QIcon("../data/assets/icons/jouer.png"));
+
     connect(run_button, SIGNAL(clicked(bool)), this, SLOT(run_code()));
 
     next_operation_button = new QPushButton("Next", this);
+    next_operation_button->setIcon(QIcon("../data/assets/icons/avancer.png"));
     next_operation_button->setEnabled(false);
 
     stop_button = new QPushButton("Stop");
+    stop_button->setIcon(QIcon("../data/assets/icons/arreter.png"));
     stop_button->setEnabled(false);
+
 
     // Create slider
 

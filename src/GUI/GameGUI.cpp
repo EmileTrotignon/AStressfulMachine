@@ -68,7 +68,7 @@ void GameGUI::open_esc_menu()
 
         // Connect resume button
         connect(esc_dlg_resume_button, SIGNAL (clicked(bool)), this, SLOT (esc_dlg_rejected()));
-        connect(this, SIGNAL (resume_play(int)), esc_dlg, SLOT (done(int)));
+        connect(this, SIGNAL (resume_game(int)), esc_dlg, SLOT (done(int)));
 
         // Connect quit button
         connect(esc_dlg_quit_button, SIGNAL (clicked(bool)), this, SLOT (esc_dlg_quit()));
@@ -77,11 +77,16 @@ void GameGUI::open_esc_menu()
 
 void GameGUI::esc_dlg_rejected()
 {
-    emit resume_play();
+    emit resume_game();
 }
 
 void GameGUI::esc_dlg_quit()
 {
     setCurrentWidget(main_menu_widget);
-    emit resume_play();
+    emit resume_game();
+}
+
+void GameGUI::return_main_menu_from_pick_save()
+{
+    setCurrentWidget(main_menu_widget);
 }
