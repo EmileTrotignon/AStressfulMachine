@@ -11,8 +11,6 @@
 #include "GUISandbox.h"
 
 
-//http://p-nand-q.com/programming/cplusplus/using_member_functions_with_c_function_pointers.html
-
 void print_memory(VirtualMachine *vm, QTextEdit *memory_printer)
 {
     QTextCharFormat format;
@@ -136,14 +134,10 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
 
     // Create typing fields
 
-    for (int i = 0; i < 5; i++)
-    {
-        auto text_edit = new QTextEdit(this);
-        text_edit->setFont(field_font);
-        //typing_zone_layout->addWidget(text_edit, 4);
-        typing_tabs->addTab(text_edit, QString::number(i));
-
-    }
+    auto text_edit = new QTextEdit(this);
+    text_edit->setFont(field_font);
+    //typing_zone_layout->addWidget(text_edit, 4);
+    typing_tabs->addTab(text_edit, "new_file");
     //typing_field = new QTextEdit(this);
     message_field = new QTextEdit(this);
     message_field->setReadOnly(true);
@@ -220,7 +214,7 @@ void GUISandbox::place_widgets_on_layout()
     windowLayout->addLayout(io_fields_layout, 0, 1);
 }
 
-void GUISandbox::run_code()
+void GUISandbox::run_code_prep()
 {
     for (int i = 0; i < typing_tabs->count(); i++)
     {
@@ -231,13 +225,21 @@ void GUISandbox::run_code()
     }
     ((QTextEdit *) typing_tabs->currentWidget())->setReadOnly(true);
 
-    using namespace std::placeholders;
-    const function<void(VirtualMachine *)> vm_callback = bind(&GUISandbox::raw_vm_callback, this, _1);
-    function<void(int)> vm_output_callback = bind(&GUISandbox::raw_vm_output_callback, this, _1);
 
     vm_output->clear();
     run_button->setEnabled(false);
     next_operation_button->setEnabled(false);
+
+
+}
+
+void GUISandbox::run_code()
+{
+    run_code_prep();
+
+    using namespace std::placeholders;
+    const function<void(VirtualMachine *)> vm_callback = bind(&GUISandbox::raw_vm_callback, this, _1);
+    function<void(int)> vm_output_callback = bind(&GUISandbox::raw_vm_output_callback, this, _1);
 
     istringstream input(vm_input_field->toPlainText().toStdString());
     ostringstream output("");
@@ -251,8 +253,15 @@ void GUISandbox::run_code()
         message_field->append("Error : " + QString::fromStdString(e.what()));
     }
     message_field->append("The execution is finished");
-    ((QTextEdit *) typing_tabs->currentWidget())->clear();
+
+    run_code_finish();
+    
     ((QTextEdit *) typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(vm.get_program()));
+}
+
+void GUISandbox::run_code_finish()
+{
+    ((QTextEdit *) typing_tabs->currentWidget())->clear();
     ((QTextEdit *) typing_tabs->currentWidget())->setReadOnly(false);
 
     for (int i = 0; i < typing_tabs->count(); i++)
@@ -261,4 +270,5 @@ void GUISandbox::run_code()
     }
     run_button->setEnabled(true);
     next_operation_button->setEnabled(false);
+
 }

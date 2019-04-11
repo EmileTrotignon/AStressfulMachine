@@ -67,6 +67,10 @@ protected:
 
     virtual void raw_vm_output_callback(int output);
 
+    void run_code_prep();
+
+    void run_code_finish();
+
 protected slots:
 
     virtual void run_code();

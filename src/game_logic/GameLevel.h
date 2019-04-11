@@ -29,7 +29,6 @@ private:
     string level_name;
     string solution;
     string instructions;
-    map<string, string>::iterator current_attempt;
 
     VirtualMachine *vm_sol;
     VirtualMachine *vm_attempt;
@@ -79,6 +78,7 @@ public:
     string get_input_as_string();
 
     map<string, string> attempts;
+    map<string, string>::iterator current_attempt;
 
     string get_level_name();
 

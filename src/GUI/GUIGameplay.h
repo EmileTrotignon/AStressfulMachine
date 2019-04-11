@@ -39,6 +39,8 @@ private:
     void raw_gl_callback(GameLevel *gl);
 
     void raw_vm_solution_output_callback(int output);
+
+    void send_typed_text_to_level();
 };
 
 
