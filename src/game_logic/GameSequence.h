@@ -34,10 +34,10 @@ private:
     
     void save_to_xml();
 
-    void load_to_xml();
+    void load_from_xml();
 
 public:
-    GameSequence(const string &savename, const fs::path &saves_dir, const fs::path &gamefiles_dir);
+    GameSequence(string savename, fs::path saves_dir, const fs::path &gamefiles_dir);
 
     void select_level(const string &level_name);
 

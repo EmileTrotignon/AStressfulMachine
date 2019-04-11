@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by emile on 05/03/19.
 //
@@ -6,20 +8,15 @@
 #include "../tinyxml/tinyxml.h"
 #include <filesystem>
 
-
-// Function prototypes
-void save_all(); // Save the complete file
-void load_all(); // Load the different values
-
 using namespace std;
 namespace fs = std::filesystem;
 
 
-GameSequence::GameSequence(const string &savename_, const fs::path &saves_dir_, const fs::path &gamefiles_dir_) :
-        saves_dir(saves_dir_),
-        savename(savename_),
-                                                                                    gamefiles_dir(gamefiles_dir_),
-                                                                                    current_level(nullptr)
+GameSequence::GameSequence(string savename_, fs::path saves_dir_, const fs::path &gamefiles_dir_) :
+        saves_dir(move(saves_dir_)),
+        savename(move(savename_)),
+        gamefiles_dir(gamefiles_dir_),
+        current_level(nullptr)
 {
     available_levels = filesystem_ls(gamefiles_dir + "/levels");
     conform_save_to_gamefiles();
@@ -66,13 +63,18 @@ void GameSequence::load_from_save()
                     file_to_string(saves_dir / savename / s.second->get_level_name() / to_string(j)));
         }
     }
-    load_to_xml();
+    //load_from_xml();
 }
 
 
 void GameSequence::conform_save_to_gamefiles()
 {
     // Todo : This should create new folders for levels that does not have one
+    if (!fs::exists(saves_dir / "save.xml"))
+    {
+        ofstream a(saves_dir / savename / "save.xml");
+        a.close();
+    }
     for (auto &l:available_levels)
     {
         fs::create_directory(saves_dir / savename / l);
@@ -98,72 +100,78 @@ void GameSequence::save_to_save()
                            saves_dir / savename / p.second->get_level_name() / to_string(j));
         }
     }
-    save_to_xml();
+    //save_to_xml();
 }
 
 
-
-void GameSequence::save_to_xml(){
+void GameSequence::save_to_xml()
+{
 
     TiXmlDocument doc;
     //TiXmlElement* msg;
-    TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
-    doc.LinkEndChild( decl );
+    auto *decl = new TiXmlDeclaration("1.0", "", "");
+    doc.LinkEndChild(decl);
 
-    TiXmlElement * root = new TiXmlElement( "Player" );
-    doc.LinkEndChild( root );
+    auto *root = new TiXmlElement("Player");
+    doc.LinkEndChild(root);
 
-    TiXmlElement * level = new TiXmlElement( "Level" );
-    root->LinkEndChild( level );
+    auto *level = new TiXmlElement("Level");
+    root->LinkEndChild(level);
     level->SetAttribute("name", "Nom_du_niveau");
 
-    if(succeeded_levels[1]==true){
-        TiXmlElement * congrats = new TiXmlElement("Congrats");
-        congrats->SetValue("True" ); // A voir si on change par la variable elle même
-        level->LinkEndChild( congrats );
-    }
-    else{
-        TiXmlElement * congrats = new TiXmlElement("Congrats");
-        congrats->SetValue("No" );
-        level->LinkEndChild( congrats );
+    if (succeeded_levels[1] == true)
+    {
+        auto *congrats = new TiXmlElement("Congrats");
+        congrats->SetValue("True"); // A voir si on change par la variable elle même
+        level->LinkEndChild(congrats);
+    } else
+    {
+        auto *congrats = new TiXmlElement("Congrats");
+        congrats->SetValue("No");
+        level->LinkEndChild(congrats);
     }
 
 
-    TiXmlElement * avg = new TiXmlElement("Avg");
-    avg->SetValue("  " );
-    level->LinkEndChild( avg );
+    auto *avg = new TiXmlElement("Avg");
+    avg->SetValue("  ");
+    level->LinkEndChild(avg);
 
     //dump_to_stdout( &doc );
     //doc.SaveFile( save_name );
-    doc.SaveFile( "/data/saves/save.xml" );
+    doc.SaveFile((saves_dir / savename / "save.xml").c_str());
 }
 
-void GameSequence::load_to_xml(){
-    TiXmlDocument doc( "/data/saves/save.xml" );
+void GameSequence::load_from_xml()
+{
+    TiXmlDocument doc((saves_dir / savename / "save.xml").c_str());
     doc.LoadFile();
-    if(!doc.LoadFile())
+    if (!doc.LoadFile())
     {
         throw runtime_error(doc.ErrorDesc());
-    }
-    else { // May be deleted if this verrification have problems.
+    } else
+    { // May be deleted if this verrification have problems.
         TiXmlElement *l_pRootElement = doc.RootElement();
 
-        if (nullptr != l_pRootElement) {
+        if (nullptr != l_pRootElement)
+        {
             TiXmlElement *l_level = l_pRootElement->FirstChildElement("Level");
 
-            if (nullptr != l_level) {
+            if (nullptr != l_level)
+            {
                 std::cout << l_level->GetText(); // display the whole file directly
 
                 TiXmlElement *l_congrats = l_level->FirstChildElement("Congrats");
 
-                if (nullptr != l_congrats) {
+                if (nullptr != l_congrats)
+                {
                     std::cout << l_congrats->GetText();
                 }
                 //while( l_level )
                 //{
                 TiXmlElement *l_avg = l_level->FirstChildElement("Avg");
 
-                if (nullptr != l_avg) {
+                if (nullptr != l_avg)
+                {
                     std::cout << l_avg->GetText();
                 }
 
