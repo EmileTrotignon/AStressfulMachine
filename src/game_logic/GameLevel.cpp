@@ -8,7 +8,8 @@
 using namespace std;
 namespace fs = filesystem;
 
-GameLevel::GameLevel(fs::path gamefiles_dir_, string level_name_, vector<string> attempts_, VirtualMachine *vm_attempt_)
+GameLevel::GameLevel(fs::path gamefiles_dir_, string level_name_, map<string, string> attempts_,
+                     VirtualMachine *vm_attempt_)
         :
         gamefiles_dir(move(gamefiles_dir_)),
         level_name(move(level_name_)),
@@ -21,7 +22,7 @@ GameLevel::GameLevel(fs::path gamefiles_dir_, string level_name_, vector<string>
     vm_sol = nullptr;
     if (attempts.empty())
     {
-        attempts.emplace_back("");
+        attempts["attempt 0"] = "";
     }
     current_attempt = attempts.begin();
 }
@@ -53,7 +54,7 @@ bool GameLevel::attempt_one_input(const function<void(VirtualMachine *)> &vm_cal
     //  replace(input_line_str.begin(), input_line_str.end(), ' ', '\n');
     istringstream input_line(input_line_str);
 
-    vm_attempt = new VirtualMachine(*current_attempt, &input_line, &attempt_ostream,
+    vm_attempt = new VirtualMachine(current_attempt->second, &input_line, &attempt_ostream,
                                     {gamefiles_dir / "levels" / level_name / "lib"});
     vm_attempt->set_output_callback(vm_output_attempt_callback);
 
@@ -98,7 +99,7 @@ bool GameLevel::attempt(const string &program_,
                         const function<void(int)> &vm_output_attempt_callback,
                         const function<void(int)> &vm_output_solution_callback)
 {
-    *current_attempt = program_;
+    current_attempt->second = program_;
     reset_input();
     while (!input.eof())
     {
@@ -113,7 +114,7 @@ bool GameLevel::attempt(const string &program_,
     return true;
 }
 
-bool GameLevel::attempt(vector<string>::iterator current_attempt_,
+bool GameLevel::attempt(map<string, string>::iterator current_attempt_,
                         const function<void(VirtualMachine *)> &vm_callback,
                         const function<void(GameLevel *)> &gl_callback,
                         const function<void(int)> &vm_output_attempt_callback,

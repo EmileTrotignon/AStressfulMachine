@@ -57,10 +57,9 @@ void GameSequence::load_from_save()
         // Todo : fill attempts with actual attempts
     {
         s.second->attempts = {};
-        for (int j = 0; j < 5; j++)
+        for (const string &attempt:filesystem_ls(saves_dir / savename / s.second->get_level_name()))
         {
-            s.second->attempts.push_back(
-                    file_to_string(saves_dir / savename / s.second->get_level_name() / to_string(j)));
+            s.second->attempts[attempt] = file_to_string(saves_dir / savename / s.second->get_level_name() / attempt);
         }
     }
     //load_from_xml();
@@ -78,26 +77,17 @@ void GameSequence::conform_save_to_gamefiles()
     for (auto &l:available_levels)
     {
         fs::create_directory(saves_dir / savename / l);
-        for (int i = 0; i < 5; i++)
-        {
-            if (!fs::exists(saves_dir / savename / l / to_string(i)))
-            {
-                ofstream a(saves_dir / savename / l / to_string(i));
-                a.close();
-            }
-        }
     }
 }
 
 void GameSequence::save_to_save()
 {
     // Save all attempts for all levels
-    for (auto p : levels)
+    for (const auto &level : levels)
     {
-        for (int j = 0; j < p.second->attempts.size(); j++)
+        for (const auto &attempt : level.second->attempts)
         {
-            string_to_file(p.second->attempts[j],
-                           saves_dir / savename / p.second->get_level_name() / to_string(j));
+            string_to_file(attempt.second, saves_dir / savename / level.second->get_level_name() / attempt.first);
         }
     }
     //save_to_xml();

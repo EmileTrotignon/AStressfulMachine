@@ -20,14 +20,14 @@ GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(parent), 
 
     vm_input_field->setReadOnly(true);
     vm_input_field->insertPlainText(
-            QString::fromStdString(game->game_sequence->get_current_level()->get_instructions()));
+            QString::fromStdString(game->game_sequence->get_current_level()->get_input_as_string()));
 
     vm_solution_output = new QTextEdit(this);
-}
 
-void GUIGameplay::place_widgets_on_layout()
-{
-    GUISandbox::place_widgets_on_layout();
+    // Set fonts
+    vm_input_field->setFont(field_font);
+    instruction_field->setFont(field_font);
+
     io_fields_layout->addWidget(instruction_field);
     io_fields_layout->addWidget(vm_solution_output);
 }

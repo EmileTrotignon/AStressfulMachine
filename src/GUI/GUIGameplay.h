@@ -26,10 +26,6 @@ class GUIGameplay : public GUISandbox
 public:
     explicit GUIGameplay(QWidget *parent, GameGUI *game);
 
-protected:
-
-    void place_widgets_on_layout() override;
-
 protected slots:
 
     void run_code() override;
