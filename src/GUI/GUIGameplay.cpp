@@ -34,6 +34,7 @@ GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(parent), 
         //typing_zone_layout->addWidget(text_edit, 4);
         typing_tabs->addTab(text_edit, QString::fromStdString(attempt_pair.first));
     }
+    typing_tabs->currentWidget()->setFocus();
 
 
     // Set fonts

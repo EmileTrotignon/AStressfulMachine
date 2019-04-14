@@ -78,6 +78,8 @@ protected slots:
 
     virtual void run_code();
 
+    virtual void close_tab(int index);
+
 };
 
 

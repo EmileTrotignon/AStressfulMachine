@@ -108,21 +108,21 @@ public:
         s_error, s_running, s_paused, s_proc_inputting, s_proc_outputting
     };
 
-    static const char SYNTAX_PTR_INCR = '>';
-    static const char SYNTAX_PTR_DINCR = '<';
-    static const char SYNTAX_VAL_INCR = '+';
-    static const char SYNTAX_VAL_DINCR = '-';
-    static const char SYNTAX_VAL_OUT = '.';
-    static const char SYNTAX_CHAR_OUT = ':';
-    static const char SYNTAX_VAL_IN = ',';
-    static const char SYNTAX_OPEN_GOTO = '[';
-    static const char SYNTAX_CLOSE_GOTO = ']';
-    static const char SYNTAX_GOTO_MARKER = '|';
-    static const char SYNTAX_COND_GREATER = '>';
-    static const char SYNTAX_COND_LESSER = '<';
-    static const char SYNTAX_COND_EQUAL = '=';
-    static const char SYNTAX_COND_DIFF = '/';
-    static const char SYNTAX_PTR_JUMP = '^';
+    static const char SYNTAX_PTR_INCR = '>';  // Move the pointer to the right
+    static const char SYNTAX_PTR_DINCR = '<'; // Move the pointer to the left
+    static const char SYNTAX_VAL_INCR = '+'; // Increment the current cell's value
+    static const char SYNTAX_VAL_DINCR = '-'; // Decrement the current cell's value
+    static const char SYNTAX_VAL_OUT = '.'; // Output the current cell's value as a base 10 int
+    static const char SYNTAX_CHAR_OUT = ':'; // Output the current cell's value a a char
+    static const char SYNTAX_VAL_IN = ','; // Fetch an input and put it in the current cell
+    static const char SYNTAX_OPEN_GOTO = '['; // Opening bracket for a goto anchor or a goto statement
+    static const char SYNTAX_CLOSE_GOTO = ']'; // Close it
+    static const char SYNTAX_GOTO_MARKER = '|'; // Signal the goto is not an anchor
+    static const char SYNTAX_COND_GREATER = '>'; // Signal that the goto should only be done if the current cell's value is greater than 0
+    static const char SYNTAX_COND_LESSER = '<'; // ___________ smaller than 0
+    static const char SYNTAX_COND_EQUAL = '='; // ___________ equal to 0
+    static const char SYNTAX_COND_DIFF = '/'; // ___________ different from 0
+    static const char SYNTAX_PTR_JUMP = '^'; // Set the pointer d
     static const char SYNTAX_PTR_RESET = '#';
     static const char SYNTAX_VAL_RESET = '_';
     static const char SYNTAX_DO_N_TIME = '*';

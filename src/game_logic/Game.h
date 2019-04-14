@@ -23,9 +23,9 @@ public:
     /**
      * SavePicker
      * @param save_dir
-     * @param gamefiles_dir
+     * @param gamefiles_dir_
      */
-    Game(const string &save_dir, const string &gamefiles_dir);
+    Game(const fs::path &save_dir, fs::path gamefiles_dir_);
 
     virtual void play() = 0;
 

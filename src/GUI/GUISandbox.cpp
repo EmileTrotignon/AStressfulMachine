@@ -10,6 +10,7 @@
 #include <QTimer>
 #include "GUISandbox.h"
 #include <QStyle>
+#include <QtWidgets/QMessageBox>
 
 
 void print_memory(VirtualMachine *vm, QTextEdit *memory_printer)
@@ -132,6 +133,9 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     // Create tabs
 
     typing_tabs = new QTabWidget(this);
+    typing_tabs->setDocumentMode(true);
+    typing_tabs->setTabsClosable(true);
+    connect(typing_tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(close_tab(int)));
 
     // Create typing fields
 
@@ -139,6 +143,7 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     text_edit->setFont(field_font);
     //typing_zone_layout->addWidget(text_edit, 4);
     typing_tabs->addTab(text_edit, "new_file");
+    typing_tabs->currentWidget()->setFocus();
     //typing_field = new QTextEdit(this);
     message_field = new QTextEdit(this);
     message_field->setReadOnly(true);
@@ -241,7 +246,13 @@ void GUISandbox::run_code_prep()
     run_button->setEnabled(false);
     next_operation_button->setEnabled(false);
 
-
+    if (((QTextEdit *) typing_tabs->currentWidget())->toPlainText() == "MPSI JP")
+    {
+        auto gg = new QMessageBox(this);
+        gg->setText("  ~~-*x_XxX_x*-~~    J  P    G  A  N  G    D  A  B    D  A  B     ~~-*x_XxX_x*-~~  ");
+        gg->exec();
+        ((QTextEdit *) typing_tabs->currentWidget())->setText("Meilleure prepa lyonnaise a l'ouest des lazos");
+    }
 }
 
 void GUISandbox::run_code()
@@ -256,6 +267,7 @@ void GUISandbox::run_code()
     ostringstream output("");
     VirtualMachine vm(((QTextEdit *) typing_tabs->currentWidget())->toPlainText().toStdString(), &input, &output, {},
                       vm_output_callback);
+
     try
     {
         vm.loop(vm_callback);
@@ -282,4 +294,9 @@ void GUISandbox::run_code_finish()
     run_button->setEnabled(true);
     next_operation_button->setEnabled(false);
 
+}
+
+void GUISandbox::close_tab(int index)
+{
+    if (typing_tabs->count() >= 1) typing_tabs->removeTab(index);
 }
