@@ -5,6 +5,8 @@
 #include <fstream>
 #include "VirtualMachine.h"
 #include "VirtualMachineProcedure.h"
+#include <stdlib.h>
+#include <cctype>
 
 bool is_operator(char ch)
 {
@@ -39,8 +41,8 @@ string::iterator corresponding_par(const string &s, char open, char close, strin
 VirtualMachine::VirtualMachine(const string &program_,
                                istream *in_,
                                ostream *out_,
-                               const vector<string> &include_directories_,
-                               const function<void(int)> output_callback_,
+                               const vector<fs::path> &include_directories_,
+                               const function<void(int)> &output_callback_,
                                ostream *verbose_out_) : program(program_),
                                                         in(in_),
                                                         out(out_),
@@ -62,7 +64,7 @@ VirtualMachine::VirtualMachine(const string &program_,
 
     memory = vector<int>{0};
     current_operator = program.begin();// is duplicated for a reason
-    if (isdigit(program[0]))
+    if (isdigit(program[0], locale("")))
     {
         size_t t;
         size_t size;
@@ -326,7 +328,7 @@ string VirtualMachine::file_to_string(const string &filename)
     ifstream file;
     for (const auto &p:include_directories)
     {
-        file.open(p + "/" + filename);
+        file.open(p / filename);
         if (file.is_open())
         {
             string c((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());

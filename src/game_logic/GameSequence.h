@@ -21,7 +21,7 @@ private:
     vector<string> available_levels;
     map<string, GameLevel *> levels;
     GameLevel *current_level;
-    string gamefiles_dir;
+    fs::path gamefiles_dir;
 
     vector<bool> attempted;
     vector<bool> succeeded_levels;

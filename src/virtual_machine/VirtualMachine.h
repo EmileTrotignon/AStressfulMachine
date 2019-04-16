@@ -9,54 +9,13 @@
 #include <vector>
 #include <map>
 #include <functional>
+#include <filesystem>
 
 #include "../file_utilities/file_utilities.h"
 #include "VirtualMachineException.h"
-/*
-const char* PRINTING_POINTER = "^\n";
 
-// Status macros
-const int STATUS_ERROR = -1;
-const int STATUS_RUNNING = 1;
-const int STATUS_PAUSED = 0;
-
-// Message macros
-const char* MESSAGE_LAUNCHING = "[ UNPAUSING VM ]";
-const char* MESSAGE_FINISHED = "The execution is finished";
-const char* MESSAGE_STARTING_PROCEDURE = "[ START PROCEDURE ]";
-#define MESSAGE_DEPTH "[ DEPTH " + to_string(depth) + " ]"
-
-// Syntax macros
-const char SYNTAX_PTR_INCR =       '>';
-const char SYNTAX_PTR_DINCR =      '<';
-const char SYNTAX_VAL_INCR =       '+';
-const char SYNTAX_VAL_DINCR =      '-';
-const char SYNTAX_VAL_OUT =        '.';
-const char SYNTAX_CHAR_OUT =       ':';
-const char SYNTAX_VAL_IN =         ',';
-const char SYNTAX_OPEN_GOTO =      '[';
-const char SYNTAX_CLOSE_GOTO =     ']';
-const char SYNTAX_GOTO_MARKER =    '|';
-const char SYNTAX_COND_GREATER =   '>';
-const char SYNTAX_COND_LESSER =    '<';
-const char SYNTAX_COND_EQUAL =     '=';
-const char SYNTAX_COND_DIFF =      '/';
-const char SYNTAX_PTR_JUMP =       '^';
-const char SYNTAX_PTR_RESET =      '#';
-const char SYNTAX_VAL_RESET =      '_';
-const char SYNTAX_DO_N_TIME =      '*';
-const char SYNTAX_OPEN_PROC =      '{';
-const char SYNTAX_CLOSE_PROC =     '}';
-const char SYNTAX_TERMINATE_PROC=  '!';
-const char SYNTAX_FILE_MARKER =    '~';
-*/
 
 #define PRINTING_POINTER "^\n"
-
-// Status macros
-//#define STATUS_ERROR -1
-//#define STATUS_RUNNING 1
-//#define STATUS_PAUSED 0
 
 // Message macros
 #define MESSAGE_LAUNCHING "[ UNPAUSING VM ]"
@@ -64,32 +23,8 @@ const char SYNTAX_FILE_MARKER =    '~';
 #define MESSAGE_STARTING_PROCEDURE "[ START PROCEDURE ]"
 #define MESSAGE_DEPTH "[ DEPTH " + to_string(depth) + " ]"
 
-/*
-// Syntax macros
-#define SYNTAX_PTR_INCR        '>'
-#define SYNTAX_PTR_DINCR       '<'
-#define SYNTAX_VAL_INCR        '+'
-#define SYNTAX_VAL_DINCR       '-'
-#define SYNTAX_VAL_OUT         '.'
-#define SYNTAX_CHAR_OUT        ':'
-#define SYNTAX_VAL_IN          ','
-#define SYNTAX_OPEN_GOTO       '['
-#define SYNTAX_CLOSE_GOTO      ']'
-#define SYNTAX_GOTO_MARKER     '|'
-#define SYNTAX_COND_GREATER    '>'
-#define SYNTAX_COND_LESSER     '<'
-#define SYNTAX_COND_EQUAL      '='
-#define SYNTAX_COND_DIFF       '/'
-#define SYNTAX_PTR_JUMP        '^'
-#define SYNTAX_PTR_RESET       '#'
-#define SYNTAX_VAL_RESET       '_'
-#define SYNTAX_DO_N_TIME       '*'
-#define SYNTAX_OPEN_PROC       '{'
-#define SYNTAX_CLOSE_PROC      '}'
-#define SYNTAX_TERMINATE_PROC  '!'
-#define SYNTAX_FILE_MARKER     '~'
-*/
 using namespace std;
+namespace fs = filesystem;
 
 class VirtualMachineProcedure;
 
@@ -147,7 +82,7 @@ protected:
     bool verbose_procedure;
     map<unsigned int, string::iterator> anchor_map;
     int depth;
-    vector<string> include_directories;
+    vector<fs::path> include_directories;
 
     VirtualMachineProcedure *procedure_call;
 
@@ -215,8 +150,8 @@ public:
      * @param size The size of the memory. If the program starts with a number, this will be ignored
      * @param memory The memory to be used by the machine. Allocated automatically if not specified.
      */
-    VirtualMachine(const string &program, istream *in, ostream *out, const vector<string> &include_directories = {},
-                   const function<void(int)> output_callback = nullptr,
+    VirtualMachine(const string &program, istream *in, ostream *out, const vector<fs::path> &include_directories = {},
+                   const function<void(int)> &output_callback = nullptr,
                    ostream *verbose_out = &cout);
 
     VirtualMachine(const VirtualMachine &vm) = default;

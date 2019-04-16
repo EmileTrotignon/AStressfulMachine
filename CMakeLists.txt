@@ -11,8 +11,8 @@ file(GLOB NCURSESPP
         "src/ncursespp/*")
 file(GLOB GUI
         "src/GUI/*")
-file(GLOB TUI
-        "src/TUI/*")
+#file(GLOB TUI
+#       "src/TUI/*")
 file(GLOB GAME_LOGIC
         "src/game_logic/*")
 file(GLOB VIRTUAL_MACHINE
@@ -25,39 +25,39 @@ add_executable(interpreter
         ${VIRTUAL_MACHINE}
         src/file_utilities/file_utilities.cpp src/file_utilities/file_utilities.h)
 
-target_link_libraries(interpreter libstdc++fs.a)
+#target_link_libraries(interpreter libstdc++fs.a)
 
-find_package(Curses)
+#find_package(Curses)
 
-message("NCurses found: ${Curses_FOUND}")
+#message("NCurses found: ${Curses_FOUND}")
 
-if(Curses_FOUND)
+#if(Curses_FOUND)
 
-    add_library(ncursespp
-            ${NCURSESPP})
+#    add_library(ncursespp
+#            ${NCURSESPP})
+#
+#   target_link_libraries(ncursespp ${CURSES_LIBRARIES})
+#
+# add_executable(a_stressful_machine_tui
+#        src/mains/a_stressful_machine_tui.cpp
+#       ${VIRTUAL_MACHINE}
+#            ${TUI}
+#${GAME_LOGIC}
+#${TINYXML}
+#src/file_utilities/file_utilities.cpp src/file_utilities/file_utilities.h
+#)
 
-    target_link_libraries(ncursespp ${CURSES_LIBRARIES})
+#    target_link_libraries(a_stressful_machine_tui libstdc++fs.a)
+#    target_link_libraries(a_stressful_machine_tui ${CURSES_LIBRARIES})
+#    target_link_libraries(a_stressful_machine_tui ncursespp)
 
-    add_executable(a_stressful_machine_tui
-            src/mains/a_stressful_machine_tui.cpp
-            ${VIRTUAL_MACHINE}
-            ${TUI}
-            ${GAME_LOGIC}
-            ${TINYXML}
-            src/file_utilities/file_utilities.cpp src/file_utilities/file_utilities.h
-            )
+#    add_executable(unit_test
+#            src/mains/unit_test.cpp
+#            ${VIRTUAL_MACHINE})
 
-    target_link_libraries(a_stressful_machine_tui libstdc++fs.a)
-    target_link_libraries(a_stressful_machine_tui ${CURSES_LIBRARIES})
-    target_link_libraries(a_stressful_machine_tui ncursespp)
+#    target_link_libraries(unit_test ncursespp)
 
-    add_executable(unit_test
-            src/mains/unit_test.cpp
-            ${VIRTUAL_MACHINE})
-
-    target_link_libraries(unit_test ncursespp)
-
-endif(Curses_FOUND)
+#endif(Curses_FOUND)
 
 # GUI App with Qt
 
@@ -73,6 +73,7 @@ if(Qt5Widgets_FOUND)
     set(CMAKE_AUTOMOC ON)
 
     find_package(Qt5Widgets CONFIG)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
     add_executable(a_stressful_machine_gui
             src/mains/a_stressful_machine_gui.cpp
@@ -84,7 +85,9 @@ if(Qt5Widgets_FOUND)
             src/GUI/GUISandbox.cpp src/GUI/GUISandbox.h src/GUI/GUIPickSave.cpp src/GUI/GUIPickSave.h src/GUI/GUIAdventureMode.cpp src/GUI/GUIAdventureMode.h src/GUI/GUIPickLevel.cpp src/GUI/GUIPickLevel.h)
 
     target_link_libraries(a_stressful_machine_gui Qt5::Widgets)
-    target_link_libraries(a_stressful_machine_gui libstdc++fs.a)
+    if (UNIX)
+        target_link_libraries(a_stressful_machine_gui libstdc++fs.a)
+    endif (UNIX)
 
 endif(Qt5Widgets_FOUND)
 

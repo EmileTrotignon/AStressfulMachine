@@ -3,12 +3,12 @@
 //
 
 #include "SavePicker.h"
-#include <ncurses.h>
 #include <assert.h>
 
 namespace fs = std::filesystem;
 
-SavePicker::SavePicker(const string &save_dir_, const string &gamefiles_) : save_dir(save_dir_), gamefiles(gamefiles_)
+SavePicker::SavePicker(const fs::path &save_dir_, const fs::path &gamefiles_) : save_dir(save_dir_),
+                                                                                gamefiles(gamefiles_)
 {
     saves = filesystem_ls(save_dir);
 

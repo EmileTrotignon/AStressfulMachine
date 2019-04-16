@@ -6,7 +6,6 @@
 #include <fstream>
 #include <thread>
 #include <QtCore/QEventLoop>
-#include <sys/socket.h>
 #include <QTimer>
 #include "GUISandbox.h"
 #include <QStyle>

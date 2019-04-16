@@ -5,7 +5,7 @@
 //
 
 #include "GameSequence.h"
-#include "../tinyxml/tinyxml.h"
+#include "tinyxml.h"
 #include <filesystem>
 
 using namespace std;
@@ -18,7 +18,7 @@ GameSequence::GameSequence(string savename_, fs::path saves_dir_, const fs::path
         gamefiles_dir(gamefiles_dir_),
         current_level(nullptr)
 {
-    available_levels = filesystem_ls(gamefiles_dir + "/levels");
+    available_levels = filesystem_ls(gamefiles_dir / "levels");
     conform_save_to_gamefiles();
     levels = map<string, GameLevel *>();
     for (const string &level_name:available_levels)
@@ -128,12 +128,12 @@ void GameSequence::save_to_xml()
 
     //dump_to_stdout( &doc );
     //doc.SaveFile( save_name );
-    doc.SaveFile((saves_dir / savename / "save.xml").c_str());
+    doc.SaveFile((saves_dir / savename / "save.xml").string().c_str());
 }
 
 void GameSequence::load_from_xml()
 {
-    TiXmlDocument doc((saves_dir / savename / "save.xml").c_str());
+    TiXmlDocument doc((saves_dir / savename / "save.xml").string().c_str());
     doc.LoadFile();
     if (!doc.LoadFile())
     {

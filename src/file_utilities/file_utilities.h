@@ -10,16 +10,17 @@
 #include <vector>
 
 using namespace std;
+namespace fs = filesystem;
 
 string::iterator corresponding_par(const string &s, char open, char close, string::iterator par_address);
 
 int corresponding_par_backward(const string &s, char open, char close, unsigned int par_address);
 
-string file_to_string(const string &filename);
+string file_to_string(const fs::path &filename);
 
-void string_to_file(const string &content, const string &filename);
+void string_to_file(const string &content, const fs::path &filename);
 
-vector<string> filesystem_ls(const string &dir);
+vector<string> filesystem_ls(const fs::path &dir);
 
 size_t size_of_longest_string(const vector<string> &vs);
 

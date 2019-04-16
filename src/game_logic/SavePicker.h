@@ -22,12 +22,12 @@ class SavePicker
 private:
 
     vector<string> saves;
-    string gamefiles;
+    fs::path gamefiles;
     fs::path save_dir;
 
 public:
 
-    SavePicker(const string &save_dir, const string &gamefiles);
+    SavePicker(const fs::path &save_dir, const fs::path &gamefiles);
 
     vector<string> get_saves() const;
 
