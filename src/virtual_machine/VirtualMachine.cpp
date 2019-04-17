@@ -280,7 +280,7 @@ void VirtualMachine::do_n_time()
     int n;
     size_t t;
     n = extract_number_from_program(&t); //stoi(number, &t);
-    current_operator = program.begin() + t;
+    current_operator = program.begin() + t + 1;
     for (int j = 0; j < n; j++)
     {
         do_one_iteration();

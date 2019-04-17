@@ -24,7 +24,9 @@ add_executable(interpreter
         src/mains/interpreter.cpp
         ${VIRTUAL_MACHINE}
         src/file_utilities/file_utilities.cpp src/file_utilities/file_utilities.h)
-
+if (UNIX)
+    target_link_libraries(interpreter libstdc++fs.a)
+endif (UNIX)
 #target_link_libraries(interpreter libstdc++fs.a)
 
 #find_package(Curses)

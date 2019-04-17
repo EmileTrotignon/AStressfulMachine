@@ -10,7 +10,7 @@ int main(int argc, char ** argv)
     //GUIWindowMainMenu mainMenu;
     //mainMenu.show();
 
-    GameGUI game("data/saves", "data/gamefiles");
+    GameGUI game("../data/saves", "../data/gamefiles");
     game.play();
 
     return QApplication::exec();
