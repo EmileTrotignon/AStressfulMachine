@@ -84,7 +84,7 @@ if(Qt5Widgets_FOUND)
             ${GAME_LOGIC}
             ${TINYXML}
             src/file_utilities/file_utilities.cpp src/file_utilities/file_utilities.h
-            src/GUI/GUISandbox.cpp src/GUI/GUISandbox.h src/GUI/GUIPickSave.cpp src/GUI/GUIPickSave.h src/GUI/GUIAdventureMode.cpp src/GUI/GUIAdventureMode.h src/GUI/GUIPickLevel.cpp src/GUI/GUIPickLevel.h)
+            src/GUI/GUISandbox.cpp src/GUI/GUISandbox.h src/GUI/GUIPickSave.cpp src/GUI/GUIPickSave.h src/GUI/GUIAdventureMode.cpp src/GUI/GUIAdventureMode.h src/GUI/GUIPickLevel.cpp src/GUI/GUIPickLevel.h src/GUI/GuiFileEdit.cpp src/GUI/GuiFileEdit.h)
 
     target_link_libraries(a_stressful_machine_gui Qt5::Widgets)
     if (UNIX)

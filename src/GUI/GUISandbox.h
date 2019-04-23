@@ -18,6 +18,8 @@
 #include <QtWidgets/QTabWidget>
 #include <QPixmap>
 #include <QIcon>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMdiArea>
 
 #include "VirtualMachine.h"
 
@@ -34,11 +36,13 @@ protected:
 
     virtual void place_widgets_on_layout();
 
+    virtual void fill_menu_bar();
+
     static const int max_speed = 10;
 
     QMenuBar *menu_bar;
 
-    QGridLayout *windowLayout;
+    QHBoxLayout *window_layout;
     QVBoxLayout *io_fields_layout;
     QTabWidget *typing_tabs;
     QVBoxLayout *typing_zone_layout;
@@ -70,6 +74,7 @@ protected:
 
     virtual void raw_vm_output_callback(int output);
 
+
     void run_code_prep();
 
     void run_code_finish();
@@ -79,6 +84,15 @@ protected slots:
     virtual void run_code();
 
     virtual void close_tab(int index);
+
+    virtual void new_tab();
+
+    virtual void save_file();
+
+    virtual void save_as_file();
+
+    virtual void open_file();
+
 
 };
 
