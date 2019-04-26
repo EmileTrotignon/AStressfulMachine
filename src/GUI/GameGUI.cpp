@@ -4,24 +4,18 @@
 
 #include "GameGUI.h"
 
-GameGUI::GameGUI(const string &saves_dir_, const string &gamefiles_dir_) : QStackedWidget(nullptr),
-                                                                           Game(saves_dir_, gamefiles_dir_)
+GameGUI::GameGUI(const string &saves_dir_, const string &gamefiles_dir_) : QMainWindow(nullptr),
+                                                                           Game(saves_dir_, gamefiles_dir_),
+                                                                           adventure_mode_widget(nullptr),
+                                                                           sandbox(nullptr)
 {
     qDebug() << "Constructing GameGUI";
     setObjectName("GUIWindow");
     setWindowTitle("A Stressful Machine");
 
-    // Create the tree windows
     main_menu_widget = new GUIMainMenu(this);
-    adventure_mode_widget = new GUIAdventureMode(this);
-    sandbox = new GUISandbox(this);
 
-    // Add them to the stack
-    addWidget(main_menu_widget);
-    addWidget(adventure_mode_widget);
-    addWidget(sandbox);
-
-    setCurrentWidget(main_menu_widget);
+    setCentralWidget(main_menu_widget);
 
     qDebug() << "Creating shortcut";
     auto *shortcut = new QShortcut(this);
@@ -37,12 +31,16 @@ void GameGUI::play()
 
 void GameGUI::open_adventure_mode()
 {
-    setCurrentWidget(adventure_mode_widget);
+    delete adventure_mode_widget;
+    adventure_mode_widget = new GUIAdventureMode(this);
+    setCentralWidget(adventure_mode_widget);
 }
 
 void GameGUI::open_sandbox()
 {
-    setCurrentWidget(sandbox);
+    delete sandbox;
+    sandbox = new GUISandbox(this);
+    setCentralWidget(sandbox);
 }
 
 void GameGUI::open_esc_menu()
@@ -50,9 +48,9 @@ void GameGUI::open_esc_menu()
 
     qDebug() << "Esc shortcut pressed";
 
-    if (currentWidget() != main_menu_widget)
+    if (centralWidget() != main_menu_widget)
     {
-        auto esc_dlg = new QDialog(currentWidget());
+        auto esc_dlg = new QDialog(centralWidget());
         esc_dlg->setObjectName("Escape dialog");
         esc_dlg->setWindowTitle("A Stressful Machine");
         // esc_menu = new QDialogButtonBox(QDialogButtonBox::Close | QDialogButtonBox::Ok, Qt::Vertical, esc_dlg);
@@ -82,11 +80,11 @@ void GameGUI::esc_dlg_rejected()
 
 void GameGUI::esc_dlg_quit()
 {
-    setCurrentWidget(main_menu_widget);
+    setCentralWidget(main_menu_widget);
     emit resume_game();
 }
 
 void GameGUI::return_main_menu_from_pick_save()
 {
-    setCurrentWidget(main_menu_widget);
+    setCentralWidget(main_menu_widget);
 }

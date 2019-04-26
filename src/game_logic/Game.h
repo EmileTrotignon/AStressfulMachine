@@ -15,7 +15,6 @@ protected:
 
     SavePicker *save_picker;
     GameSequence *game_sequence;
-    fs::path gamefiles_dir;
 
 
 public:
@@ -28,6 +27,8 @@ public:
     Game(const fs::path &save_dir, fs::path gamefiles_dir_);
 
     virtual void play() = 0;
+
+    const fs::path gamefiles_dir;
 
 };
 

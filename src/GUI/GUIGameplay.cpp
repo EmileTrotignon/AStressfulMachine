@@ -2,8 +2,10 @@
 // Created by marcel on 25/03/19.
 //
 
+#include <QtCore/QDir>
 #include "GUIGameplay.h"
 #include "GameGUI.h"
+#include "GUIFileEdit.h"
 
 void GUIGameplay::raw_gl_callback(GameLevel *gl)
 {
@@ -28,9 +30,11 @@ GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(parent), 
 
     for (const auto &attempt_pair : game->game_sequence->get_current_level()->attempts)
     {
-        auto text_edit = new QTextEdit(this);
+        auto text_edit = new GUIFileEdit(game->game_sequence->get_current_save_path() /
+                                         game->game_sequence->get_current_level()->get_level_name() /
+                                         attempt_pair.first,
+                                         this);
         text_edit->setFont(field_font);
-        text_edit->insertPlainText(QString::fromStdString(attempt_pair.second));
         //typing_zone_layout->addWidget(text_edit, 4);
         typing_tabs->addTab(text_edit, QString::fromStdString(attempt_pair.first));
     }
@@ -97,4 +101,29 @@ void GUIGameplay::send_typed_text_to_level()
         game->game_sequence->get_current_level()->attempts[typing_tabs->tabText(i).toStdString()] =
                 ((QTextEdit *) typing_tabs->widget(i))->toPlainText().toStdString();
     }
+}
+
+void GUIGameplay::new_tab()
+{
+    GUISandbox::new_tab();
+    auto text_edit = new GUIFileEdit(this);
+
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+                                         tr("User name:"), QLineEdit::Normal,
+                                         "", &ok);
+    if (ok && !text.isEmpty())
+    {
+        text_edit->setFont(field_font);
+        text_edit->file_path = game->game_sequence->get_current_save_path() /
+                               game->game_sequence->get_current_level()->get_level_name() / text.toStdString();
+        typing_tabs->addTab(text_edit, text);
+        typing_tabs->currentWidget()->setFocus();
+    }
+
+}
+
+void GUIGameplay::close_tab(int index)
+{
+    GUISandbox::close_tab(index);
 }

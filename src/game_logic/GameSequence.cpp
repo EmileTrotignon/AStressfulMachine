@@ -173,3 +173,8 @@ void GameSequence::load_from_xml()
         }
     }
 }
+
+fs::path GameSequence::get_current_save_path()
+{
+    return saves_dir / savename;
+}

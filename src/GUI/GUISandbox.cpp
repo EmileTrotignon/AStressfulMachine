@@ -2,15 +2,16 @@
 // Created by emile on 28/03/19.
 //
 
-#include <VirtualMachine.h>
 #include <fstream>
 #include <thread>
 #include <QtCore/QEventLoop>
 #include <QTimer>
-#include "GUISandbox.h"
 #include <QStyle>
 #include <QtWidgets/QMessageBox>
 
+#include "VirtualMachine.h"
+#include "GUISandbox.h"
+#include "GUIFileEdit.h"
 
 void print_memory(VirtualMachine *vm, QTextEdit *memory_printer)
 {
@@ -93,14 +94,12 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     field_font.setStyleHint(QFont::TypeWriter); // For portability
     field_font.setPointSize(12);
 
-
-    // Create menu bar and menus
-
-    menu_bar = new QMenuBar;
+    menu_bar = new QMenuBar(this);
+    fill_menu_bar();
 
     // Create layouts
 
-    windowLayout = new QGridLayout(this);
+    window_layout = new QHBoxLayout(this);
     typing_zone_layout = new QVBoxLayout;
     button_layout = new QHBoxLayout;
     io_fields_layout = new QVBoxLayout;
@@ -138,7 +137,7 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
 
     // Create typing fields
 
-    auto text_edit = new QTextEdit(this);
+    auto text_edit = new GUIFileEdit(this);
     text_edit->setFont(field_font);
     //typing_zone_layout->addWidget(text_edit, 4);
     typing_tabs->addTab(text_edit, "new_file");
@@ -201,6 +200,10 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
 
 void GUISandbox::place_widgets_on_layout()
 {
+    ((QMainWindow *) parent())->menuBar()->hide();
+    delete ((QMainWindow *) parent())->menuBar();
+    ((QMainWindow *) parent())->setMenuBar(menu_bar);
+
 // Add Widget to layout
 
     io_fields_layout->addWidget(input_label);
@@ -225,8 +228,8 @@ void GUISandbox::place_widgets_on_layout()
     // Add sublayout to layout
 
     typing_zone_layout->addLayout(button_layout);
-    windowLayout->addLayout(typing_zone_layout, 0, 0);
-    windowLayout->addLayout(io_fields_layout, 0, 1);
+    window_layout->addLayout(typing_zone_layout);
+    window_layout->addLayout(io_fields_layout);
 }
 
 void GUISandbox::run_code_prep()
@@ -277,7 +280,7 @@ void GUISandbox::run_code()
     message_field->append("The execution is finished");
 
     run_code_finish();
-    
+
     ((QTextEdit *) typing_tabs->currentWidget())->insertPlainText(QString::fromStdString(vm.get_program()));
 }
 
@@ -298,4 +301,77 @@ void GUISandbox::run_code_finish()
 void GUISandbox::close_tab(int index)
 {
     if (typing_tabs->count() >= 1) typing_tabs->removeTab(index);
+}
+
+void GUISandbox::save_file()
+{
+    for (int i = 0; i < typing_tabs->count(); i++)
+    {
+        if (((GUIFileEdit *) (typing_tabs->widget(i)))->has_file_path())
+        {
+            ((GUIFileEdit *) (typing_tabs->widget(i)))->save();
+        } else if (i == typing_tabs->currentIndex())
+        {
+            ((GUIFileEdit *) (typing_tabs->widget(i)))->save();
+            if (((GUIFileEdit *) (typing_tabs->widget(i)))->has_file_path())
+            {
+                typing_tabs->setTabText(i, QString::fromStdString(
+                        ((GUIFileEdit *) (typing_tabs->widget(i)))->file_path.filename().string()));
+            }
+        }
+    }
+}
+
+void GUISandbox::save_as_file()
+{
+    ((GUIFileEdit *) (typing_tabs->currentWidget()))->save_as();
+}
+
+void GUISandbox::open_file()
+{
+
+}
+
+void GUISandbox::fill_menu_bar()
+{
+    // Create menu bar and menus
+
+    auto file_menu = new QMenu("File", menu_bar);
+
+    // File menu
+    auto new_tab_action = new QAction("New tab");
+    new_tab_action->setShortcut(Qt::CTRL + Qt::Key_T);
+    connect(new_tab_action, SIGNAL(triggered()), this, SLOT(new_tab()));
+
+    auto save_file_action = new QAction("Save", file_menu);
+    save_file_action->setShortcut(QKeySequence::Save);
+    connect(save_file_action, SIGNAL(triggered()), this, SLOT(save_file()));
+
+    auto save_as_file_action = new QAction("Save as", file_menu);
+    save_as_file_action->setShortcut(QKeySequence::SaveAs);
+    connect(save_as_file_action, SIGNAL(triggered()), this, SLOT(save_as_file()));
+
+    auto open_file_action = new QAction("Open", file_menu);
+    open_file_action->setShortcut(QKeySequence::Open);
+    connect(open_file_action, SIGNAL(triggered()), this, SLOT(open_file()));
+
+    // Add actions to menu
+
+    file_menu->addAction(new_tab_action);
+    file_menu->addAction(save_file_action);
+    file_menu->addAction(save_as_file_action);
+    file_menu->addAction(open_file_action);
+
+    // Add menu to menu bar
+
+    menu_bar->addMenu(file_menu);
+
+}
+
+void GUISandbox::new_tab()
+{
+    auto text_edit = new GUIFileEdit(this);
+    text_edit->setFont(field_font);
+    typing_tabs->addTab(text_edit, "new_file");
+    typing_tabs->currentWidget()->setFocus();
 }

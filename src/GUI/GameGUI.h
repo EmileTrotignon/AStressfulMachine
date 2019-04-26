@@ -24,7 +24,7 @@ class GUIPickSave;
 class GUIPickLevel;
 
 
-class GameGUI : public QStackedWidget, public Game
+class GameGUI : public QMainWindow, public Game
 {
 Q_OBJECT
 

@@ -30,6 +30,11 @@ protected slots:
 
     void run_code() override;
 
+    void new_tab() override;
+
+    void close_tab(int index) override;
+
+
 private:
     QTextEdit *instruction_field;
     QTextEdit *vm_solution_output;

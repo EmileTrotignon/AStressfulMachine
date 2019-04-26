@@ -47,6 +47,8 @@ public:
 
     void save_to_save();
 
+    fs::path get_current_save_path();
+
 };
 
 
