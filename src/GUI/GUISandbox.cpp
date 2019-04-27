@@ -202,7 +202,6 @@ void GUISandbox::place_widgets_on_layout()
 {
     ((QMainWindow *) parent())->menuBar()->hide();
     delete ((QMainWindow *) parent())->menuBar();
-    ((QMainWindow *) parent())->setMenuBar(menu_bar);
 
 // Add Widget to layout
 

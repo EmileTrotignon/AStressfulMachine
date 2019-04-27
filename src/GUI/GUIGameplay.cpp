@@ -3,6 +3,7 @@
 //
 
 #include <QtCore/QDir>
+#include <QtWidgets/QtWidgets>
 #include "GUIGameplay.h"
 #include "GameGUI.h"
 #include "GUIFileEdit.h"
@@ -125,5 +126,12 @@ void GUIGameplay::new_tab()
 
 void GUIGameplay::close_tab(int index)
 {
-    GUISandbox::close_tab(index);
+    QMessageBox::StandardButton b = QMessageBox::critical(this, "Confirm", "Do you really want to close this window ?",
+                                                          QMessageBox::Close | QMessageBox::Cancel,
+                                                          QMessageBox::Cancel);
+    if (b == QMessageBox::Close)
+    {
+        fs::remove(((GUIFileEdit *) typing_tabs->widget(index))->file_path);
+        GUISandbox::close_tab(index);
+    }
 }

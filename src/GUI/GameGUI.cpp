@@ -31,14 +31,12 @@ void GameGUI::play()
 
 void GameGUI::open_adventure_mode()
 {
-    delete adventure_mode_widget;
     adventure_mode_widget = new GUIAdventureMode(this);
     setCentralWidget(adventure_mode_widget);
 }
 
 void GameGUI::open_sandbox()
 {
-    delete sandbox;
     sandbox = new GUISandbox(this);
     setCentralWidget(sandbox);
 }
@@ -80,6 +78,7 @@ void GameGUI::esc_dlg_rejected()
 
 void GameGUI::esc_dlg_quit()
 {
+    main_menu_widget = new GUIMainMenu(this);
     setCentralWidget(main_menu_widget);
     emit resume_game();
 }
