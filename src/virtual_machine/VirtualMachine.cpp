@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by emile on 25/02/19.
 //
@@ -38,22 +40,22 @@ string::iterator corresponding_par(const string &s, char open, char close, strin
 }
 
 
-VirtualMachine::VirtualMachine(const string &program_,
+VirtualMachine::VirtualMachine(string program_,
                                istream *in_,
                                ostream *out_,
-                               const vector<fs::path> &include_directories_,
-                               const function<void(int)> &output_callback_,
-                               ostream *verbose_out_) : program(program_),
+                               vector<fs::path> include_directories_,
+                               function<void(int)> output_callback_,
+                               ostream *verbose_out_) : program(move(program_)),
                                                         in(in_),
                                                         out(out_),
                                                         verbose_out(verbose_out_),
-                                                        output_callback(output_callback_),
+                                                        output_callback(move(output_callback_)),
                                                         procedure_call(nullptr),
                                                         verbose(false),
                                                         verbose_procedure(false),
                                                         depth(0),
                                                         print_errors(false),
-                                                        include_directories(include_directories_)
+                                                        include_directories(std::move(include_directories_))
 {
     status = s_paused;
 

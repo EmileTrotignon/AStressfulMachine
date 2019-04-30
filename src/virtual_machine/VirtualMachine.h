@@ -150,8 +150,8 @@ public:
      * @param size The size of the memory. If the program starts with a number, this will be ignored
      * @param memory The memory to be used by the machine. Allocated automatically if not specified.
      */
-    VirtualMachine(const string &program, istream *in, ostream *out, const vector<fs::path> &include_directories = {},
-                   const function<void(int)> &output_callback = nullptr,
+    VirtualMachine(string program, istream *in, ostream *out, vector<fs::path> include_directories = {},
+                   function<void(int)> output_callback = nullptr,
                    ostream *verbose_out = &cout);
 
     VirtualMachine(const VirtualMachine &vm) = default;
