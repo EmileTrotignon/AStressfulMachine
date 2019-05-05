@@ -85,5 +85,6 @@ void GameGUI::esc_dlg_quit()
 
 void GameGUI::return_main_menu_from_pick_save()
 {
+    main_menu_widget = new GUIMainMenu(this);
     setCentralWidget(main_menu_widget);
 }
