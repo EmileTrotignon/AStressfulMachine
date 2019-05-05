@@ -27,7 +27,6 @@ add_executable(interpreter
 if (UNIX)
     target_link_libraries(interpreter libstdc++fs.a)
 endif (UNIX)
-#target_link_libraries(interpreter libstdc++fs.a)
 
 #find_package(Curses)
 
@@ -63,13 +62,15 @@ endif (UNIX)
 
 # GUI App with Qt
 
-# find_package(Qt5 REQUIRED)
-
 find_package(Qt5Widgets)
 
-message("Qt5 found: ${Qt5Widgets_FOUND}")
+message("Qt5Widgets found: ${Qt5Widgets_FOUND}")
 
-if(Qt5Widgets_FOUND)
+find_package(Qt5Multimedia)
+
+message("Qt5Multimedia found: ${Qt5Multimedia_FOUND}")
+
+if(Qt5Widgets_FOUND AND Qt5Multimedia_FOUND)
 
     # Instruct CMake to run moc automatically when needed
     set(CMAKE_AUTOMOC ON)
@@ -87,11 +88,12 @@ if(Qt5Widgets_FOUND)
             src/GUI/GUISandbox.cpp src/GUI/GUISandbox.h src/GUI/GUIPickSave.cpp src/GUI/GUIPickSave.h src/GUI/GUIAdventureMode.cpp src/GUI/GUIAdventureMode.h src/GUI/GUIPickLevel.cpp src/GUI/GUIPickLevel.h src/GUI/GUIFileEdit.cpp src/GUI/GUIFileEdit.h)
 
     target_link_libraries(a_stressful_machine_gui Qt5::Widgets)
+    target_link_libraries(a_stressful_machine_gui Qt5::Multimedia)
     if (UNIX)
         target_link_libraries(a_stressful_machine_gui libstdc++fs.a)
     endif (UNIX)
 
-endif(Qt5Widgets_FOUND)
+endif(Qt5Widgets_FOUND AND Qt5Multimedia_FOUND)
 
 #add_executable(scratch
 #        src/ncurses_scratch.cpp)
