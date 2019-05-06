@@ -181,11 +181,11 @@ GUISandbox::GUISandbox(fs::path assets_, QWidget *parent_) : QWidget(parent_), a
     connect(run_button, SIGNAL(clicked(bool)), this, SLOT(run_code()));
 
     next_operation_button = new QPushButton("Next", this);
-    next_operation_button->setIcon(QIcon(QString::fromStdString(assets / "icons/avancer.png")));
+    next_operation_button->setIcon(QIcon(QString::fromStdString((assets / "icons/avancer.png").string())));
     next_operation_button->setEnabled(false);
 
     stop_button = new QPushButton("Stop");
-    stop_button->setIcon(QIcon(QString::fromStdString(assets / "icons/arreter.png")));
+    stop_button->setIcon(QIcon(QString::fromStdString((assets / "icons/arreter.png").string())));
     stop_button->setEnabled(false);
 
 
