@@ -82,6 +82,8 @@ protected:
 
     QSlider *speed_slider;
 
+    bool about_to_close;
+
     virtual void raw_vm_callback(VirtualMachine *vm);
 
     virtual void raw_vm_output_callback(int output);
@@ -90,6 +92,10 @@ protected:
     void run_code_prep();
 
     void run_code_finish();
+
+private slots:
+
+    void is_about_to_close();
 
 protected slots:
 

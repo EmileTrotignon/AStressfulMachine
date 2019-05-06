@@ -13,6 +13,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QDebug>
 #include <QtWidgets/QFileDialog>
+#include <QApplication>
 
 #include "VirtualMachine.h"
 #include "GUISandbox.h"
@@ -85,7 +86,9 @@ void GUISandbox::raw_vm_output_callback(int output)
     vm_output->append(QString::number(output));
 }
 
-GUISandbox::GUISandbox(fs::path assets_, QWidget *parent_) : QWidget(parent_), assets(std::move(assets_))
+GUISandbox::GUISandbox(fs::path assets_, QWidget *parent_) : QWidget(parent_),
+                                                             assets(std::move(assets_)),
+                                                             about_to_close(false)
 {
     this->setObjectName("GUISandbox");
     this->setWindowTitle("A Stressful Machine");
@@ -209,6 +212,8 @@ GUISandbox::GUISandbox(fs::path assets_, QWidget *parent_) : QWidget(parent_), a
     message_field->setFont(field_font);
 
     place_widgets_on_layout();
+
+    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(is_about_to_close()));
 }
 
 void GUISandbox::place_widgets_on_layout()
@@ -401,6 +406,14 @@ void GUISandbox::close_current_tab()
 
 GUISandbox::~GUISandbox()
 {
-    ((QMainWindow *) window())->menuBar()->hide();
-    delete ((QMainWindow *) window())->menuBar();
+    if (!about_to_close)
+    {
+        ((QMainWindow *) window())->menuBar()->hide();
+        delete ((QMainWindow *) window())->menuBar();
+    }
+}
+
+void GUISandbox::is_about_to_close()
+{
+    about_to_close = true;
 }
