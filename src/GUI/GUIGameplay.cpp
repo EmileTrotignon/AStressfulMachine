@@ -21,6 +21,9 @@ void GUIGameplay::raw_gl_callback(GameLevel *gl)
 GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(game_->gamefiles_dir / "assets", parent),
                                                             game(game_), vm_input()
 {
+    file_menu->removeAction(open_file_action);
+    file_menu->removeAction(save_as_file_action);
+
     instruction_field = new QTextEdit(this);
     instruction_field->insertPlainText(
             QString::fromStdString(game->game_sequence->get_current_level()->get_instructions()));
@@ -34,7 +37,6 @@ GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(game_->ga
 
     vm_solution_output_label = new QLabel("Solution output", this);
     vm_solution_output_label->setFont(label_font);
-
 
     typing_tabs->removeTab(0);
 
