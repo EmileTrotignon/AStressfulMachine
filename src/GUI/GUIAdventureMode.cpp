@@ -5,6 +5,7 @@
 #include "GUIAdventureMode.h"
 #include "GameGUI.h"
 #include <QSound>
+#include <QFileInfo>
 
 GUIAdventureMode::GUIAdventureMode(GameGUI *game_) : QStackedWidget(game_), game(game_), level_picker(nullptr),
                                                      game_widget(nullptr)
@@ -38,7 +39,8 @@ void GUIAdventureMode::pick_level()
 
 void GUIAdventureMode::launch_game()
 {
-	QSound bells("../data/assets/sons/Start_game.wav");
+	// QSound bells("../data/assets/sons/Start_game.wav");
+	QSound bells(QFileInfo("../data/assets/sons/Start_game.wav").absoluteFilePath());
 	bells.play();
     if (game_widget == nullptr)
     {
