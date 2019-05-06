@@ -12,6 +12,8 @@
 #include <QLabel>
 #include <QFont>
 #include <QInputDialog>
+#include <QSound>
+#include <QMediaPlayer>
 
 // class QPushButton;
 class GUIMainMenu : public QWidget
@@ -24,6 +26,14 @@ public:
 
     ~GUIMainMenu() override;
 
+
+private slots:
+
+	// Used in GUIMainMenu
+	void song_on();
+
+	void song_off();
+
 private:
     QGridLayout *window_Layout;
     QVBoxLayout *button_layout;
@@ -33,6 +43,10 @@ private:
     QPushButton *sandbox_button;
     QPushButton *settings_button;
     QPushButton *quit_game_button;
+	QPushButton * playbutton;
+	QPushButton * stopbutton;
+	QSound* sound;
+	QMediaPlayer* level_w;
 };
 
 

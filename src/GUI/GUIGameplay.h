@@ -12,6 +12,7 @@
 #include <QFont>
 #include <QTextBrowser>
 #include <QVBoxLayout>
+#include <QMediaPlayer>
 #include "GUISandbox.h"
 
 class GameGUI;
@@ -38,6 +39,8 @@ protected slots:
 private:
     QTextEdit *instruction_field;
     QTextEdit *vm_solution_output;
+	QMediaPlayer * level_w;
+	QMediaPlayer * level_f;
     GameGUI *game;
     istringstream vm_input;
 

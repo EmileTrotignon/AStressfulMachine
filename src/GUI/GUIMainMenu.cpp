@@ -6,11 +6,16 @@
 #include "GameGUI.h"
 
 #include <QApplication>
+#include <QSound>
 #include <iostream>
+#include <QMediaPlayer>
 
 GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
 {
     this->setObjectName("this"); // For debugging purposes
+
+	QSound bells("../data/assets/sons/Start_game.wav");
+	bells.play();
 
     // Create font
     title_font.setFamily("arial");
@@ -31,6 +36,24 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
     settings_button = new QPushButton("Settings", this);
     quit_game_button = new QPushButton("Quit Game", this);
 
+	playbutton = new QPushButton("Play Song", this);
+	stopbutton = new QPushButton("Stop Song", this);
+	
+	// Songs
+	sound = new QSound("../data/assets/sons/Start_game.wav");
+
+	level_w = new QMediaPlayer;
+	level_w->setMedia(QUrl::fromLocalFile("../data/assets/sons/Game_song.wav"));
+	level_w->setVolume(50);
+	level_w->play();
+
+	if (level_w->state() == QMediaPlayer::PlayingState) {
+		level_w->setPosition(0);
+	}
+	else if (level_w->state() == QMediaPlayer::StoppedState) {
+		level_w->play();
+	}
+
     // Insert buttons in button layout
     button_layout = new QVBoxLayout;
     button_layout->setObjectName("button_layout");
@@ -39,6 +62,8 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
     button_layout->addWidget(sandbox_button);
     button_layout->addWidget(settings_button);
     button_layout->addWidget(quit_game_button);
+	button_layout->addWidget(playbutton);
+	button_layout->addWidget(stopbutton);
 
     // Create main layout
     window_Layout = new QGridLayout(this);
@@ -62,6 +87,8 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
     connect(adventure_mode_button, SIGNAL(clicked(bool)), parent(), SLOT (open_adventure_mode()));
     //connect(new_game_button, SIGNAL (clicked(bool)), this, SLOT (createNewGameDialog()));
     connect(sandbox_button, SIGNAL(clicked(bool)), parent(), SLOT (open_sandbox()));
+	connect(playbutton, SIGNAL(clicked(bool)), this, SLOT(song_on()));
+	connect(stopbutton, SIGNAL(clicked(bool)), this, SLOT(song_off()));
 }
 
 GUIMainMenu::~GUIMainMenu()
@@ -70,6 +97,18 @@ GUIMainMenu::~GUIMainMenu()
     // Does this call parent's destructor?
     std::cout << "Destructing GUIWindowMainMenu" << std::endl;
     delete button_layout;
+}
+
+void GUIMainMenu::song_on()
+{
+	//sound->play();
+	level_w->play();
+}
+
+void GUIMainMenu::song_off()
+{
+	sound->stop();
+	level_w->stop();
 }
 
 /*void GUIMainMenu::createNewGameDialog()

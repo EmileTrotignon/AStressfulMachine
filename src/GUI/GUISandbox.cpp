@@ -6,6 +6,7 @@
 #include <thread>
 #include <QtCore/QEventLoop>
 #include <QTimer>
+#include <QSound>
 #include <QStyle>
 #include <QtWidgets/QMessageBox>
 
@@ -85,7 +86,7 @@ GUISandbox::GUISandbox(QWidget *parent) : QWidget(parent)
     this->setObjectName("GUISandbox");
     this->setWindowTitle("A Stressful Machine");
 
-
+	
     // Create fonts
 
     label_font.setFamily("Monospace");

@@ -3,6 +3,7 @@
 //
 
 #include "GameGUI.h"
+#include <QSound>
 
 GameGUI::GameGUI(const string &saves_dir_, const string &gamefiles_dir_) : QMainWindow(nullptr),
                                                                            Game(saves_dir_, gamefiles_dir_),
@@ -33,12 +34,14 @@ void GameGUI::open_adventure_mode()
 {
     adventure_mode_widget = new GUIAdventureMode(this);
     setCentralWidget(adventure_mode_widget);
+	
 }
 
 void GameGUI::open_sandbox()
 {
     sandbox = new GUISandbox(this);
     setCentralWidget(sandbox);
+	
 }
 
 void GameGUI::open_esc_menu()

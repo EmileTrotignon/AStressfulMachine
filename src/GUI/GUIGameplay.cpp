@@ -4,6 +4,9 @@
 
 #include <QtCore/QDir>
 #include <QtWidgets/QtWidgets>
+#include <QMediaPlayer>
+#include <QSound>
+#include <QMediaPlayer>
 #include "GUIGameplay.h"
 #include "GameGUI.h"
 #include "GUIFileEdit.h"
@@ -55,6 +58,12 @@ void GUIGameplay::run_code()
 {
     run_code_prep();
 
+	
+	QMediaPlayer * game_song = new QMediaPlayer;
+	game_song->setMedia(QUrl::fromLocalFile("../data/assets/sons/Start_game.wav"));
+	game_song->setVolume(50);
+	game_song->play();
+
     using namespace placeholders;
     function<void(GameLevel *)> gl_callback = bind(&GUIGameplay::raw_gl_callback, this, _1);
     function<void(VirtualMachine *)> vm_callback = bind(&GUIGameplay::raw_vm_callback, this, _1);
@@ -71,9 +80,19 @@ void GUIGameplay::run_code()
                 vm_solution_callback);
         if (b)
         {
+			level_w = new QMediaPlayer;
+			level_w->setMedia(QUrl::fromLocalFile("../data/assets/sons/258142__tuudurt__level-win.wav"));
+			level_w->setVolume(50);
+			level_w->play();
+
             message_field->append("Congratulation, you solved this level");
         } else
         {
+			level_f = new QMediaPlayer;
+			level_f->setMedia(QUrl::fromLocalFile("../data/assets/sons/Level_failed.wav"));
+			level_f->setVolume(50);
+			level_f->play();
+
             message_field->append("Your output differs from the expected output, try again :(");
         }
     } catch (const VirtualMachineException &e)
