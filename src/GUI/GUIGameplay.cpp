@@ -91,7 +91,7 @@ void GUIGameplay::run_code()
 			level_w = new QMediaPlayer;
             // level_w->setMedia(QUrl::fromLocalFile("../data/assets/sounds/258142__tuudurt__level-win.wav"));
             level_w->setMedia(QUrl::fromLocalFile(QFileInfo(
-                    QString::fromStdString(assets / "sounds/258142__tuudurt__level-win.wav")).absoluteFilePath()));
+                    QString::fromStdString((assets / "sounds/258142__tuudurt__level-win.wav").string())).absoluteFilePath()));
 			level_w->setVolume(50);
 			level_w->play();
 
@@ -109,7 +109,7 @@ void GUIGameplay::run_code()
 			level_f = new QMediaPlayer;
             // level_f->setMedia(QUrl::fromLocalFile("../data/assets/sounds/Level_failed.wav"));
             level_f->setMedia(QUrl::fromLocalFile(
-                    QFileInfo(QString::fromStdString(assets / "sounds/Level_failed.wav")).absoluteFilePath()));
+                    QFileInfo(QString::fromStdString((assets / "sounds/Level_failed.wav").string())).absoluteFilePath()));
 			level_f->setVolume(50);
 			level_f->play();
 

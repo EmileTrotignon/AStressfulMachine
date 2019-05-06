@@ -42,20 +42,9 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
 	
 	// Songs
     sound = new QSound("../data/assets/sounds/Start_game.wav");
-
 	level_w = new QMediaPlayer;
-    level_w->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sounds/Game_song.wav").absoluteFilePath()));
-    // level_w->setMedia(QUrl::fromLocalFile("../data/assets/sounds/Game_song.wav"));
-	level_w->setVolume(50);
-	level_w->play();
-
-	if (level_w->state() == QMediaPlayer::PlayingState) {
-		level_w->setPosition(0);
-	}
-	else if (level_w->state() == QMediaPlayer::StoppedState) {
-		level_w->play();
-	}
-
+	level_w->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sounds/Game_song.wav").absoluteFilePath()));
+	
     // Insert buttons in button layout
     button_layout = new QVBoxLayout;
     button_layout->setObjectName("button_layout");
@@ -104,12 +93,25 @@ GUIMainMenu::~GUIMainMenu()
 void GUIMainMenu::song_on()
 {
 	//sound->play();
-	level_w->play();
+	//level_w->play();
+	
+	// level_w->setMedia(QUrl::fromLocalFile("../data/assets/sounds/Game_song.wav"));
+	level_w->setVolume(50);
+	//level_w->play();
+
+	if (level_w->state() == QMediaPlayer::PlayingState) {
+		level_w->setPosition(0);
+		level_w->stop();
+	}
+	else if (level_w->state() == QMediaPlayer::StoppedState) {
+		level_w->play();
+	}
+
 }
 
 void GUIMainMenu::song_off()
 {
-	sound->stop();
+	//sound->stop();
 	level_w->stop();
 }
 
