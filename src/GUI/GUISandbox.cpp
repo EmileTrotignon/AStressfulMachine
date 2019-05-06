@@ -317,7 +317,8 @@ void GUISandbox::run_code()
     {
         message_field->append("Error : " + QString::fromStdString(e.what()));
     }
-    message_field->append("The execution is finished");
+    message_field->append(
+            QString::fromStdString("The execution is finished. Number of steps : " + to_string(vm.get_n_steps())));
 
     run_code_finish();
 
