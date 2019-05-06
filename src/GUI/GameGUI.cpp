@@ -60,11 +60,9 @@ void GameGUI::open_esc_dialog()
         esc_dlg->setWindowTitle("A Stressful Machine");
         // esc_menu = new QDialogButtonBox(QDialogButtonBox::Close | QDialogButtonBox::Ok, Qt::Vertical, esc_dlg);
         auto esc_dlg_resume_button = new QPushButton("Resume", esc_dlg);
-        auto esc_dlg_settings_button = new QPushButton("Settings", esc_dlg);
         auto esc_dlg_quit_button = new QPushButton("Quit to main menu", esc_dlg);
         auto esc_dlg_layout = new QVBoxLayout(esc_dlg);
         esc_dlg_layout->addWidget(esc_dlg_resume_button);
-        esc_dlg_layout->addWidget(esc_dlg_settings_button);
         esc_dlg_layout->addWidget(esc_dlg_quit_button);
         esc_dlg->setModal(true);
         esc_dlg->open();

@@ -10,6 +10,8 @@
 GUIAdventureMode::GUIAdventureMode(GameGUI *game_) : QStackedWidget(game_), game(game_), level_picker(nullptr),
                                                      game_widget(nullptr)
 {
+    setObjectName("Adventure Mode Object");
+
     save_picker = new GUIPickSave(this, game);
 
     addWidget(save_picker);
@@ -66,14 +68,12 @@ void GUIAdventureMode::open_esc_dialog()
     esc_dlg->setWindowTitle("A Stressful Machine");
     // esc_menu = new QDialogButtonBox(QDialogButtonBox::Close | QDialogButtonBox::Ok, Qt::Vertical, esc_dlg);
     auto resume_button = new QPushButton("Resume", esc_dlg);
-    auto settings_button = new QPushButton("Settings", esc_dlg);
     auto load_save_button = new QPushButton("Load save", esc_dlg);
     auto switch_level_button = new QPushButton("Switch levels", esc_dlg);
     auto quit_button = new QPushButton("Quit to main menu", esc_dlg);
     auto layout = new QVBoxLayout(esc_dlg);
 
     layout->addWidget(resume_button);
-    layout->addWidget(settings_button);
     layout->addWidget(switch_level_button);
     layout->addWidget(load_save_button);
     layout->addWidget(quit_button);
@@ -97,5 +97,6 @@ void GUIAdventureMode::open_esc_dialog()
     connect(resume_button, SIGNAL (clicked(bool)), parent(), SLOT (close_esc_dialog()));
     connect(parent(), SIGNAL (resume_game(int)), esc_dlg, SLOT (done(int)));
 
+    qDebug() << parent();
     connect(quit_button, SIGNAL (clicked(bool)), parent(), SLOT (esc_dialog_quit()));
 }

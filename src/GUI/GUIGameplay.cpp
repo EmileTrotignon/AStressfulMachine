@@ -30,6 +30,11 @@ GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(game_->ga
             QString::fromStdString(game->game_sequence->get_current_level()->get_input_as_string()));
 
     vm_solution_output = new QTextEdit(this);
+    vm_solution_output->setReadOnly(true);
+
+    vm_solution_output_label = new QLabel("Solution output", this);
+    vm_solution_output_label->setFont(label_font);
+
 
     typing_tabs->removeTab(0);
 
@@ -51,7 +56,8 @@ GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(game_->ga
     instruction_field->setFont(field_font);
 
     // Add widgets to layout
-    io_fields_layout->addWidget(instruction_field);
+    io_fields_layout->insertWidget(0, instruction_field);
+    io_fields_layout->addWidget(vm_solution_output_label);
     io_fields_layout->addWidget(vm_solution_output);
 }
 

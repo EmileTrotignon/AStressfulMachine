@@ -39,6 +39,7 @@ protected slots:
 private:
     QTextEdit *instruction_field;
     QTextEdit *vm_solution_output;
+    QLabel *vm_solution_output_label;
 	QMediaPlayer * level_w;
 	QMediaPlayer * level_f;
     GameGUI *game;
