@@ -32,9 +32,10 @@ cd build
 
 On Windows, you will need the Visual Studio 2019 compiler (older versions were not tested but may work)
 
-Visual Studio / cmake should do the linking for you, but you should add your Qt's version bin and include to the PATH environment variable.
+Visual Studio / cmake should do the linking for you, but you should add your Qt's version bin and include folders to the PATH environment variable.
 
 We tested with Qt 5.12.2 MSVC2017.
+We had issues with the auto linker picking the wrong version of Qt when both x84 and x64 versions were installed, and we fixed it be deinstalling one of them. 
 
 ##
 
