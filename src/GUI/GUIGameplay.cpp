@@ -18,7 +18,8 @@ void GUIGameplay::raw_gl_callback(GameLevel *gl)
             QString::fromStdString(gl->get_input_as_string()));
 }
 
-GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(parent), game(game_), vm_input()
+GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(game_->gamefiles_dir / "assets", parent),
+                                                            game(game_), vm_input()
 {
     instruction_field = new QTextEdit(this);
     instruction_field->insertPlainText(
@@ -58,10 +59,10 @@ void GUIGameplay::run_code()
 {
     run_code_prep();
 
-	
-	QMediaPlayer * game_song = new QMediaPlayer;
-	// game_song->setMedia(QUrl::fromLocalFile("../data/assets/sons/Start_game.wav"));
-	game_song->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sons/Start_game.wav").absoluteFilePath()));
+
+    auto game_song = new QMediaPlayer;
+    // game_song->setMedia(QUrl::fromLocalFile("../data/assets/sounds/Start_game.wav"));
+    game_song->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sounds/Start_game.wav").absoluteFilePath()));
 	game_song->setVolume(50);
 	game_song->play();
 
@@ -82,17 +83,27 @@ void GUIGameplay::run_code()
         if (b)
         {
 			level_w = new QMediaPlayer;
-			// level_w->setMedia(QUrl::fromLocalFile("../data/assets/sons/258142__tuudurt__level-win.wav"));
-			level_w->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sons/258142__tuudurt__level-win.wav").absoluteFilePath()));
+            // level_w->setMedia(QUrl::fromLocalFile("../data/assets/sounds/258142__tuudurt__level-win.wav"));
+            level_w->setMedia(QUrl::fromLocalFile(QFileInfo(
+                    QString::fromStdString(assets / "sounds/258142__tuudurt__level-win.wav")).absoluteFilePath()));
 			level_w->setVolume(50);
 			level_w->play();
 
             message_field->append("Congratulation, you solved this level");
+            QMessageBox::StandardButton button = QMessageBox::critical(this, "Congrats",
+                                                                       "Do you want to play another level ?",
+                                                                       QMessageBox::Yes | QMessageBox::No,
+                                                                       QMessageBox::Yes);
+            if (button == QMessageBox::Yes)
+            {
+                ((GUIAdventureMode *) parent())->pick_level();
+            }
         } else
         {
 			level_f = new QMediaPlayer;
-			// level_f->setMedia(QUrl::fromLocalFile("../data/assets/sons/Level_failed.wav"));
-			level_f->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sons/Level_failed.wav").absoluteFilePath()));
+            // level_f->setMedia(QUrl::fromLocalFile("../data/assets/sounds/Level_failed.wav"));
+            level_f->setMedia(QUrl::fromLocalFile(
+                    QFileInfo(QString::fromStdString(assets / "sounds/Level_failed.wav")).absoluteFilePath()));
 			level_f->setVolume(50);
 			level_f->play();
 
@@ -128,7 +139,6 @@ void GUIGameplay::send_typed_text_to_level()
 
 void GUIGameplay::new_tab()
 {
-    GUISandbox::new_tab();
     auto text_edit = new GUIFileEdit(this);
 
     bool ok;

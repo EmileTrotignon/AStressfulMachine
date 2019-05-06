@@ -18,15 +18,20 @@ Q_OBJECT
 public:
     explicit GUIAdventureMode(GameGUI *game);
 
+    void open_esc_dialog();
+
 private slots:
+
+    void launch_game();
+
+    void return_pick_save();
+
+public slots:
 
     void pick_save();
 
     void pick_level();
 
-    void launch_game();
-
-    void return_pick_save();
 
 private:
     GUIGameplay *game_widget;

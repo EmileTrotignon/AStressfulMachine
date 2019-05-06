@@ -159,16 +159,10 @@ public:
     ~VirtualMachine();
 
     /**
-     * @brief This resets the class to its state after construction
-     * @param in
-     */
-    void reset(istream *in);
-
-    /**
      * @brief This execute the program until it halts.
      * @param func A function to be executed at each step of the loop. Basic use would be to slow down execution.
      */
-    void loop(function<void(VirtualMachine *)> vm_callback = nullptr);
+    void loop(const function<void(VirtualMachine *)> &vm_callback = nullptr);
 
     /**
      * @brief Getter for member program

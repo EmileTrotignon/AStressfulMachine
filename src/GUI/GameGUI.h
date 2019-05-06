@@ -32,10 +32,11 @@ private:
     GUISandbox *sandbox;
     GUIMainMenu *main_menu_widget;
     GUIAdventureMode *adventure_mode_widget;
+    fs::path data_dir;
 
 public:
     // GameGUI();
-    GameGUI(const string &saves_dir, const string &gamefiles_dir);
+    GameGUI(const fs::path &data_dir);
 
     /* This is only implemented to ensure project compiles
      * (GameGUI is a virtual class and requires inherited virtual functions to be implemented)
@@ -50,14 +51,17 @@ private slots:
 
     // Used in GUIMainMenu
     void open_adventure_mode();
+
     void open_sandbox();
 
     void return_main_menu_from_pick_save();
 
     // Slots for escape menu
-    void open_esc_menu();
-    void esc_dlg_rejected();
-    void esc_dlg_quit();
+    void open_esc_dialog();
+
+    void close_esc_dialog();
+
+    void esc_dialog_quit();
 
 signals:
     void resume_game(int dialog_rejected = QDialog::Rejected);

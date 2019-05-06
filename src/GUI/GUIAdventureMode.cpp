@@ -39,8 +39,9 @@ void GUIAdventureMode::pick_level()
 
 void GUIAdventureMode::launch_game()
 {
-	// QSound bells("../data/assets/sons/Start_game.wav");
-	QSound bells(QFileInfo("../data/assets/sons/Start_game.wav").absoluteFilePath());
+    // QSound bells("../data/assets/sounds/Start_game.wav");
+    QSound bells(QFileInfo(
+            QString::fromStdString((game->gamefiles_dir / "../assets/sounds/Start_game.wav"))).absoluteFilePath());
 	bells.play();
     if (game_widget == nullptr)
     {
@@ -53,4 +54,44 @@ void GUIAdventureMode::launch_game()
 void GUIAdventureMode::return_pick_save()
 {
     setCurrentWidget(save_picker);
+}
+
+/**
+ * Dialog triggered by pressing esc in adventure mode
+ */
+void GUIAdventureMode::open_esc_dialog()
+{
+    auto esc_dlg = new QDialog(this);
+    esc_dlg->setObjectName("Escape dialog");
+    esc_dlg->setWindowTitle("A Stressful Machine");
+    // esc_menu = new QDialogButtonBox(QDialogButtonBox::Close | QDialogButtonBox::Ok, Qt::Vertical, esc_dlg);
+    auto resume_button = new QPushButton("Resume", esc_dlg);
+    auto settings_button = new QPushButton("Settings", esc_dlg);
+    auto load_save_button = new QPushButton("Load save", esc_dlg);
+    auto switch_level_button = new QPushButton("Switch levels", esc_dlg);
+    auto quit_button = new QPushButton("Quit to main menu", esc_dlg);
+    auto layout = new QVBoxLayout(esc_dlg);
+
+    layout->addWidget(resume_button);
+    layout->addWidget(settings_button);
+    layout->addWidget(switch_level_button);
+    layout->addWidget(load_save_button);
+    layout->addWidget(quit_button);
+
+    if (currentWidget() != game_widget)
+    {
+        switch_level_button->setEnabled(false);
+        if (currentWidget() == save_picker) load_save_button->setEnabled(false);
+    }
+
+    esc_dlg->setModal(true);
+    esc_dlg->open();
+
+    connect(switch_level_button, SIGNAL(clicked(bool)), this, SLOT(pick_level()));
+    connect(load_save_button, SIGNAL(clicked(bool)), this, SLOT(pick_save()));
+
+    connect(resume_button, SIGNAL (clicked(bool)), parent(), SLOT (esc_dialog_rejected()));
+    connect(parent(), SIGNAL (resume_game(int)), esc_dlg, SLOT (done(int)));
+
+    connect(quit_button, SIGNAL (clicked(bool)), parent(), SLOT (esc_dialog_quit()));
 }

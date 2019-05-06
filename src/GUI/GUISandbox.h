@@ -29,18 +29,30 @@ class GUISandbox : public QWidget
     // Initialize macro for qt
 Q_OBJECT
 
+private:
+
+    void place_widgets_on_layout();
+
+    void fill_menu_bar();
+
 public:
-    explicit GUISandbox(QWidget *parent = nullptr);
+    explicit GUISandbox(fs::path assets, QWidget *parent = nullptr);
+
+    ~GUISandbox() override;
 
 protected:
 
-    virtual void place_widgets_on_layout();
-
-    virtual void fill_menu_bar();
-
     static const int max_speed = 10;
 
+    const fs::path assets;
+
     QMenuBar *menu_bar;
+
+    QMenu *file_menu;
+    QAction *new_tab_action;
+    QAction *save_file_action;
+    QAction *save_as_file_action;
+    QAction *open_file_action;
 
     QHBoxLayout *window_layout;
     QVBoxLayout *io_fields_layout;
@@ -84,6 +96,8 @@ protected slots:
     virtual void run_code();
 
     virtual void close_tab(int index);
+
+    virtual void close_current_tab();
 
     virtual void new_tab();
 

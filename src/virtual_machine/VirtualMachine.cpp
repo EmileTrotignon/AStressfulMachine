@@ -86,18 +86,6 @@ VirtualMachine::~VirtualMachine()
     delete procedure_call;
 }
 
-void VirtualMachine::reset(istream *in_)
-{
-    in = in_;
-    current_operator = program.begin();
-    memory_ptr = memory.begin();
-    delete procedure_call;
-    procedure_call = nullptr;
-    verbose = false;
-    verbose_procedure = false;
-    depth = 0;
-}
-
 void VirtualMachine::initialize_anchor_map()
 {
     while (current_operator < program.end())
@@ -458,7 +446,7 @@ void VirtualMachine::do_one_iteration()
 
 }
 
-void VirtualMachine::loop(function<void(VirtualMachine *)> vm_callback)
+void VirtualMachine::loop(const function<void(VirtualMachine *)> &vm_callback)
 {
     if (verbose)
     {

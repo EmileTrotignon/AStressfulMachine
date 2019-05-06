@@ -15,8 +15,8 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
 {
     this->setObjectName(""); // For debugging purposes
 
-	// QSound bells("../data/assets/sons/Start_game.wav");
-	QSound bells(QFileInfo("../data/assets/sons/Start_game.wav").absoluteFilePath());
+    // QSound bells("../data/assets/sounds/Start_game.wav");
+    QSound bells(QFileInfo("../data/assets/sounds/Start_game.wav").absoluteFilePath());
 	bells.play();
 
     // Create font
@@ -42,11 +42,11 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
 	stopbutton = new QPushButton("Stop Song", this);
 	
 	// Songs
-	sound = new QSound("../data/assets/sons/Start_game.wav");
+    sound = new QSound("../data/assets/sounds/Start_game.wav");
 
 	level_w = new QMediaPlayer;
-    level_w->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sons/Game_song.wav").absoluteFilePath()));
-	// level_w->setMedia(QUrl::fromLocalFile("../data/assets/sons/Game_song.wav"));
+    level_w->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sounds/Game_song.wav").absoluteFilePath()));
+    // level_w->setMedia(QUrl::fromLocalFile("../data/assets/sounds/Game_song.wav"));
 	level_w->setVolume(50);
 	level_w->play();
 
