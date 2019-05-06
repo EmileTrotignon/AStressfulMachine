@@ -302,7 +302,7 @@ void VirtualMachine::call_procedure()
                 code = procedure;
             }
         }
-        if (verbose_procedure) message(MESSAGE_STARTING_PROCEDURE MESSAGE_DEPTH);
+        if (verbose_procedure) message(MESSAGE_STARTING_PROCEDURE + get_message_for_depth());
         procedure_call = new VirtualMachineProcedure(this, code, depth + 1, include_directories, verbose_out);
         if (verbose_procedure) procedure_call->be_verbose();
         loop_procedure();
@@ -635,5 +635,10 @@ ostream &VirtualMachine::operator<<(ostream &o) const
 int VirtualMachine::get_n_steps()
 {
     return n_steps;
+}
+
+string VirtualMachine::get_message_for_depth() const
+{
+    return "[ DEPTH " + to_string(depth) + " ]";
 }
 

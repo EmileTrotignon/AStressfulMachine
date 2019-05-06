@@ -36,7 +36,7 @@ void VirtualMachineProcedure::val_out()
 void VirtualMachineProcedure::val_in()
 {
     status = s_proc_inputting;
-    if (verbose) *verbose_out << "[ PROC STATUS_PROC_INPUTTING ] " MESSAGE_DEPTH " " << endl;
+    if (verbose) *verbose_out << "[ PROC STATUS_PROC_INPUTTING ] " + get_message_for_depth() + " " << endl;
 }
 
 void VirtualMachineProcedure::error_handler(const VirtualMachineException &error)
@@ -47,7 +47,7 @@ void VirtualMachineProcedure::error_handler(const VirtualMachineException &error
 
 void VirtualMachineProcedure::message(const string &message)
 {
-    *verbose_out << PROC_PRINTING_MESSAGE " " MESSAGE_DEPTH " ";
+    *verbose_out << string(PROC_PRINTING_MESSAGE) + " " + get_message_for_depth() + " ";
     VirtualMachine::message(message);
 }
 
@@ -69,6 +69,6 @@ int VirtualMachineProcedure::get_output()
 VirtualMachineProcedure::operator string() const
 {
     return add_message_before_each_line(VirtualMachine::operator string(),
-                                        PROC_PRINTING_MESSAGE " " MESSAGE_DEPTH "  ");
+                                        string(PROC_PRINTING_MESSAGE) + " " + get_message_for_depth() + "  ");
 }
 

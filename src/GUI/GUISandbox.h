@@ -126,7 +126,7 @@ protected slots:
     virtual void save_as_file();
 
     /**
-     *
+     * @brief Open a file in a new tab
      */
     virtual void open_file();
 

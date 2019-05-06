@@ -8,7 +8,7 @@
 
 #include "VirtualMachine.h"
 
-#define PROC_PRINTING_MESSAGE (string)"[ PROC ]"
+//#define PROC_PRINTING_MESSAGE (string)"[ PROC ]"
 
 //Status macros
 //#define STATUS_PROC_OUTPUTTING 101
@@ -16,18 +16,20 @@
 
 /**
  * This class is used by VirtualMachine to perform procedure calls.
- * It is only the input and output and the verbose/error printing that are changed.
+ * Only the input and output and the verbose/error printing are changed.
  */
 class VirtualMachineProcedure : public VirtualMachine
 {
+
 protected:
 
-    int output;
-    VirtualMachine *master_vm;
+    static constexpr const char *PROC_PRINTING_MESSAGE = "[ PROC]";
+    int output; /// Used to store the output
+    VirtualMachine *master_vm; /// Parent VirtualMachine. May be in fact a VirtualMachineProcedure
 
-    void val_out() override;
+    void val_out() override; /// Stop the execution and tell the parent vm the an output is available
 
-    void val_in() override;
+    void val_in() override; /// Stop the execution to ask for an output.
 
     void error_handler(const VirtualMachineException &error) override;
 
@@ -36,25 +38,27 @@ protected:
 
 public:
     /**
-     * This call the VirtualMachine constructor as a delegate constructor and initialize the new fields.
-     * @param program_
-     * @param in_
-     * @param out_
-     * @param depth_ The recursive depth of the procedure.
-     * @param size_
-     * @param memory_
+     * @brief This call the VirtualMachine constructor as a delegate constructor and initialize the new fields.
      */
     VirtualMachineProcedure(VirtualMachine *master_vm, const string &program_, int depth_,
                             const vector<fs::path> &include_directories = {}, ostream *verbose_out = &cout);
 
     /**
-     * This should be used to access the output of the procedure.
+     * @brief This is used by VirtualMachine to access the output of the procedure.
      * @return The output of the procedure
      */
     int get_output();
 
+    /**
+     * @brief This is used by VirtualMachine to input to the procedure.
+     * @param inpt The input in question
+     */
     void input(int inpt);
 
+    /**
+     * Changes the string operator to include header that indicates the procedure depth
+     * @return
+     */
     explicit operator string() const override;
 
     int depth;

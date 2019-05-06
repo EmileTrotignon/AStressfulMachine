@@ -18,10 +18,9 @@
 #define PRINTING_POINTER "^\n"
 
 // Message macros
-#define MESSAGE_LAUNCHING "[ UNPAUSING VM ]"
+/*#define MESSAGE_LAUNCHING "[ UNPAUSING VM ]"
 #define MESSAGE_FINISHED "The execution is finished"
-#define MESSAGE_STARTING_PROCEDURE "[ START PROCEDURE ]"
-#define MESSAGE_DEPTH "[ DEPTH " + to_string(depth) + " ]"
+#define MESSAGE_STARTING_PROCEDURE "[ START PROCEDURE ]"*/
 
 using namespace std;
 namespace fs = filesystem;
@@ -67,6 +66,12 @@ public:
     static constexpr char SYNTAX_FILE_MARKER = '~'; /// Used at the beginning of a program or procedure. Indicate that the program/procedure is stored in a file. Put the filename just after it.
 
 protected:
+
+    static constexpr const char *MESSAGE_LAUNCHING = "[ UNPAUSING VM ]";
+    static constexpr const char *MESSAGE_FINISHED = "The execution is finished";
+    static constexpr const char *MESSAGE_STARTING_PROCEDURE = "[ START PROCEDURE ]";
+
+
 
     istream *in; /// The stream used to get the input
     ostream *out; /// The stream used to output
@@ -128,6 +133,8 @@ protected:
     void loop_procedure();
 
     void terminate_procedure();
+
+    string get_message_for_depth() const;
 
     /**
      * @brief Handle an error
