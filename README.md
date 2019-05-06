@@ -9,6 +9,7 @@ In order to compile it you need :
   - gcc-8
   - cmake >= 3.8
   - Qt5
+
 On Ubuntu, you can use the apt install command and install the following packages: gcc-8, cmake, qt5-default, qtmultimedia5-dev.
 You may also need: libqt5multimedia5-plugins.
 
