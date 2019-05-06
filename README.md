@@ -2,9 +2,15 @@
 
 A Stressful Machine is a programming game where the player has to write programs to solve challenges using the game's particularly arduous programming language.
 
-## Compilation
+## The GUI executable
 
-This is a C++17/Qt5 project.
+### Compilation
+
+This is a C++17/Qt5 project, that was built to be as crossplatform as possible.
+It was tested on both Linux (Ubuntu/Kubuntu) and Windows 10.
+
+#### Linux
+
 In order to compile it you need :
   - gcc-8
   - cmake >= 3.8
@@ -22,9 +28,15 @@ cd build
 
 ./a_stressful_machine_gui
 
-On Windows, you will need the Visual Studio 2019 (older versions may not be usefull)
+#### Windows
 
-Adding qt/./bin and /include to environment variables.
+On Windows, you will need the Visual Studio 2019 compiler (older versions were not tested but may work)
+
+Visual Studio / cmake should do the linking for you, but you should add your Qt's version bin and include to the PATH environment variable.
+
+We tested with Qt 5.12.2 MSVC2017.
+
+##
 
 ## Authors
 
