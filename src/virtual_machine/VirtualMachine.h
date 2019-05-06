@@ -14,14 +14,6 @@
 #include "../file_utilities/file_utilities.h"
 #include "VirtualMachineException.h"
 
-
-#define PRINTING_POINTER "^\n"
-
-// Message macros
-/*#define MESSAGE_LAUNCHING "[ UNPAUSING VM ]"
-#define MESSAGE_FINISHED "The execution is finished"
-#define MESSAGE_STARTING_PROCEDURE "[ START PROCEDURE ]"*/
-
 using namespace std;
 namespace fs = filesystem;
 
@@ -67,6 +59,7 @@ public:
 
 protected:
 
+    static constexpr const char *PRINTING_POINTER = "^\n";
     static constexpr const char *MESSAGE_LAUNCHING = "[ UNPAUSING VM ]";
     static constexpr const char *MESSAGE_FINISHED = "The execution is finished";
     static constexpr const char *MESSAGE_STARTING_PROCEDURE = "[ START PROCEDURE ]";
