@@ -82,6 +82,7 @@ protected:
     bool verbose_procedure;
     map<unsigned int, string::iterator> anchor_map;
     int depth;
+    int n_steps;
     vector<fs::path> include_directories;
 
     VirtualMachineProcedure *procedure_call;
@@ -188,6 +189,8 @@ public:
      * @return status
      */
     int get_status() const;
+
+    int get_n_steps();
 
     /**
      * @brief Getter for member memory

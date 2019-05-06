@@ -88,9 +88,13 @@ void GUIAdventureMode::open_esc_dialog()
     esc_dlg->open();
 
     connect(switch_level_button, SIGNAL(clicked(bool)), this, SLOT(pick_level()));
-    connect(load_save_button, SIGNAL(clicked(bool)), this, SLOT(pick_save()));
+    connect(switch_level_button, SIGNAL(clicked(bool)), parent(), SLOT(close_esc_dialog()));
 
-    connect(resume_button, SIGNAL (clicked(bool)), parent(), SLOT (esc_dialog_rejected()));
+    connect(load_save_button, SIGNAL(clicked(bool)), this, SLOT(pick_save()));
+    connect(load_save_button, SIGNAL(clicked(bool)), parent(), SLOT(close_esc_dialog()));
+
+
+    connect(resume_button, SIGNAL (clicked(bool)), parent(), SLOT (close_esc_dialog()));
     connect(parent(), SIGNAL (resume_game(int)), esc_dlg, SLOT (done(int)));
 
     connect(quit_button, SIGNAL (clicked(bool)), parent(), SLOT (esc_dialog_quit()));

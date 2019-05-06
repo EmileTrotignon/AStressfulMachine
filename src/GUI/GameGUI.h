@@ -36,7 +36,7 @@ private:
 
 public:
     // GameGUI();
-    GameGUI(const fs::path &data_dir);
+    explicit GameGUI(const fs::path &data_dir);
 
     /* This is only implemented to ensure project compiles
      * (GameGUI is a virtual class and requires inherited virtual functions to be implemented)
@@ -47,7 +47,7 @@ public:
     friend GUIPickLevel;
     friend GUIGameplay;
 
-private slots:
+protected slots:
 
     // Used in GUIMainMenu
     void open_adventure_mode();

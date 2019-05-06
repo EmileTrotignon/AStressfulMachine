@@ -55,7 +55,8 @@ VirtualMachine::VirtualMachine(string program_,
                                                         verbose_procedure(false),
                                                         depth(0),
                                                         print_errors(false),
-                                                        include_directories(std::move(include_directories_))
+                                                        include_directories(std::move(include_directories_)),
+                                                        n_steps(0)
 {
     status = s_paused;
 
@@ -361,11 +362,13 @@ void VirtualMachine::error_handler(const VirtualMachineException &error)
 void VirtualMachine::do_one_iteration()
 {
     if (status != s_running) return;
+    n_steps++;
 
     //verbose_out << program[current_operator] << endl;
     switch (*current_operator)
     {
         default:
+            n_steps--;
             break;
 
         case SYNTAX_PTR_INCR:
@@ -627,5 +630,10 @@ ostream &VirtualMachine::operator<<(ostream &o) const
 {
     o << (string) (*this);
     return o;
+}
+
+int VirtualMachine::get_n_steps()
+{
+    return n_steps;
 }
 
