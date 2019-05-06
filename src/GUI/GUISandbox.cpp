@@ -11,6 +11,7 @@
 #include <QSound>
 #include <QStyle>
 #include <QtWidgets/QMessageBox>
+#include <QDebug>
 
 #include "VirtualMachine.h"
 #include "GUISandbox.h"
@@ -216,10 +217,10 @@ void GUISandbox::place_widgets_on_layout()
 
     io_fields_layout->addWidget(input_label);
     io_fields_layout->addWidget(vm_input_field);
-    io_fields_layout->addWidget(memory_label);
-    io_fields_layout->addWidget(vm_memory_printer);
     io_fields_layout->addWidget(output_label);
     io_fields_layout->addWidget(vm_output);
+    io_fields_layout->addWidget(memory_label);
+    io_fields_layout->addWidget(vm_memory_printer);
 
     button_layout->addWidget(stop_button);
     button_layout->addWidget(run_button);
@@ -341,7 +342,9 @@ void GUISandbox::run_code_finish()
 
 void GUISandbox::close_tab(int index)
 {
+    qDebug() << "Nbre de tabs avant:" << typing_tabs->count();
     if (typing_tabs->count() >= 1) typing_tabs->removeTab(index);
+    qDebug() << "Nbre de tabs apres:" << typing_tabs->count();
 }
 
 void GUISandbox::save_file()
@@ -389,6 +392,6 @@ void GUISandbox::close_current_tab()
 
 GUISandbox::~GUISandbox()
 {
-    ((QMainWindow *) parent())->menuBar()->hide();
-    delete ((QMainWindow *) parent())->menuBar();
+    ((QMainWindow *) window())->menuBar()->hide();
+    delete ((QMainWindow *) window())->menuBar();
 }

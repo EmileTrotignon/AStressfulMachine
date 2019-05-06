@@ -35,11 +35,10 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
     adventure_mode_button = new QPushButton("Adventure Mode", this);
     sandbox_button = new QPushButton("Sandbox mode", this);
 
-    settings_button = new QPushButton("Settings", this);
     quit_game_button = new QPushButton("Quit Game", this);
 
-	playbutton = new QPushButton("Play Song", this);
-	stopbutton = new QPushButton("Stop Song", this);
+	play_music_button = new QPushButton("Play Song", this);
+	stop_music_button = new QPushButton("Stop Song", this);
 	
 	// Songs
     sound = new QSound("../data/assets/sounds/Start_game.wav");
@@ -63,10 +62,10 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
 
     button_layout->addWidget(adventure_mode_button);
     button_layout->addWidget(sandbox_button);
-    button_layout->addWidget(settings_button);
+    button_layout->addWidget(play_music_button);
+    button_layout->addWidget(stop_music_button);
     button_layout->addWidget(quit_game_button);
-	button_layout->addWidget(playbutton);
-	button_layout->addWidget(stopbutton);
+
 
     // Create main layout
     window_Layout = new QGridLayout(this);
@@ -90,8 +89,8 @@ GUIMainMenu::GUIMainMenu(QWidget *parent_) : QWidget(parent_)
     connect(adventure_mode_button, SIGNAL(clicked(bool)), parent(), SLOT (open_adventure_mode()));
     //connect(new_game_button, SIGNAL (clicked(bool)), this, SLOT (createNewGameDialog()));
     connect(sandbox_button, SIGNAL(clicked(bool)), parent(), SLOT (open_sandbox()));
-	connect(playbutton, SIGNAL(clicked(bool)), this, SLOT(song_on()));
-	connect(stopbutton, SIGNAL(clicked(bool)), this, SLOT(song_off()));
+	connect(play_music_button, SIGNAL(clicked(bool)), this, SLOT(song_on()));
+	connect(stop_music_button, SIGNAL(clicked(bool)), this, SLOT(song_off()));
 }
 
 GUIMainMenu::~GUIMainMenu()

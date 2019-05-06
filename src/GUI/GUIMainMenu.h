@@ -43,8 +43,8 @@ private:
     QPushButton *sandbox_button;
     QPushButton *settings_button;
     QPushButton *quit_game_button;
-	QPushButton * playbutton;
-	QPushButton * stopbutton;
+	QPushButton * play_music_button;
+	QPushButton * stop_music_button;
 	QSound* sound;
 	QMediaPlayer* level_w;
 };
