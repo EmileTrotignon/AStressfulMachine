@@ -4,10 +4,13 @@ A Stressful Machine is a programming game where the player has to write programs
 
 ## The GUI executable
 
-### Compilation
+### Compilation and running
 
 This is a C++17/Qt5 project, that was built to be as crossplatform as possible.
 It was tested on both Linux (Ubuntu/Kubuntu) and Windows 10.
+
+Please note that the data folder needs to be in the parent folder of the executable for it to properly work.
+On Linux you just have to run it from its build folder, but on Windows you may need to move a few files around.
 
 #### Linux
 
@@ -20,7 +23,7 @@ On Ubuntu, you can use the apt install command and install the following package
 
 You may also need: libqt5multimedia5-plugins.
 
-To compile on linux, use command: make a_stressful_machine_gui
+To compile on linux, use command: "make a_stressful_machine_gui"
 
 Afterwards, you can run the program by running 2 commands: 
 
@@ -37,7 +40,31 @@ Visual Studio / cmake should do the linking for you, but you should add your Qt'
 We tested with Qt 5.12.2 MSVC2017.
 We had issues with the auto linker picking the wrong version of Qt when both x84 and x64 versions were installed, and we fixed it be deinstalling one of them. 
 
-##
+## The interpreter executable
+
+The interpreter is an interpreter of the game's langage
+
+### Compiling and running
+
+The interpreter executable just needs C++17 (mostly for the filesystem lib).
+
+The console executable needs at least one argument : the program to run.
+
+You can add 
+
+#### Linux
+
+In order to compile it you need :
+  - gcc-8
+  - cmake >= 3.8
+
+On Ubuntu, you can use the apt install command and install the following packages: gcc-8, cmake.
+
+Then use command "make interpreter"
+
+#### Windows
+
+The VisualStudio compiler should be enough, however this executable was not tested on Windows (most of the code is shared with the GUI, and it does compile, so if it does not work it should be pretty easy to fix)
 
 ## Authors
 
@@ -51,6 +78,10 @@ Marcel Fodor - 11719949
 
 ## Credits
 
-Icons are from icons8.com
+Icons are from https://icons8.com
 
 Songs are from https://freesound.org/
+
+The idea for the langage design is from https://en.wikipedia.org/wiki/Brainfuck
+
+The gameplay idea is from https://tomorrowcorporation.com/humanresourcemachine
