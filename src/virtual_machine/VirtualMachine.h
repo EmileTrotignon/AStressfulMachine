@@ -43,49 +43,49 @@ public:
         s_error, s_running, s_paused, s_proc_inputting, s_proc_outputting
     };
 
-    static constexpr char SYNTAX_PTR_INCR = '>';  // Move the pointer to the right
-    static constexpr char SYNTAX_PTR_DINCR = '<'; // Move the pointer to the left
-    static constexpr char SYNTAX_VAL_INCR = '+'; // Increment the current cell's value
-    static constexpr char SYNTAX_VAL_DINCR = '-'; // Decrement the current cell's value
-    static constexpr char SYNTAX_VAL_OUT = '.'; // Output the current cell's value as a base 10 int
-    static constexpr char SYNTAX_CHAR_OUT = ':'; // Output the current cell's value a a char
-    static constexpr char SYNTAX_VAL_IN = ','; // Fetch an input and put it in the current cell
-    static constexpr char SYNTAX_OPEN_GOTO = '['; // Opening bracket for a goto anchor or a goto statement
-    static constexpr char SYNTAX_CLOSE_GOTO = ']'; // Close it
-    static constexpr char SYNTAX_GOTO_MARKER = '|'; // Signal the goto is not an anchor
-    static constexpr char SYNTAX_COND_GREATER = '>'; // Signal that the goto should only be done if the current cell's value is greater than 0
-    static constexpr char SYNTAX_COND_LESSER = '<'; // ___________ smaller than 0
-    static constexpr char SYNTAX_COND_EQUAL = '='; // ___________ equal to 0
-    static constexpr char SYNTAX_COND_DIFF = '/'; // ___________ different from 0
-    static constexpr char SYNTAX_PTR_JUMP = '^'; // Set the pointer d
-    static constexpr char SYNTAX_PTR_RESET = '#'; // Set the pointer to 0
-    static constexpr char SYNTAX_VAL_RESET = '_'; // Set the current cell's value to 0
-    static constexpr char SYNTAX_DO_N_TIME = '*'; // *14+ evaluate the '+' 14 times
-    static constexpr char SYNTAX_OPEN_PROC = '{';
-    static constexpr char SYNTAX_CLOSE_PROC = '}';
-    static constexpr char SYNTAX_TERMINATE_PROC = '!';
-    static constexpr char SYNTAX_FILE_MARKER = '~';
+    static constexpr char SYNTAX_PTR_INCR = '>';  /// Operator : Move the pointer to the right
+    static constexpr char SYNTAX_PTR_DINCR = '<'; /// Operator : Move the pointer to the left
+    static constexpr char SYNTAX_VAL_INCR = '+'; /// Operator : Increment the current cell's value
+    static constexpr char SYNTAX_VAL_DINCR = '-'; /// Operator : Decrement the current cell's value
+    static constexpr char SYNTAX_VAL_OUT = '.'; /// Operator : Output the current cell's value as a base 10 int
+    static constexpr char SYNTAX_CHAR_OUT = ':'; /// Operator : Output the current cell's value a a char
+    static constexpr char SYNTAX_VAL_IN = ','; /// Operator : Fetch an input and put it in the current cell
+    static constexpr char SYNTAX_OPEN_GOTO = '['; /// Operator : Opening bracket for a goto anchor or a goto statement
+    static constexpr char SYNTAX_CLOSE_GOTO = ']'; /// Operator : Close it
+    static constexpr char SYNTAX_GOTO_MARKER = '|'; /// Operator : Signal the goto is not an anchor
+    static constexpr char SYNTAX_COND_GREATER = '>'; /// Operator : Signal that the goto should only be done if the current cell's value is greater than 0
+    static constexpr char SYNTAX_COND_LESSER = '<'; /// Operator : ___________ smaller than 0
+    static constexpr char SYNTAX_COND_EQUAL = '='; /// Operator : ___________ equal to 0
+    static constexpr char SYNTAX_COND_DIFF = '/'; /// Operator : ___________ different from 0
+    static constexpr char SYNTAX_PTR_JUMP = '^'; /// Operator : Set the pointer d
+    static constexpr char SYNTAX_PTR_RESET = '#'; /// Operator : Set the pointer to 0
+    static constexpr char SYNTAX_VAL_RESET = '_'; /// Operator : Set the current cell's value to 0
+    static constexpr char SYNTAX_DO_N_TIME = '*'; /// Operator : *14+ evaluate the '+' 14 times
+    static constexpr char SYNTAX_OPEN_PROC = '{'; /// Operator : Opening delimiter for procedures
+    static constexpr char SYNTAX_CLOSE_PROC = '}'; /// Operator : Closing delimiter for procedures
+    static constexpr char SYNTAX_TERMINATE_PROC = '!'; /// Operator : Terminate the current procedure before it ends
+    static constexpr char SYNTAX_FILE_MARKER = '~'; /// Used at the beginning of a program or procedure. Indicate that the program/procedure is stored in a file. Put the filename just after it.
 
 protected:
 
-    istream *in; // The stream used to get the input
-    ostream *out; // The stream used to output
-    ostream *verbose_out; // The stream used to log information
-    function<void(int)> output_callback; // Callback called each time the VM outputs
-    string program; // The code
+    istream *in; /// The stream used to get the input
+    ostream *out; /// The stream used to output
+    ostream *verbose_out; /// The stream used to log information
+    function<void(int)> output_callback; /// Callback called each time the VM outputs
+    string program; /// The code
     string::iterator current_operator;
-    vector<int> memory; // The internal memory of the VM
-    vector<int>::iterator memory_ptr;
-    Status status;
-    bool print_errors; // In
-    bool verbose;
-    bool verbose_procedure;
-    map<unsigned int, string::iterator> anchor_map;
-    int depth;
-    int n_steps;
-    vector<fs::path> include_directories;
+    vector<int> memory; /// The internal memory of the VM
+    vector<int>::iterator memory_ptr; /// The iterator to the current cell
+    Status status; /// Indicate whether the VM is paused or running or raised an error
+    bool print_errors; /// Indicate whether the VM should output errors in standard ouput
+    bool verbose; /// Indicate whether the VM are verbose
+    bool verbose_procedure; /// Indicate whether the VM's procedure are verbose
+    map<unsigned int, string::iterator> anchor_map; /// Maps anchors location for gotoes
+    int depth; /// Indicate the recursive depth (always 0 for this class, become positive in procedures only)
+    int n_steps; /// Count the number of steps executed by the VM
+    vector<fs::path> include_directories; /// Directories from which
 
-    VirtualMachineProcedure *procedure_call;
+    VirtualMachineProcedure *procedure_call; /// Pointer to the procedure
 
     void initialize_anchor_map();
 
@@ -129,6 +129,14 @@ protected:
 
     void terminate_procedure();
 
+    /**
+     * @brief Handle an error
+     * Print it if member verbose_error is true
+     * Change member status
+     * Rethrow the error
+     * Virtual in order to be able to change the printing in a derived class.
+     * @param error the error to be handled
+     */
     virtual void error_handler(const VirtualMachineException &error);
 
     int extract_number_from_program(size_t *t = nullptr);
