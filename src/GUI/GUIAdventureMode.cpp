@@ -95,6 +95,7 @@ void GUIAdventureMode::open_esc_dialog()
 
 
     connect(resume_button, SIGNAL (clicked(bool)), parent(), SLOT (close_esc_dialog()));
+
     connect(parent(), SIGNAL (resume_game(int)), esc_dlg, SLOT (done(int)));
 
     connect(quit_button, SIGNAL (clicked(bool)), parent(), SLOT (esc_dialog_quit()));

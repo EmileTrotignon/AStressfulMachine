@@ -36,10 +36,17 @@ private:
 
 public:
     // GameGUI();
+    /**
+     * @param data_dir The path to the directory where the data (saves, gamefiles and assets) is
+     */
     explicit GameGUI(const fs::path &data_dir);
 
     /* This is only implemented to ensure project compiles
      * (GameGUI is a virtual class and requires inherited virtual functions to be implemented)
+     */
+
+    /**
+     * To start the execution
      */
     void play() override;
 
@@ -50,8 +57,16 @@ public:
 protected slots:
 
     // Used in GUIMainMenu
+
+    /**
+     * Allocate a new adventure mode widget and make it the central widget
+     */
     void open_adventure_mode();
 
+
+    /**
+     * Allocate a new sandbox mode widget and make it the central widget
+     */
     void open_sandbox();
 
     void return_main_menu_from_pick_save();

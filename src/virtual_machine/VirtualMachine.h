@@ -206,18 +206,25 @@ public:
 
     /**
      * @brief Makes the VM verbose.
+     * Being verbose means that the state of the VM will be printed to standard output at each operation
      */
     void be_verbose();
 
     /**
      * @brief Makes the VM silent.
+     * That is the default state of the VM
      */
     void stop_verbose();
 
+    /**
+     * @brief Indicates whether the VM is verbose or not.
+     * @return True if the VM is verbose else false.
+     */
     bool is_verbose() const;
 
     /**
      * @brief Make the VM and its procedures verbose.
+     * @warning Not recursive, the procedures' procedures will not be verbose
      */
     void be_verbose_procedure();
 
@@ -226,26 +233,68 @@ public:
      */
     void stop_verbose_procedure();
 
+    /**
+     * @brief Indicates whether the VM and its procedures are verbose or not.
+     * @return True if the VM and its procedures are verbose, else false.
+     */
     bool is_verbose_procedure() const;
 
+    /**
+     * @brief Make the VM print errors
+     */
     void start_printing_errors();
 
+    /**
+     * Make the VM stop printing errors
+     */
     void stop_printing_errors();
 
+
+    /**
+     *
+     * @return True if the VM is printing errors else false.
+     */
     bool is_printing_errors() const;
 
+    /**
+     * @brief Set a callback to be called each time a output is outputted
+     * @param output_callback This function has the int that is being outputted as a parameter.
+     */
     void set_output_callback(const function<void(int)> &output_callback);
 
+    /**
+     * @brief Convert the current state of memory into a printable (two line) string.
+     * The string is two line long, with the memory in the first line,
+     * and a '^' char placed under the current memory cell in the second.
+     * @return The current state of the memory as a string.
+     */
+
     virtual string memory_to_string() const;
+
+
+    /**
+     * @brief Convert the program that is being executed into a printable (two line) string.
+     * The string is two line long, with the program in the first line,
+     * and a '^' char placed under the current operator in the second.
+     * @warning Fails if there are any line return in the program : this only to be used for simple one line program,
+     * if you want to debug longer programs use the Qt GUI
+     * @return The program as a two line string
+     */
 
     virtual string program_to_string() const;
 
     /**
      * @brief Convert the VM's current state into a string.
+     *
+     * @warning Only use with one line programs. See VirtualMachine::program_to_string's doc for explanation.
      * @return The VM's string representation
      */
     virtual explicit operator string() const;
 
+    /**
+     * @brief Output the VM's current state to o.
+     * @warning Only use with one line programs. See VirtualMachine::program_to_string's doc for explanation.
+     */
     ostream &operator<<(ostream &o) const;
 
     friend UnitTest;
