@@ -12,6 +12,7 @@
 #include <QStyle>
 #include <QtWidgets/QMessageBox>
 #include <QDebug>
+#include <QtWidgets/QFileDialog>
 
 #include "VirtualMachine.h"
 #include "GUISandbox.h"
@@ -351,7 +352,7 @@ void GUISandbox::save_file()
 {
     for (int i = 0; i < typing_tabs->count(); i++)
     {
-        if (((GUIFileEdit *) (typing_tabs->widget(i)))->has_file_path())
+        if (((GUIFileEdit *) (typing_tabs->widget(i)))->has_file_path()) // if the file has already been saved once
         {
             ((GUIFileEdit *) (typing_tabs->widget(i)))->save();
         } else if (i == typing_tabs->currentIndex())
@@ -373,6 +374,14 @@ void GUISandbox::save_as_file()
 
 void GUISandbox::open_file()
 {
+    QString filename = QFileDialog::getOpenFileName(this, "Choose file");
+    if (!filename.isEmpty() && !filename.isNull())
+    {
+        fs::path p(filename.toStdString());
+        auto text_edit = new GUIFileEdit(this);
+        text_edit->open(p);
+        typing_tabs->addTab(text_edit, QString::fromStdString(p.filename()));
+    }
 
 }
 

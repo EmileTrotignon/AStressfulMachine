@@ -154,6 +154,9 @@ public:
      * @param program_ The code to be executed
      * @param in The input strestring("Solution initialisation throw exception : ") + string(e.what())am
      * @param out The output stream
+     * @param include_directories The directories where procedures are stored
+     * @param output_callback The callback that is called each time a value is outputted
+     * @param verbose_out The stream for verbose outputting
      */
     /*
      * @param size The size of the memory. If the program starts with a number, this will be ignored

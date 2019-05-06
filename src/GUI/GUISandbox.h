@@ -93,18 +93,41 @@ protected:
 
 protected slots:
 
+    /**
+     * @brief This slot runs the code the user typed
+     */
     virtual void run_code();
 
+    /**
+     * @brief This slot closes an editor tab
+     * @param index The index of the tab to close
+     */
     virtual void close_tab(int index);
 
+    /**
+     * @brief This slot closes the current tab
+     */
     virtual void close_current_tab();
 
+    /**
+     * @brief This slot opens a new tab.
+     */
     virtual void new_tab();
 
+    /**
+     * @brief This slot save the current file, and other already saved once tabs
+     * If the current tab was never saved, it asks the user for a path and a filename
+     */
     virtual void save_file();
 
+    /**
+     * @brief This slot saves the current file and always ask for a path and filename
+     */
     virtual void save_as_file();
 
+    /**
+     *
+     */
     virtual void open_file();
 
 
