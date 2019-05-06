@@ -22,6 +22,10 @@ cd build
 
 ./a_stressful_machine_gui
 
+On Windows, you will need the Visual Studio 2019 (older versions may not be usefull)
+
+Adding qt/./bin and /include to environment variables.
+
 ## Authors
 
 Emile Trotignon - 11719286
@@ -35,3 +39,5 @@ Marcel Fodor - 11719949
 ## Credits
 
 Icons are from icons8.com
+
+Songs are from https://freesound.org/
