@@ -19,7 +19,7 @@ void GUIGameplay::raw_gl_callback(GameLevel *gl)
 }
 
 GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(game_->gamefiles_dir / "assets", parent),
-                                                            game(game_), vm_input()
+                                                            game(game_), vm_input(), level_f(nullptr), level_w(nullptr)
 {
     file_menu->removeAction(open_file_action);
     file_menu->removeAction(save_as_file_action);
@@ -71,8 +71,8 @@ void GUIGameplay::run_code()
     auto game_song = new QMediaPlayer;
     // game_song->setMedia(QUrl::fromLocalFile("../data/assets/sounds/Start_game.wav"));
     game_song->setMedia(QUrl::fromLocalFile(QFileInfo("../data/assets/sounds/Start_game.wav").absoluteFilePath()));
-	game_song->setVolume(50);
-	game_song->play();
+    game_song->setVolume(50);
+    game_song->play();
 
     using namespace placeholders;
     function<void(GameLevel *)> gl_callback = bind(&GUIGameplay::raw_gl_callback, this, _1);
@@ -90,30 +90,31 @@ void GUIGameplay::run_code()
                 vm_solution_callback);
         if (b)
         {
-			level_w = new QMediaPlayer;
+            level_w = new QMediaPlayer;
             // level_w->setMedia(QUrl::fromLocalFile("../data/assets/sounds/258142__tuudurt__level-win.wav"));
-            level_w->setMedia(QUrl::fromLocalFile(QFileInfo(
-                    QString::fromStdString((assets / "sounds/258142__tuudurt__level-win.wav").string())).absoluteFilePath()));
-			level_w->setVolume(50);
-			level_w->play();
+            level_w->setMedia(QUrl::fromLocalFile(QFileInfo(QString::fromStdString(
+                    (assets / "sounds/258142__tuudurt__level-win.wav").string())).absoluteFilePath()));
+            level_w->setVolume(50);
+            level_w->play();
 
             message_field->append("Congratulation, you solved this level");
-            QMessageBox::StandardButton button = QMessageBox::critical(this, "Congrats",
-                                                                       "Do you want to play another level ?",
-                                                                       QMessageBox::Yes | QMessageBox::No,
-                                                                       QMessageBox::Yes);
+            QMessageBox::StandardButton button = QMessageBox::information(this, "Congrats",
+                                                                          "Do you want to play another level ?",
+                                                                          QMessageBox::Yes | QMessageBox::No,
+                                                                          QMessageBox::Yes);
             if (button == QMessageBox::Yes)
             {
                 ((GUIAdventureMode *) parent())->pick_level();
             }
         } else
         {
-			level_f = new QMediaPlayer;
+            level_f = new QMediaPlayer;
             // level_f->setMedia(QUrl::fromLocalFile("../data/assets/sounds/Level_failed.wav"));
             level_f->setMedia(QUrl::fromLocalFile(
-                    QFileInfo(QString::fromStdString((assets / "sounds/Level_failed.wav").string())).absoluteFilePath()));
-			level_f->setVolume(50);
-			level_f->play();
+                    QFileInfo(
+                            QString::fromStdString((assets / "sounds/Level_failed.wav").string())).absoluteFilePath()));
+            level_f->setVolume(50);
+            level_f->play();
 
             message_field->append("Your output differs from the expected output, try again :(");
         }
@@ -166,7 +167,8 @@ void GUIGameplay::new_tab()
 
 void GUIGameplay::close_tab(int index)
 {
-    QMessageBox::StandardButton b = QMessageBox::critical(this, "Confirm", "Do you really want to close this window ?",
+    QMessageBox::StandardButton b = QMessageBox::critical(this, "Confirm",
+                                                          "Do you really want delete this attempt FOREVER ? ?",
                                                           QMessageBox::Close | QMessageBox::Cancel,
                                                           QMessageBox::Cancel);
     if (b == QMessageBox::Close)

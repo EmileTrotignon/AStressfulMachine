@@ -45,11 +45,10 @@ void GUIAdventureMode::launch_game()
     QSound bells(QFileInfo(
             QString::fromStdString(((game->gamefiles_dir / "../assets/sounds/Start_game.wav").string()))).absoluteFilePath());
 	bells.play();
-    if (game_widget == nullptr)
-    {
-        game_widget = new GUIGameplay(this, game);
-        addWidget(game_widget);
-    }
+
+    removeWidget(game_widget);
+    game_widget = new GUIGameplay(this, game);
+    addWidget(game_widget);
     setCurrentWidget(game_widget);
 }
 
