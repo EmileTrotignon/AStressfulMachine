@@ -29,10 +29,19 @@ public:
 
 protected slots:
 
+    /**
+     * Override run_code in order to make it do an attempt to solve the level instead of a simple run.
+     */
     void run_code() override;
 
+    /**
+     * Force the user to chose a filename (not directory, this is handled by the save mechanism)
+     */
     void new_tab() override;
 
+    /**
+     * Just like GUISandbox::new_tab() except that it asks confirmation as it also delete the file.
+     */
     void close_tab(int index) override;
 
 
