@@ -385,7 +385,7 @@ void GUISandbox::open_file()
         fs::path p(filename.toStdString());
         auto text_edit = new GUIFileEdit(this);
         text_edit->open(p);
-        typing_tabs->addTab(text_edit, QString::fromStdString(p.filename()));
+        typing_tabs->addTab(text_edit, QString::fromStdString(p.filename().string()));
     }
 
 }
