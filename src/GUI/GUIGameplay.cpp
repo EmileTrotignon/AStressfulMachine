@@ -18,7 +18,8 @@ void GUIGameplay::raw_gl_callback(GameLevel *gl)
             QString::fromStdString(gl->get_input_as_string()));
 }
 
-GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(game_->gamefiles_dir / "assets", parent),
+GUIGameplay::GUIGameplay(QWidget *parent, GameGUI *game_) : GUISandbox(game_->gamefiles_dir.parent_path() / "assets",
+                                                                       parent),
                                                             game(game_), vm_input(), level_f(nullptr), level_w(nullptr)
 {
     file_menu->removeAction(open_file_action);

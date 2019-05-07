@@ -180,6 +180,7 @@ GUISandbox::GUISandbox(fs::path assets_, QWidget *parent_) : QWidget(parent_),
     //QIcon *icon_test = new QIcon("../data/assets/icons/icons.png");
 
     //run_button->setIcon(*icon_test);
+    cout << (assets / "icons/jouer.png") << endl;
     run_button->setIcon(QIcon(QString::fromStdString((assets / "icons/jouer.png").string())));
 
     connect(run_button, SIGNAL(clicked(bool)), this, SLOT(run_code()));
