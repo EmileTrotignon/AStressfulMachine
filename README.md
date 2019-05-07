@@ -2,7 +2,8 @@
 
 A Stressful Machine is a programming game where the player has to write programs to solve challenges using the game's particularly arduous programming language.
 
-The langage syntax is inspired by brainfuck's syntax (https://en.wikipedia.org/wiki/Brainfuck), it is however made higher level.
+The language's syntax is inspired by brainfuck's syntax (https://en.wikipedia.org/wiki/Brainfuck), it is however made higher level.
+See SYNTAX.md for a complete description of the language
 
 There is also a standalone interpreter for the game langage provided.
 
