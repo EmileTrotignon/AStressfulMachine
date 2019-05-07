@@ -7,25 +7,13 @@
 
 #include <iostream>
 
-/*
-#define ERROR_RUNTIME                       0
-#define ERROR_OUT_OF_MEMORY                 1
-#define ERROR_NEGATIVE_MEMORY_ACCESS        2
-#define ERROR_UNMATCHED_OPEN_BRACKET        3
-#define ERROR_UNMATCHED_CLOSED_BRACKET      4
-#define ERROR_UNMATCHED_CURLY_BRACKET       5
-#define ERROR_PROC_ASK_OUTPUT_WITHOUT_INPUT 6
-#define ERROR_PROC_ASK_OUPUT_WHEN_FINISHED  7
-#define ERROR_UNABLE_TO_OPEN_FILE           8
-#define ERROR_TERMINATE_NONEXISTING_PROC    9
-#define ERROR_IN_PROC                       10
-#define ERROR_INVALID_NUMBER                11
-#define ERROR_LOOP_NONEXISTING_PROC         12
-*/
 using namespace std;
 
 class VirtualMachine;
 
+/**
+ * Exception base class. Derived a lot in this header, every class is a possible error of the VM
+ */
 class VirtualMachineException : public runtime_error
 {
 protected:

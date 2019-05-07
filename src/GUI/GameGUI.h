@@ -23,7 +23,9 @@ class GUIPickSave;
 
 class GUIPickLevel;
 
-
+/**
+ * This is the base class of the GUI
+ */
 class GameGUI : public QMainWindow, public Game
 {
 Q_OBJECT

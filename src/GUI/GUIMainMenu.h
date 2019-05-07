@@ -16,10 +16,13 @@
 #include <QMediaPlayer>
 
 // class QPushButton;
+/**
+ * This widget display the main menu displayed at launch
+ */
 class GUIMainMenu : public QWidget
 {
     // Initialize macro for qt
-    Q_OBJECT
+Q_OBJECT
 
 public:
     explicit GUIMainMenu(QWidget *parent_ = nullptr);
@@ -29,10 +32,10 @@ public:
 
 private slots:
 
-	// Used in GUIMainMenu
-	void song_on();
+    // Used in GUIMainMenu
+    void song_on();
 
-	void song_off();
+    void song_off();
 
 private:
     QGridLayout *window_Layout;
@@ -43,10 +46,10 @@ private:
     QPushButton *sandbox_button;
     QPushButton *settings_button;
     QPushButton *quit_game_button;
-	QPushButton * play_music_button;
-	QPushButton * stop_music_button;
-	QSound* sound;
-	QMediaPlayer* level_w;
+    QPushButton * play_music_button;
+    QPushButton * stop_music_button;
+    QSound* sound;
+    QMediaPlayer* level_w;
 };
 
 

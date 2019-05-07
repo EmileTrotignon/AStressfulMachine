@@ -1,6 +1,10 @@
 #include "GameGUI.h"
 #include <QApplication>
 
+/*
+ * This main launches the GUI
+ */
+
 int main(int argc, char ** argv)
 {
 

@@ -19,10 +19,13 @@ class GameGUI;
 
 class GameLevel;
 
+/**
+ * Derived class from sandbox that add behaviour to actually play the game and not just program
+ */
 class GUIGameplay : public GUISandbox
 {
     // Initialize macro for qt
-    Q_OBJECT
+Q_OBJECT
 
 public:
     explicit GUIGameplay(QWidget *parent, GameGUI *game);
@@ -49,8 +52,8 @@ private:
     QTextEdit *instruction_field;
     QTextEdit *vm_solution_output;
     QLabel *vm_solution_output_label;
-	QMediaPlayer * level_w;
-	QMediaPlayer * level_f;
+    QMediaPlayer * level_w;
+    QMediaPlayer * level_f;
     GameGUI *game;
     istringstream vm_input;
 
